@@ -247,8 +247,8 @@ body{
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm" type="module"></script>
 <script type="module">
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 // ── STARS ──
 (function(){
   const c=document.getElementById('stars');
@@ -270,12 +270,12 @@ let resendCount=0;
 let resendTimer=null;
 
 // ── HELPERS ──
-function showMsg(id,text,type){
+window.showMsg = function(id,text,type){
   const el=document.getElementById(id);
   el.textContent=text;el.className='msg '+type+' show';
 }
-function hideMsg(id){document.getElementById(id).className='msg'}
-function setStep(n){
+window.hideMsg = function(id){document.getElementById(id).className='msg'}
+window.setStep = function(n){
   [1,2,3].forEach(i=>{
     document.getElementById('screen'+i).className='screen'+(i===n?' active':'');
     const dot=document.getElementById('dot'+i);
@@ -284,15 +284,15 @@ function setStep(n){
     else dot.className='step-dot';
   });
 }
-function goBack(n){setStep(n);hideMsg('msg'+(n+1))}
-function setLoading(btnId,loading,text){
+window.goBack = function(n){setStep(n);hideMsg('msg'+(n+1))}
+window.setLoading = function(btnId,loading,text){
   const b=document.getElementById(btnId);
   b.disabled=loading;
   b.innerHTML=loading?'<span class="spinner"></span>Please wait...':text;
 }
 
 // ── STEP 1: CREDENTIALS ──
-async function handleStep1(){
+window.handleStep1 = async function(){
   const email=document.getElementById('login-email').value.trim();
   const password=document.getElementById('login-password').value;
   if(!email||!email.includes('@')){showMsg('msg1','Please enter a valid email address.','error');return}
@@ -317,12 +317,12 @@ async function handleStep1(){
 }
 
 // ── SEND OTP ──
-async function sendOTP(email){
+window.sendOTP = async function(email){
   await supabase.auth.signInWithOtp({email,options:{shouldCreateUser:false}});
 }
 
 // ── STEP 2: SLIDER PUZZLE ──
-function initSlider(){
+window.initSlider = function(){
   const track=document.getElementById('slider-track');
   const handle=document.getElementById('slider-handle');
   const fill=document.getElementById('slider-fill');
@@ -375,7 +375,7 @@ function getOTPValue(){
   return [0,1,2,3,4,5].map(i=>document.getElementById('otp'+i).value).join('');
 }
 
-async function handleOTP(){
+window.handleOTP = async function(){
   const token=getOTPValue();
   if(token.length!==6){showMsg('msg3','Please enter the full 6-digit code.','error');return}
   setLoading('btn3',true,'Verify & Sign In');
@@ -393,7 +393,7 @@ async function handleOTP(){
 }
 
 // ── RESEND OTP ──
-async function resendOTP(){
+window.resendOTP = async function(){
   if(resendCount>=3){showMsg('msg3','Maximum resend limit reached. Please try again in an hour.','error');return}
   const btn=document.getElementById('resend-btn');
   btn.disabled=true;
