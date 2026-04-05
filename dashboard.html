@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)file:///C:/Users/Administrator/Downloads/dashboard_2.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Fortiq Funded</title>
+<link href="./dashboard_files/css2" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#04060f;--bg2:#070b18;--surface:#0f1829;--surface2:#162038;--surface3:#1c2a42;
+  --purple:#6c3de8;--purple2:#8b5cf6;--purple3:#a78bfa;
+  --blue:#1e5fff;--blue2:#3d7fff;--cyan:#00d4ff;
+  --text:#f0eeff;--muted:#7a7a9a;--muted2:#555575;
+  --border:rgba(108,61,232,0.25);--border2:rgba(255,255,255,0.06);
+  --success:#00d68f;--error:#ff4d4d;--warning:#f59e0b;
+  --gold:#c9a84c;
+  --sidebar:240px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar);min-height:100vh;
+  background:var(--bg2);border-right:1px solid var(--border2);
+  display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:100;
+}
+.sidebar-logo{padding:1.5rem 1.2rem;border-bottom:1px solid var(--border2)}
+.logo-mark{display:flex;align-items:center;gap:8px;text-decoration:none}
+.logo-wordmark{font-family:'Cinzel',serif;font-weight:700;font-size:16px;letter-spacing:0.5px;
+  background:linear-gradient(135deg,#a78bfa,#6c3de8,#3d7fff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-wordmark span{background:linear-gradient(135deg,#c9a84c,#e8c96a);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+.sidebar-nav{flex:1;padding:1rem 0}
+.nav-section{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted2);padding:0.8rem 1.2rem 0.4rem}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:0.7rem 1.2rem;cursor:pointer;
+  font-size:14px;font-weight:400;color:var(--muted);
+  transition:all 0.2s;text-decoration:none;
+  border-left:2px solid transparent;
+}
+.nav-item:hover{color:var(--text);background:rgba(108,61,232,0.06)}
+.nav-item.active{color:var(--purple3);background:rgba(108,61,232,0.1);border-left-color:var(--purple)}
+.nav-icon{width:16px;height:16px;opacity:0.7;flex-shrink:0}
+.nav-item.active .nav-icon{opacity:1}
+
+.sidebar-bottom{padding:1rem 1.2rem;border-top:1px solid var(--border2)}
+.user-pill{
+  display:flex;align-items:center;gap:10px;
+  padding:0.7rem;border-radius:10px;background:var(--surface);
+  border:1px solid var(--border2);margin-bottom:0.8rem;
+}
+.user-avatar{
+  width:32px;height:32px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;font-size:12px;font-weight:700;color:#fff;
+}
+.user-info{min-width:0}
+.user-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-id{font-size:11px;color:var(--purple3);font-family:'Cinzel',serif}
+.logout-btn{
+  width:100%;background:transparent;border:1px solid var(--border2);
+  color:var(--muted);padding:8px;border-radius:8px;
+  font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;
+  transition:all 0.2s;
+}
+.logout-btn:hover{border-color:var(--error);color:var(--error)}
+
+/* ── MAIN CONTENT ── */
+.main{margin-left:var(--sidebar);flex:1;padding:2rem;min-height:100vh}
+.page{display:none}
+.page.active{display:block}
+
+/* ── PAGE HEADER ── */
+.page-header{margin-bottom:2rem}
+.page-header h1{font-family:'Cinzel',serif;font-size:1.6rem;font-weight:700;margin-bottom:0.3rem}
+.page-header p{color:var(--muted);font-size:14px;font-weight:300}
+
+/* ── METRIC CARDS ── */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.metric-card{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:14px;padding:1.4rem;
+}
+.metric-label{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:0.6rem}
+.metric-value{font-family:'Cinzel',serif;font-size:1.6rem;font-weight:700}
+.metric-value.purple{background:linear-gradient(135deg,#a78bfa,#3d7fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.metric-value.green{color:var(--success)}
+.metric-value.gold{color:var(--gold)}
+.metric-sub{font-size:12px;color:var(--muted);margin-top:4px;font-weight:300}
+
+/* ── ACCOUNT CARD ── */
+.account-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;
+}
+.account-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at top right,rgba(108,61,232,0.08),transparent 60%);
+  pointer-events:none;
+}
+.account-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.account-id-wrap h3{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.account-id-wrap .acc-id{font-size:12px;color:var(--purple3);font-family:'Cinzel',serif}
+.status-badge{
+  padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.status-badge.to_be_active{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:var(--warning)}
+.status-badge.active{background:rgba(0,214,143,0.1);border:1px solid rgba(0,214,143,0.3);color:var(--success)}
+.status-badge.failed{background:rgba(255,77,77,0.1);border:1px solid rgba(255,77,77,0.3);color:var(--error)}
+.status-badge.funded{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold)}
+.status-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* PROGRESS BARS */
+.progress-section{margin-bottom:1.5rem}
+.progress-item{margin-bottom:1rem}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.progress-label{font-size:13px;color:var(--muted);font-weight:400}
+.progress-val{font-size:13px;font-weight:600;font-family:'Cinzel',serif}
+.progress-bar{height:6px;background:var(--border2);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;border-radius:100px;transition:width 0.8s ease}
+.fill-purple{background:linear-gradient(90deg,var(--purple),var(--blue2))}
+.fill-green{background:var(--success)}
+.fill-red{background:var(--error)}
+.fill-gold{background:var(--gold)}
+
+/* RULES CHECKLIST */
+.rules-check{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-top:1.2rem}
+.rule-check-item{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:10px;padding:10px 12px;font-size:13px;
+}
+.rci-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+.rci-ok{background:rgba(0,214,143,0.15);color:var(--success)}
+.rci-warn{background:rgba(245,158,11,0.15);color:var(--warning)}
+.rci-text{color:var(--muted);font-weight:300}
+.rci-text strong{color:var(--text);display:block;font-weight:500;font-size:12px}
+
+/* NO ACCOUNT STATE */
+.empty-state{
+  text-align:center;padding:4rem 2rem;
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:16px;
+}
+.empty-icon{font-size:3rem;margin-bottom:1rem}
+.empty-state h3{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;margin-bottom:0.8rem}
+.empty-state p{color:var(--muted);font-size:14px;font-weight:300;line-height:1.7;margin-bottom:2rem;max-width:400px;margin-left:auto;margin-right:auto}
+.btn-primary{
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:#fff;border:none;padding:13px 28px;border-radius:10px;
+  font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;
+  cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;
+  box-shadow:0 0 20px rgba(108,61,232,0.3);
+}
+.btn-primary:hover{opacity:0.9;transform:translateY(-1px)}
+
+/* BILLING TABLE */
+.table-wrap{background:var(--surface);border:1px solid var(--border2);border-radius:14px;overflow:hidden}
+.table-wrap table{width:100%;border-collapse:collapse}
+.table-wrap th{
+  padding:12px 16px;font-size:11px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--border2);text-align:left;background:var(--surface2);
+}
+.table-wrap td{padding:14px 16px;font-size:13px;border-bottom:1px solid var(--border2);color:var(--muted)}
+.table-wrap tr:last-child td{border-bottom:none}
+.table-wrap td.highlight{color:var(--text);font-weight:500}
+.pill{padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600}
+.pill-green{background:rgba(0,214,143,0.1);color:var(--success)}
+.pill-yellow{background:rgba(245,158,11,0.1);color:var(--warning)}
+.pill-red{background:rgba(255,77,77,0.1);color:var(--error)}
+
+/* AFFILIATE */
+.aff-link-box{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:12px;padding:1rem 1.2rem;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  margin-bottom:1.5rem;flex-wrap:wrap;
+}
+.aff-link{font-size:13px;color:var(--purple3);font-family:'Cinzel',serif;word-break:break-all}
+.copy-btn{
+  background:rgba(108,61,232,0.15);border:1px solid var(--border);
+  color:var(--purple3);padding:7px 16px;border-radius:8px;
+  font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;
+  cursor:pointer;white-space:nowrap;transition:all 0.2s;
+}
+.copy-btn:hover{background:rgba(108,61,232,0.3)}
+
+/* LOADING */
+.loading{text-align:center;padding:4rem;color:var(--muted)}
+.spinner{display:inline-block;width:32px;height:32px;border:3px solid var(--border2);
+  border-top-color:var(--purple);border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* MOBILE */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform 0.3s}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .rules-check{grid-template-columns:1fr}
+  .metrics{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <a href="file:///C:/Users/Administrator/Downloads/index.html" class="logo-mark">
+      <svg width="28" height="28" viewBox="0 0 38 38" fill="none">
+        <defs>
+          <lineargradient id="lg1" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#a78bfa"></stop><stop offset="55%" stop-color="#6c3de8"></stop><stop offset="100%" stop-color="#3d7fff"></stop>
+          </lineargradient>
+          <lineargradient id="lg2" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#c9a84c"></stop><stop offset="100%" stop-color="#e8c96a"></stop>
+          </lineargradient>
+        </defs>
+        <rect x="4" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"></rect>
+        <rect x="15.5" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"></rect>
+        <rect x="27" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"></rect>
+        <rect x="4" y="14" width="30" height="7" fill="url(#lg1)" opacity="0.85"></rect>
+        <polygon points="19,22 27,28 19,38 11,28" fill="url(#lg2)" opacity="0.95"></polygon>
+        <polygon points="19,22 27,28 19,26 11,28" fill="url(#lg1)" opacity="0.7"></polygon>
+        <polygon points="16,24 19,22 19,26" fill="#fff" opacity="0.25"></polygon>
+      </svg>
+      <span class="logo-wordmark">Fortiq <span>Funded</span></span>
+    </a>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a class="nav-item active" onclick="showPage(&#39;overview&#39;)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>
+      Overview
+    </a>
+    <a class="nav-item" onclick="showPage(&#39;challenge&#39;)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+      My Challenge
+    </a>
+    <a class="nav-item" onclick="showPage(&#39;billing&#39;)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path></svg>
+      Billing
+    </a>
+    <a class="nav-item" onclick="showPage(&#39;payouts&#39;)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"></path></svg>
+      Payouts
+    </a>
+    <div class="nav-section">Grow</div>
+    <a class="nav-item" onclick="showPage(&#39;affiliate&#39;)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"></path></svg>
+      Affiliates
+    </a>
+    <a class="nav-item" href="file:///C:/Users/Administrator/Downloads/index.html#challenge">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path></svg>
+      New Challenge
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="user-pill">
+      <div class="user-avatar" id="avatar-initials">?</div>
+      <div class="user-info">
+        <div class="user-name" id="sidebar-name">Loading...</div>
+        <div class="user-id" id="sidebar-uid">USR-000000</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- ── OVERVIEW PAGE ── -->
+  <div class="page active" id="page-overview">
+    <div class="page-header">
+      <h1>Dashboard</h1>
+      <p id="welcome-msg">Welcome back — loading your account...</p>
+    </div>
+
+    <div class="metrics" id="metrics-row">
+      <div class="metric-card">
+        <div class="metric-label">Account Size</div>
+        <div class="metric-value purple">$5,000</div>
+        <div class="metric-sub">Funded account value</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Profit Target</div>
+        <div class="metric-value gold">8%</div>
+        <div class="metric-sub">$400 USDT needed</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Your Split</div>
+        <div class="metric-value green">80%</div>
+        <div class="metric-sub">Of all profits earned</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Account Status</div>
+        <div class="metric-value purple" id="overview-status">—</div>
+        <div class="metric-sub" id="overview-acc-id">Waiting for challenge</div>
+      </div>
+    </div>
+
+    <div id="overview-account-section">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <!-- ── CHALLENGE PAGE ── -->
+  <div class="page" id="page-challenge">
+    <div class="page-header">
+      <h1>My Challenge</h1>
+      <p>Track your evaluation progress in real time</p>
+    </div>
+    <div id="challenge-section">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <!-- ── BILLING PAGE ── -->
+  <div class="page" id="page-billing">
+    <div class="page-header">
+      <h1>Billing</h1>
+      <p>Your payment history and challenge purchases</p>
+    </div>
+    <div id="billing-section">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <!-- ── PAYOUTS PAGE ── -->
+  <div class="page" id="page-payouts">
+    <div class="page-header">
+      <h1>Payouts</h1>
+      <p>Your earnings and payout history</p>
+    </div>
+    <div id="payouts-section">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <!-- ── AFFILIATE PAGE ── -->
+  <div class="page" id="page-affiliate">
+    <div class="page-header">
+      <h1>Affiliate Program</h1>
+      <p>Earn $50 USDT for every trader you refer</p>
+    </div>
+    <div id="affiliate-section">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+</main>
+
+<script src="./dashboard_files/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://qhfsvazxpnjwfxhamkea.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo';
+const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+
+let profile=null;
+let account=null;
+
+// ── AUTH GUARD ──
+async function init(){
+  const {data:{session}}=await supabase.auth.getSession();
+  if(!session){window.location.href='login.html';return}
+  await loadProfile(session.user);
+  renderAll();
+}
+
+async function loadProfile(user){
+  const {data}=await supabase.from('profiles').select('*').eq('id',user.id).single();
+  profile=data;
+  const {data:acc}=await supabase.from('accounts').select('*').eq('user_id',user.id).order('created_at',{ascending:false}).limit(1).single();
+  account=acc;
+
+  // Sidebar
+  const name=profile?.full_name||user.email;
+  document.getElementById('sidebar-name').textContent=name;
+  document.getElementById('sidebar-uid').textContent=profile?.user_id||'USR-000000';
+  document.getElementById('avatar-initials').textContent=name.charAt(0).toUpperCase();
+  document.getElementById('welcome-msg').textContent='Welcome back, '+name.split(' ')[0]+'!';
+  document.getElementById('overview-status').textContent=account?statusLabel(account.status):'No Challenge';
+  document.getElementById('overview-acc-id').textContent=account?.account_id||'Purchase a challenge to begin';
+}
+
+function statusLabel(s){
+  return{to_be_active:'Awaiting Trade',active:'Active',failed:'Failed',funded:'Funded'}[s]||s;
+}
+
+function statusClass(s){
+  return{to_be_active:'to_be_active',active:'active',failed:'failed',funded:'funded'}[s]||'to_be_active';
+}
+
+// ── RENDER ALL PAGES ──
+function renderAll(){
+  renderOverview();
+  renderChallenge();
+  renderBilling();
+  renderPayouts();
+  renderAffiliate();
+}
+
+function renderOverview(){
+  const el=document.getElementById('overview-account-section');
+  if(!account){
+    el.innerHTML=`
+      <div class="empty-state">
+        <div class="empty-icon">🏆</div>
+        <h3>No Active Challenge</h3>
+        <p>You haven't purchased a challenge yet. Start your $150 one-phase evaluation and get funded with a $5,000 account.</p>
+        <a href="index.html#challenge" class="btn-primary">Start Challenge — $150</a>
+      </div>`;
+    return;
+  }
+  const profit_pct=((account.profit/5000)*100).toFixed(2);
+  const daily_pct=account.daily_loss.toFixed(2);
+  const dd_pct=account.max_drawdown.toFixed(2);
+  el.innerHTML=`
+    <div class="account-card">
+      <div class="account-header">
+        <div class="account-id-wrap">
+          <h3>Challenge Account</h3>
+          <div class="acc-id">${account.account_id}</div>
+        </div>
+        <div class="status-badge ${statusClass(account.status)}">
+          <div class="status-dot"></div>
+          ${statusLabel(account.status)}
+        </div>
+      </div>
+      <div class="progress-section">
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">Profit Progress</span>
+            <span class="progress-val" style="color:var(--success)">${profit_pct}% / 8%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill fill-green" style="width:${Math.min((profit_pct/8)*100,100)}%"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">Daily Loss Used</span>
+            <span class="progress-val" style="color:var(--error)">${daily_pct}% / 5%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill fill-red" style="width:${Math.min((daily_pct/5)*100,100)}%"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">Max Drawdown Used</span>
+            <span class="progress-val" style="color:var(--warning)">${dd_pct}% / 8%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill fill-gold" style="width:${Math.min((dd_pct/8)*100,100)}%"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">Active Trading Days</span>
+            <span class="progress-val" style="color:var(--purple3)">${account.active_days} / 5</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill fill-purple" style="width:${Math.min((account.active_days/5)*100,100)}%"></div></div>
+        </div>
+      </div>
+      <div class="rules-check">
+        <div class="rule-check-item">
+          <div class="rci-icon ${account.profit>=0?'rci-ok':'rci-warn'}">${account.profit>=0?'✓':'!'}</div>
+          <div class="rci-text"><strong>Profit Target</strong>$${account.profit.toFixed(2)} earned</div>
+        </div>
+        <div class="rule-check-item">
+          <div class="rci-icon ${account.daily_loss<5?'rci-ok':'rci-warn'}">${account.daily_loss<5?'✓':'!'}</div>
+          <div class="rci-text"><strong>Daily Loss Limit</strong>${daily_pct}% of 5% used</div>
+        </div>
+        <div class="rule-check-item">
+          <div class="rci-icon ${account.max_drawdown<8?'rci-ok':'rci-warn'}">${account.max_drawdown<8?'✓':'!'}</div>
+          <div class="rci-text"><strong>Max Drawdown</strong>${dd_pct}% of 8% used</div>
+        </div>
+        <div class="rule-check-item">
+          <div class="rci-icon ${account.active_days>=5?'rci-ok':'rci-warn'}">${account.active_days>=5?'✓':'!'}</div>
+          <div class="rci-text"><strong>Trading Days</strong>${account.active_days} of 5 required</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderChallenge(){
+  document.getElementById('challenge-section').innerHTML=
+    document.getElementById('overview-account-section').innerHTML;
+}
+
+function renderBilling(){
+  const el=document.getElementById('billing-section');
+  if(!account){
+    el.innerHTML=`<div class="empty-state"><div class="empty-icon">💳</div><h3>No Payments Yet</h3><p>Your payment history will appear here after you purchase a challenge.</p><a href="index.html#challenge" class="btn-primary">Buy Challenge — $150</a></div>`;
+    return;
+  }
+  el.innerHTML=`
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>${new Date(account.created_at).toLocaleDateString()}</td>
+            <td class="highlight">One-Phase Challenge — ${account.account_id}</td>
+            <td class="highlight">$150.00 USDT</td>
+            <td><span class="pill pill-green">Confirmed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function renderPayouts(){
+  const el=document.getElementById('payouts-section');
+  if(!account||account.account_type!=='funded'){
+    el.innerHTML=`<div class="empty-state"><div class="empty-icon">💰</div><h3>No Payouts Yet</h3><p>Payouts become available once you pass the challenge and receive your funded account. Your profit split is 80%.</p></div>`;
+    return;
+  }
+  const profit_pct=((account.profit/5000)*100).toFixed(2);
+  el.innerHTML=`
+    <div class="account-card">
+      <div class="account-header">
+        <div class="account-id-wrap">
+          <h3>Funded Account</h3>
+          <div class="acc-id">${account.funded_account_id||account.account_id+'-F'}</div>
+        </div>
+        <div class="status-badge funded"><div class="status-dot"></div>Funded</div>
+      </div>
+      <div class="progress-section">
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">Lifetime Profit Cap</span>
+            <span class="progress-val" style="color:var(--gold)">$${account.profit.toFixed(2)} / $5,000</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill fill-gold" style="width:${Math.min((account.profit/5000)*100,100)}%"></div></div>
+        </div>
+      </div>
+      <div class="metrics" style="margin-top:1rem">
+        <div class="metric-card"><div class="metric-label">Your 80% Share</div><div class="metric-value green">$${(account.profit*0.8).toFixed(2)}</div></div>
+        <div class="metric-card"><div class="metric-label">Payout Status</div><div class="metric-value purple">${account.paid_out?'Paid Out':'Pending'}</div></div>
+      </div>
+    </div>`;
+}
+
+function renderAffiliate(){
+  const el=document.getElementById('affiliate-section');
+  const uid=profile?.user_id||'USR-000000';
+  const refLink=`https://fortiqfunded.com/signup.html?ref=${uid}`;
+  el.innerHTML=`
+    <div class="metrics" style="margin-bottom:1.5rem">
+      <div class="metric-card"><div class="metric-label">Your Referrals</div><div class="metric-value purple">0</div><div class="metric-sub">Traders referred</div></div>
+      <div class="metric-card"><div class="metric-label">Earned</div><div class="metric-value gold">$0</div><div class="metric-sub">USDT commissions</div></div>
+      <div class="metric-card"><div class="metric-label">Per Referral</div><div class="metric-value green">$50</div><div class="metric-sub">USDT reward</div></div>
+    </div>
+    <div class="account-card">
+      <h3 style="font-family:'Cinzel',serif;font-size:1rem;font-weight:700;margin-bottom:0.5rem">Your Referral Link</h3>
+      <p style="color:var(--muted);font-size:13px;font-weight:300;margin-bottom:1rem">Share this link. Earn $50 USDT when your referral buys and activates a challenge.</p>
+      <div class="aff-link-box">
+        <span class="aff-link" id="ref-link">${refLink}</span>
+        <button class="copy-btn" onclick="copyLink('${refLink}')">Copy Link</button>
+      </div>
+      <p style="color:var(--muted2);font-size:12px;font-weight:300">Commissions are subject to fraud verification and are paid in USDT on TRC20.</p>
+    </div>`;
+}
+
+function copyLink(link){
+  navigator.clipboard.writeText(link).then(()=>{
+    const btn=document.querySelector('.copy-btn');
+    btn.textContent='Copied!';
+    setTimeout(()=>btn.textContent='Copy Link',2000);
+  });
+}
+
+// ── NAV ──
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ── LOGOUT ──
+async function handleLogout(){
+  await supabase.auth.signOut();
+  window.location.href='login.html';
+}
+
+init();
+</script>
+
+
+</body></html>

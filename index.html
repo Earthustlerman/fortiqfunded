@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)file:///C:/Users/Administrator/Downloads/index_2.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortiq Funded — Crypto Prop Trading</title>
+<link href="./index_files/css2" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#04060f;
+  --bg2:#070b18;
+  --bg3:#0a1020;
+  --surface:#0f1829;
+  --surface2:#162038;
+  --purple:#6c3de8;
+  --purple2:#8b5cf6;
+  --purple3:#a78bfa;
+  --neon:#b48cff;
+  --blue:#1e5fff;
+  --blue2:#3d7fff;
+  --cyan:#00d4ff;
+  --text:#f0eeff;
+  --muted:#7a7a9a;
+  --muted2:#555575;
+  --border:rgba(108,61,232,0.25);
+  --border2:rgba(255,255,255,0.06);
+  --gold:#c9a84c;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* ── STARFIELD ── */
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s)}
+@keyframes twinkle{0%,100%{opacity:var(--min,0.1)}50%{opacity:var(--max,0.7)}}
+
+/* ── LOGO SVG component ── */
+.logo-mark{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.logo-svg{flex-shrink:0}
+.logo-wordmark{
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:20px;
+  letter-spacing:1px;
+  background:linear-gradient(135deg,#a78bfa,#6c3de8,#3d7fff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.logo-wordmark span{
+  background:linear-gradient(135deg,#c9a84c,#e8c96a);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 3rem;
+  background:rgba(4,6,15,0.8);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border2);
+}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{
+  text-decoration:none;color:var(--muted);font-size:14px;font-weight:400;
+  transition:color 0.2s;letter-spacing:0.3px;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:#fff;border:none;padding:10px 24px;border-radius:8px;
+  font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;
+  cursor:pointer;transition:opacity 0.2s,transform 0.15s;
+  text-decoration:none;display:inline-block;letter-spacing:0.3px;
+}
+.nav-cta:hover{opacity:0.9;transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{
+  position:relative;z-index:1;
+  min-height:96vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:6rem 2rem 4rem;
+}
+.hero-glow-1{
+  position:absolute;top:-120px;left:50%;transform:translateX(-50%);
+  width:800px;height:600px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(108,61,232,0.18) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-glow-2{
+  position:absolute;top:200px;left:20%;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(30,95,255,0.09) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--border);padding:6px 18px;border-radius:100px;
+  font-size:12px;font-weight:500;color:var(--neon);
+  margin-bottom:2.5rem;
+  background:rgba(108,61,232,0.08);
+  animation:fadeUp 0.8s ease both;
+}
+.badge-pulse{width:6px;height:6px;border-radius:50%;background:#00d4ff;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.4)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.hero h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(2.4rem,5.5vw,4.6rem);
+  font-weight:900;line-height:1.08;
+  letter-spacing:-1px;max-width:860px;
+  animation:fadeUp 0.9s 0.1s ease both;
+  margin-bottom:0.6rem;
+}
+.hero h1 .grad{
+  background:linear-gradient(135deg,#a78bfa 0%,#6c3de8 40%,#3d7fff 80%,#00d4ff 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.tagline-strip{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:6px 20px;
+  margin:1.6rem 0 2.8rem;
+  animation:fadeUp 1s 0.2s ease both;
+}
+.tag-item{
+  font-size:15px;color:var(--muted);font-weight:400;
+  display:flex;align-items:center;gap:7px;
+}
+.tag-item::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--purple2)}
+.hero-sub{
+  font-size:17px;color:var(--muted);font-weight:300;
+  max-width:540px;line-height:1.75;margin-bottom:3rem;
+  animation:fadeUp 1s 0.25s ease both;
+}
+.hero-buttons{
+  display:flex;gap:1rem;align-items:center;justify-content:center;flex-wrap:wrap;
+  animation:fadeUp 1s 0.35s ease both;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:#fff;border:none;padding:15px 36px;border-radius:10px;
+  font-family:'Outfit',sans-serif;font-weight:600;font-size:16px;
+  cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;
+  box-shadow:0 0 30px rgba(108,61,232,0.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(108,61,232,0.55)}
+.btn-ghost{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border2);padding:15px 36px;border-radius:10px;
+  font-family:'Outfit',sans-serif;font-weight:500;font-size:16px;
+  cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;
+}
+.btn-ghost:hover{border-color:var(--border);background:rgba(108,61,232,0.08)}
+
+/* ── STATS ── */
+.stats-bar{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  max-width:900px;margin:0 auto 5rem;
+  background:var(--surface);
+  border:1px solid var(--border2);border-radius:16px;overflow:hidden;
+}
+.stat-item{
+  padding:1.8rem 1.2rem;text-align:center;
+  border-right:1px solid var(--border2);
+}
+.stat-item:last-child{border-right:none}
+.stat-num{
+  font-family:'Cinzel',serif;font-size:1.9rem;font-weight:700;
+  background:linear-gradient(135deg,#a78bfa,#3d7fff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-label{font-size:11px;color:var(--muted);margin-top:5px;font-weight:400;letter-spacing:0.5px}
+
+/* ── SECTION WRAPPER ── */
+.section{position:relative;z-index:1;padding:5rem 2rem;max-width:1100px;margin:0 auto}
+.section-eyebrow{
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--purple3);font-weight:600;margin-bottom:0.8rem;
+}
+.section-title{
+  font-family:'Cinzel',serif;font-size:clamp(1.6rem,3vw,2.4rem);
+  font-weight:700;letter-spacing:-0.5px;line-height:1.2;margin-bottom:0.8rem;
+}
+.section-sub{color:var(--muted);font-size:15px;font-weight:300;line-height:1.8;max-width:500px}
+
+/* ── HOW IT WORKS ── */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.5rem;margin-top:3rem}
+.step-card{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:16px;padding:2rem;position:relative;overflow:hidden;
+  transition:border-color 0.25s,transform 0.2s;
+}
+.step-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--purple2),transparent);
+  opacity:0;transition:opacity 0.25s;
+}
+.step-card:hover{border-color:var(--border);transform:translateY(-4px)}
+.step-card:hover::after{opacity:1}
+.step-num{
+  font-family:'Cinzel',serif;font-size:11px;font-weight:600;
+  color:var(--purple3);letter-spacing:2px;margin-bottom:1rem;
+}
+.step-card h3{font-size:16px;font-weight:600;margin-bottom:0.6rem}
+.step-card p{color:var(--muted);font-size:14px;font-weight:300;line-height:1.7}
+
+/* ── CHALLENGE CARD ── */
+.challenge-wrap{
+  display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;
+  align-items:center;margin-top:3.5rem;
+}
+.challenge-card{
+  background:var(--surface);
+  border:1px solid var(--purple);
+  border-radius:20px;padding:2.5rem;position:relative;overflow:hidden;
+}
+.challenge-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at top left,rgba(108,61,232,0.12),transparent 60%);
+  pointer-events:none;
+}
+.challenge-glow{
+  position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(61,127,255,0.15),transparent 70%);
+}
+.challenge-badge{
+  display:inline-block;background:rgba(108,61,232,0.2);
+  border:1px solid var(--border);color:var(--purple3);
+  font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  padding:5px 14px;border-radius:100px;margin-bottom:1.5rem;
+}
+.challenge-price{
+  font-family:'Cinzel',serif;font-size:3rem;font-weight:900;
+  background:linear-gradient(135deg,#a78bfa,#3d7fff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.challenge-price sub{font-size:1rem;font-weight:400;-webkit-text-fill-color:var(--muted);color:var(--muted)}
+.challenge-funded{
+  font-size:13px;color:var(--muted);margin:0.4rem 0 2rem;font-weight:300;
+}
+.challenge-funded strong{color:var(--text);font-weight:500}
+.rules-list{list-style:none;margin-bottom:2rem}
+.rules-list li{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid var(--border2);
+  font-size:14px;
+}
+.rules-list li:last-child{border-bottom:none}
+.rules-list .rule-label{color:var(--muted);font-weight:300}
+.rules-list .rule-val{color:var(--text);font-weight:600;font-family:'Cinzel',serif;font-size:13px}
+.challenge-info{padding:0 1rem}
+.challenge-info h3{font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;line-height:1.3;margin-bottom:1.2rem}
+.challenge-info p{color:var(--muted);font-size:15px;font-weight:300;line-height:1.8;margin-bottom:1.5rem}
+.perks{list-style:none}
+.perks li{
+  display:flex;align-items:center;gap:10px;
+  font-size:14px;color:var(--muted);padding:7px 0;
+  border-bottom:1px solid var(--border2);
+}
+.perks li:last-child{border-bottom:none}
+.perk-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);flex-shrink:0}
+.perks li strong{color:var(--text);font-weight:500}
+
+/* ── RULES SECTION ── */
+.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem}
+.rule-box{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:14px;padding:1.8rem;transition:border-color 0.2s;
+}
+.rule-box:hover{border-color:var(--border)}
+.rule-box-title{
+  font-size:13px;font-weight:600;color:var(--purple3);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:1.2rem;
+  display:flex;align-items:center;gap:8px;
+}
+.allowed-dot{width:7px;height:7px;border-radius:50%;background:#00d68f;flex-shrink:0}
+.denied-dot{width:7px;height:7px;border-radius:50%;background:#ff4d4d;flex-shrink:0}
+.rule-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:9px 0;border-bottom:1px solid var(--border2);
+  font-size:13px;
+}
+.rule-item:last-child{border-bottom:none}
+.rule-icon{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:9px;font-weight:700}
+.ri-ok{background:rgba(0,214,143,0.15);color:#00d68f}
+.ri-no{background:rgba(255,77,77,0.15);color:#ff4d4d}
+.rule-text{color:var(--muted);font-weight:300;line-height:1.5}
+.rule-text strong{color:var(--text);font-weight:500;display:block;margin-bottom:1px}
+
+/* ── FAQ ── */
+.faq-list{margin-top:3rem;max-width:740px}
+.faq-item{
+  border-bottom:1px solid var(--border2);
+  overflow:hidden;
+}
+.faq-question{
+  width:100%;background:none;border:none;color:var(--text);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.3rem 0;cursor:pointer;text-align:left;
+  font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;
+}
+.faq-chevron{
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(108,61,232,0.15);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:transform 0.3s,background 0.2s;font-size:10px;color:var(--purple3);
+}
+.faq-item.open .faq-chevron{transform:rotate(180deg);background:rgba(108,61,232,0.3)}
+.faq-answer{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.35s ease,padding 0.25s ease;
+}
+.faq-item.open .faq-answer{max-height:300px}
+.faq-answer p{color:var(--muted);font-size:14px;font-weight:300;line-height:1.8;padding-bottom:1.3rem}
+
+/* ── AFFILIATE ── */
+.affiliate-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-top:3rem}
+.aff-card{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:14px;padding:1.8rem;text-align:center;
+  transition:border-color 0.2s,transform 0.2s;
+}
+.aff-card:hover{border-color:var(--border);transform:translateY(-3px)}
+.aff-icon{
+  width:52px;height:52px;border-radius:12px;margin:0 auto 1.2rem;
+  background:rgba(108,61,232,0.12);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+}
+.aff-icon svg{width:24px;height:24px}
+.aff-card h3{font-size:15px;font-weight:600;margin-bottom:0.5rem}
+.aff-card p{color:var(--muted);font-size:13px;font-weight:300;line-height:1.6}
+.aff-reward{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);
+  color:var(--gold);font-size:14px;font-weight:600;
+  padding:8px 20px;border-radius:100px;margin-top:1.5rem;
+}
+
+/* ── PAYOUT SECTION ── */
+.payout-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;margin-top:3rem}
+.payout-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:2.5rem;text-align:center;
+}
+.payout-ring-wrap{width:160px;height:160px;border-radius:50%;margin:0 auto 1.5rem;position:relative}
+.payout-ring-svg{width:160px;height:160px}
+.payout-center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;
+}
+.payout-pct{font-family:'Cinzel',serif;font-size:2rem;font-weight:700;color:var(--purple3)}
+.payout-sub{font-size:11px;color:var(--muted)}
+.payout-info h3{font-family:'Cinzel',serif;font-size:1.7rem;font-weight:700;margin-bottom:0.8rem;line-height:1.3}
+.payout-info p{color:var(--muted);font-size:15px;font-weight:300;line-height:1.8;margin-bottom:1.5rem}
+.payout-feats{list-style:none}
+.payout-feats li{
+  display:flex;align-items:center;gap:10px;
+  font-size:14px;color:var(--muted);padding:8px 0;
+  border-bottom:1px solid var(--border2);
+}
+.payout-feats li:last-child{border-bottom:none}
+.pf-check{color:#00d68f;font-weight:700;font-size:13px}
+
+/* ── CTA BANNER ── */
+.cta-banner{
+  position:relative;z-index:1;
+  background:linear-gradient(135deg,rgba(108,61,232,0.2),rgba(30,95,255,0.15));
+  border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);
+  padding:5rem 2rem;text-align:center;margin:3rem 0;overflow:hidden;
+}
+.cta-banner::before{
+  content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:600px;height:400px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(108,61,232,0.2),transparent 65%);
+}
+.cta-banner h2{
+  font-family:'Cinzel',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);
+  font-weight:700;letter-spacing:-0.5px;margin-bottom:1rem;position:relative;z-index:1;
+}
+.cta-banner p{color:var(--muted);margin-bottom:2.5rem;font-size:16px;font-weight:300;position:relative;z-index:1}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  background:var(--bg2);border-top:1px solid var(--border2);
+  padding:3.5rem 3rem 2rem;
+}
+.footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;max-width:1100px;margin:0 auto 2.5rem}
+.footer-brand p{color:var(--muted);font-size:13px;font-weight:300;line-height:1.7;margin-top:0.8rem;max-width:240px}
+.footer-col h4{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple3);margin-bottom:1rem}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:0.6rem}
+.footer-col a{text-decoration:none;color:var(--muted);font-size:13px;font-weight:300;transition:color 0.2s}
+.footer-col a:hover{color:var(--text)}
+.footer-bottom{
+  max-width:1100px;margin:0 auto;
+  border-top:1px solid var(--border2);padding-top:1.5rem;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;
+}
+.footer-bottom p{color:var(--muted2);font-size:12px;font-weight:300}
+.disclaimer{
+  max-width:1100px;margin:1rem auto 0;
+  color:var(--muted2);font-size:11px;line-height:1.7;font-weight:300;
+}
+
+/* ── DIVIDER ── */
+.section-divider{
+  max-width:1100px;margin:0 auto;
+  height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  .challenge-wrap,.payout-wrap{grid-template-columns:1fr}
+  .rules-grid{grid-template-columns:1fr}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .hero{padding:5rem 1.2rem 3rem}
+}
+@media(max-width:600px){
+  .footer-inner{grid-template-columns:1fr}
+  .section{padding:3.5rem 1.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- STARFIELD -->
+<div id="stars"></div>
+
+<!-- ═══════════════════════════════════════════
+     REUSABLE LOGO SVG (fort battlements + gem)
+     ═══════════════════════════════════════════ -->
+<template id="logo-tpl"></template>
+
+<!-- NAV -->
+<nav>
+  <a href="file:///C:/Users/Administrator/Downloads/index_2.html#" class="logo-mark" id="nav-logo">
+    <span class="logo-wordmark">Fortiq <span>Funded</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="file:///C:/Users/Administrator/Downloads/index_2.html#how">How It Works</a></li>
+    <li><a href="file:///C:/Users/Administrator/Downloads/index_2.html#challenge">Challenge</a></li>
+    <li><a href="file:///C:/Users/Administrator/Downloads/index_2.html#rules">Rules</a></li>
+    <li><a href="file:///C:/Users/Administrator/Downloads/index_2.html#faq">FAQ</a></li>
+    <li><a href="file:///C:/Users/Administrator/Downloads/index_2.html#affiliate">Affiliates</a></li>
+  </ul>
+  <a href="file:///C:/Users/Administrator/Downloads/signup.html" class="nav-cta">Get Funded</a>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+
+  <!-- Logo centred in hero -->
+  <div style="margin-bottom:2rem;animation:fadeUp 0.7s ease both" id="hero-logo-wrap">
+    <a href="file:///C:/Users/Administrator/Downloads/index_2.html#" class="logo-mark" style="justify-content:center" id="hero-logo">
+      <span class="logo-wordmark" style="font-size:26px">Fortiq <span>Funded</span></span>
+    </a>
+  </div>
+
+  <div class="hero-badge">
+    <div class="badge-pulse"></div>
+    Crypto Prop Trading · Now Accepting Traders
+  </div>
+
+  <h1>Trade Our Capital.<br>Keep <span class="grad">80% of Every Profit.</span></h1>
+
+  <div class="tagline-strip">
+    <span class="tag-item">$5,000 Funded Account</span>
+    <span class="tag-item">$150 Entry Fee</span>
+    <span class="tag-item">One Phase</span>
+    <span class="tag-item">8% Profit Target</span>
+  </div>
+
+  <p class="hero-sub">Pass our single-phase evaluation. Get funded. No personal capital at risk — ever. Powered by USDT on TRC20.</p>
+
+  <div class="hero-buttons">
+    <a href="file:///C:/Users/Administrator/Downloads/signup.html" class="btn-primary">Start the Challenge</a>
+    <a href="file:///C:/Users/Administrator/Downloads/index_2.html#how" class="btn-ghost">See How It Works</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div style="position:relative;z-index:1;padding:0 2rem">
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-num">$5K</div><div class="stat-label">Funded Account Size</div></div>
+    <div class="stat-item"><div class="stat-num">80%</div><div class="stat-label">Profit Split</div></div>
+    <div class="stat-item"><div class="stat-num">8%</div><div class="stat-label">Profit Target</div></div>
+    <div class="stat-item"><div class="stat-num">100+</div><div class="stat-label">Crypto Pairs</div></div>
+    <div class="stat-item"><div class="stat-num">TRC20</div><div class="stat-label">Payment Method</div></div>
+  </div>
+</div>
+
+<!-- ══════════ HOW IT WORKS ══════════ -->
+<section class="section" id="how">
+  <div class="section-eyebrow">Process</div>
+  <h2 class="section-title">Three Steps to a Funded Account</h2>
+  <p class="section-sub">Simple. Transparent. One phase only. No complicated multi-step hoops.</p>
+
+  <div class="steps">
+    <div class="step-card">
+      <div class="step-num">STEP 01</div>
+      <h3>Buy the Challenge</h3>
+      <p>Pay the $150 entry fee in USDT (TRC20). Your evaluation account is activated automatically after 19 blockchain confirmations.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">STEP 02</div>
+      <h3>Pass the Evaluation</h3>
+      <p>Hit 8% profit while respecting the 5% daily loss and 8% max drawdown limits. Trade at least 5 active days — your way.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">STEP 03</div>
+      <h3>Get Funded &amp; Paid</h3>
+      <p>Receive a $5,000 funded account. Trade it to the profit cap and collect your payout — automatically in USDT on TRC20.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════ CHALLENGE CARD ══════════ -->
+<section class="section" id="challenge">
+  <div class="section-eyebrow">The Offer</div>
+  <h2 class="section-title">One Challenge. One Focus.</h2>
+  <p class="section-sub">We keep it simple so you can focus on what matters — trading well.</p>
+
+  <div class="challenge-wrap">
+    <div class="challenge-card">
+      <div class="challenge-glow"></div>
+      <div class="challenge-badge">One-Phase Evaluation</div>
+      <div class="challenge-price">$150 <sub>USDT · TRC20</sub></div>
+      <div class="challenge-funded">Funded account size: <strong>$5,000 USDT</strong></div>
+      <ul class="rules-list">
+        <li><span class="rule-label">Profit Target</span><span class="rule-val">8%</span></li>
+        <li><span class="rule-label">Daily Loss Limit</span><span class="rule-val">5%</span></li>
+        <li><span class="rule-label">Max Drawdown</span><span class="rule-val">8%</span></li>
+        <li><span class="rule-label">Min Trading Days</span><span class="rule-val">5 Days</span></li>
+        <li><span class="rule-label">Leverage</span><span class="rule-val">1× – 5×</span></li>
+        <li><span class="rule-label">Profit Split</span><span class="rule-val">80%</span></li>
+        <li><span class="rule-label">Max Time Limit</span><span class="rule-val">None</span></li>
+      </ul>
+      <a href="file:///C:/Users/Administrator/Downloads/signup.html" class="btn-primary" style="width:100%;text-align:center;display:block;padding:14px">Start Challenge — $150</a>
+    </div>
+
+    <div class="challenge-info">
+      <h3>Everything You Need. Nothing You Don't.</h3>
+      <p>Fortiq Funded is built exclusively for crypto traders. One clean offer, clear rules, and a fast path to a funded account.</p>
+      <ul class="perks">
+        <li><span class="perk-dot"></span><strong>100+ Crypto Pairs</strong> — BTC, ETH, altcoins and more</li>
+        <li><span class="perk-dot"></span><strong>News Trading Allowed</strong> — trade volatility without restrictions</li>
+        <li><span class="perk-dot"></span><strong>Weekend Holding Allowed</strong> — no forced position closures</li>
+        <li><span class="perk-dot"></span><strong>No Time Limit</strong> — take as long as you need</li>
+        <li><span class="perk-dot"></span><strong>Instant Activation</strong> — trade the moment payment confirms</li>
+        <li><span class="perk-dot"></span><strong>USDT Payouts</strong> — fast, global, borderless</li>
+        <li><span class="perk-dot"></span><strong>No Resets Needed</strong> — one clear phase, then you're funded</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════ RULES ══════════ -->
+<section class="section" id="rules">
+  <div class="section-eyebrow">Rules</div>
+  <h2 class="section-title">Clear Rules. No Hidden Surprises.</h2>
+  <p class="section-sub">Every rule is set before you buy. What you see is what you trade under.</p>
+
+  <div class="rules-grid">
+    <div class="rule-box">
+      <div class="rule-box-title"><span class="allowed-dot"></span>What's Allowed</div>
+      <div class="rule-item">
+        <div class="rule-icon ri-ok">✓</div>
+        <div class="rule-text"><strong>Scalping &amp; Day Trading</strong>Any short-term strategy is fully supported.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon ri-ok">✓</div>
+        <div class="rule-text"><strong>Swing &amp; Overnight Positions</strong>Hold trades across days and weekends.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon ri-ok">✓</div>
+        <div class="rule-text"><strong>News Trading</strong>Trade major economic events freely.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon ri-ok">✓</div>
+        <div class="rule-text"><strong>Multiple Crypto Pairs</strong>Trade different assets simultaneously.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon ri-ok">✓</div>
+        <div class="rule-text"><strong>Manual Trading</strong>All manual strategies are welcome.</div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-box-title"><span class="denied-dot"></span>What's Not Allowed</div>
+      <div class="rule-item">
+        <div class="rule-icon ri-no">✕</div>
+        <div class="rule-text"><strong>Hedging on the Same Asset</strong>No simultaneous long &amp; short on the same pair.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon ri-no">✕</div>
+        <div class="rule-text"><strong>Martingale Strategies</strong>High-risk compounding methods are prohibited.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon ri-no">✕</div>
+        <div class="rule-text"><strong>Account Sharing</strong>Only the registered holder may trade the account.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon ri-no">✕</div>
+        <div class="rule-text"><strong>Exceeding Daily Loss Limit</strong>Losing more than 5% in a single day.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon ri-no">✕</div>
+        <div class="rule-text"><strong>Exceeding Max Drawdown</strong>Total account loss beyond 8% of starting balance.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════ PAYOUTS ══════════ -->
+<section class="section" id="payouts">
+  <div class="section-eyebrow">Earnings</div>
+  <h2 class="section-title">Your Profit. Mostly Yours.</h2>
+  <p class="section-sub">We succeed when you do. That's why we give you the majority of every dollar you earn.</p>
+
+  <div class="payout-wrap">
+    <div class="payout-card">
+      <div class="payout-ring-wrap">
+        <svg class="payout-ring-svg" viewBox="0 0 160 160">
+          <circle cx="80" cy="80" r="65" fill="none" stroke="rgba(108,61,232,0.15)" stroke-width="14"></circle>
+          <circle cx="80" cy="80" r="65" fill="none" stroke="url(#ringGrad)" stroke-width="14" stroke-dasharray="326 409" stroke-dashoffset="102" stroke-linecap="round"></circle>
+          <defs>
+            <lineargradient id="ringGrad" x1="0" y1="0" x2="160" y2="160" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#a78bfa"></stop>
+              <stop offset="100%" stop-color="#3d7fff"></stop>
+            </lineargradient>
+          </defs>
+        </svg>
+        <div class="payout-center">
+          <div class="payout-pct">80%</div>
+          <div class="payout-sub">yours</div>
+        </div>
+      </div>
+      <p style="color:var(--muted);font-size:13px">Trader keeps 80% · Fortiq keeps 20%</p>
+    </div>
+
+    <div class="payout-info">
+      <h3>Automatic Payouts in USDT</h3>
+      <p>Once your funded account hits the profit target and all positions are closed, your payout is triggered automatically — no waiting, no forms.</p>
+      <ul class="payout-feats">
+        <li><span class="pf-check">✓</span>Paid in USDT on TRC20</li>
+        <li><span class="pf-check">✓</span>Automatic payout when conditions are met</li>
+        <li><span class="pf-check">✓</span>No minimum withdrawal threshold</li>
+        <li><span class="pf-check">✓</span>Lifetime profit cap of $5,000 per funded account</li>
+        <li><span class="pf-check">✓</span>Pass a new challenge to continue trading after cap</li>
+        <li><span class="pf-check">✓</span>Zero hidden fees on payouts</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════ FAQ ══════════ -->
+<section class="section" id="faq">
+  <div class="section-eyebrow">FAQ</div>
+  <h2 class="section-title">Frequently Asked Questions</h2>
+  <p class="section-sub">Everything you need to know before you begin.</p>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        What exactly is Fortiq Funded?
+        <div class="faq-chevron">▾</div>
+      </button>
+      <div class="faq-answer"><p>Fortiq Funded is a proprietary crypto trading firm. We give skilled traders access to a $5,000 simulated funded account after they pass our one-phase evaluation challenge. Traders keep 80% of all profits earned on the funded account.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        How do I pay for the challenge?
+        <div class="faq-chevron">▾</div>
+      </button>
+      <div class="faq-answer"><p>We accept USDT on the TRC20 network only. Send exactly $150 USDT (or $148+ to allow for network fees) to our wallet address shown at checkout. Your challenge activates automatically after 19 blockchain confirmations — no manual action needed on your part.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        What counts as an "active trading day"?
+        <div class="faq-chevron">▾</div>
+      </button>
+      <div class="faq-answer"><p>An active day is any calendar day on which your account has at least one open position at any point during that day. A trade can remain open across multiple days — if your account had a position open on each of those days, all of them count. You need 5 separate active days in total to qualify.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Can I get a reset or free retry if I fail?
+        <div class="faq-chevron">▾</div>
+      </button>
+      <div class="faq-answer"><p>No. Fortiq Funded does not offer resets or free retries. If you breach the challenge rules, you must purchase a new $150 challenge to try again. This keeps the evaluation fair and meaningful for all traders.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Can I hold trades over the weekend?
+        <div class="faq-chevron">▾</div>
+      </button>
+      <div class="faq-answer"><p>Yes. Weekend holding is fully allowed on both the challenge account and the funded account. Crypto markets run 24/7, and we do not force you to close positions before the weekend.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        How does the funded account payout work?
+        <div class="faq-chevron">▾</div>
+      </button>
+      <div class="faq-answer"><p>Each funded account has a $5,000 lifetime profit cap. Once you hit that cap with all positions closed and no rule violations, your payout is triggered automatically in USDT (TRC20). After payout, that funded account lifecycle is complete. You may purchase a new challenge to continue trading.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Is hedging allowed?
+        <div class="faq-chevron">▾</div>
+      </button>
+      <div class="faq-answer"><p>Cross-asset positions are allowed — you can trade BTC and ETH at the same time, for example. However, hedging on the same asset is not allowed. If you have a BTC long open, you cannot open a BTC short on the same account simultaneously.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        How do I contact Fortiq Funded for support?
+        <div class="faq-chevron">▾</div>
+      </button>
+      <div class="faq-answer"><p>You can reach our support team by email at <strong style="color:var(--purple3)"><a href="file:///C:/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8cfff9fcfce3fef8cceae3fef8e5fdeaf9e2e8e9e8a2efe3e1">[email&nbsp;protected]</a></strong>. We aim to respond within 24 hours on business days. [Update this email address to your actual contact email before publishing.]</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════ AFFILIATE ══════════ -->
+<section class="section" id="affiliate">
+  <div class="section-eyebrow">Referrals</div>
+  <h2 class="section-title">Earn $50 USDT Per Referral</h2>
+  <p class="section-sub">Share your unique affiliate link. Earn $50 USDT every time someone you refer buys and activates a challenge.</p>
+
+  <div class="affiliate-steps">
+    <div class="aff-card">
+      <div class="aff-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="color:var(--purple3)">
+          <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"></path>
+        </svg>
+      </div>
+      <h3>Get Your Link</h3>
+      <p>Sign up and receive your unique referral link from your dashboard instantly.</p>
+    </div>
+    <div class="aff-card">
+      <div class="aff-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="color:var(--purple3)">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"></path>
+        </svg>
+      </div>
+      <h3>Refer a Trader</h3>
+      <p>Share your link with fellow traders. They sign up, buy the challenge, and payment is confirmed.</p>
+    </div>
+    <div class="aff-card">
+      <div class="aff-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="color:var(--purple3)">
+          <rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path>
+        </svg>
+      </div>
+      <h3>Earn $50 USDT</h3>
+      <p>Once the challenge activates and fraud checks clear, your $50 USDT commission is approved and paid.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:2.5rem">
+    <div class="aff-reward">
+      $50 USDT · Per Verified Referral · Paid on TRC20
+    </div>
+    <p style="color:var(--muted);font-size:13px;margin-top:1rem;font-weight:300">
+      Refer unlimited traders. No cap on earnings. Full affiliate terms available on signup.
+    </p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════ CRYPTO DISCLAIMER ══════════ -->
+<section class="section" id="crypto">
+  <div style="background:var(--surface);border:1px solid rgba(201,168,76,0.2);border-radius:16px;padding:2rem 2.5rem">
+    <div style="display:flex;align-items:flex-start;gap:1rem">
+      <div style="width:36px;height:36px;border-radius:8px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px">⚠</div>
+      <div>
+        <h3 style="font-family:&#39;Cinzel&#39;,serif;font-size:1rem;font-weight:700;color:var(--gold);margin-bottom:0.6rem">Crypto Payment Disclaimer</h3>
+        <p style="color:var(--muted);font-size:13px;font-weight:300;line-height:1.8">
+          All payments are made in <strong style="color:var(--text)">USDT on the TRC20 network only</strong>. Crypto transactions are <strong style="color:var(--text)">irreversible</strong> — please double-check the wallet address before sending. Challenge activation may occur at slightly below $150 due to network and withdrawal fee tolerance (minimum $148 USDT required). Fortiq Funded operates simulated trading environments and is not a licensed financial broker or investment adviser. Trading involves risk. Past performance is not indicative of future results. By purchasing a challenge, you confirm you have read and accepted our full Terms &amp; Conditions.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA BANNER ══════════ -->
+<div class="cta-banner">
+  <h2>Ready to Prove Your Edge?</h2>
+  <p>Join Fortiq Funded. One challenge. One phase. Real crypto profits.</p>
+  <a href="file:///C:/Users/Administrator/Downloads/signup.html" class="btn-primary" style="font-size:17px;padding:16px 44px">Start Your Challenge — $150</a>
+</div>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="file:///C:/Users/Administrator/Downloads/index_2.html#" class="logo-mark" id="footer-logo">
+        <span class="logo-wordmark">Fortiq <span>Funded</span></span>
+      </a>
+      <p>A crypto proprietary trading firm by Fortiq Prop Digital. Empowering disciplined traders worldwide with funded accounts and transparent rules.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <ul>
+        <li><a href="file:///C:/Users/Administrator/Downloads/index_2.html#how">How It Works</a></li>
+        <li><a href="file:///C:/Users/Administrator/Downloads/index_2.html#challenge">The Challenge</a></li>
+        <li><a href="file:///C:/Users/Administrator/Downloads/index_2.html#rules">Trading Rules</a></li>
+        <li><a href="file:///C:/Users/Administrator/Downloads/index_2.html#payouts">Payouts</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="file:///C:/Users/Administrator/Downloads/index.html#how">About Us</a></li>
+        <li><a href="file:///C:/Users/Administrator/Downloads/index_2.html#affiliate">Affiliate Program</a></li>
+        <li><a href="file:///C:/Users/Administrator/Downloads/index_2.html#">Leaderboard (Coming Soon)</a></li>
+        <li><a href="mailto:support@fortiqfunded.com">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="file:///C:/Users/Administrator/Downloads/terms.html">Terms &amp; Conditions</a></li>
+        <li><a href="file:///C:/Users/Administrator/Downloads/privacy.html">Privacy Policy</a></li>
+        <li><a href="file:///C:/Users/Administrator/Downloads/affiliate-terms.html">Affiliate Terms</a></li>
+        <li><a href="file:///C:/Users/Administrator/Downloads/crypto-disclaimer.html">Crypto Disclaimer</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Fortiq Prop Digital. All rights reserved.</p>
+    <p>Fortiq Funded is a simulated trading evaluation platform, not a licensed broker.</p>
+  </div>
+  <p class="disclaimer">
+    Risk Disclosure: Fortiq Funded offers simulated proprietary trading challenges. All trading accounts operate in a simulated environment using demo capital. Fortiq Prop Digital does not provide financial advice and is not regulated as a financial services provider. Trading cryptocurrency involves substantial risk of loss. You should only participate if you understand and accept these risks. Challenge fees are non-refundable. Past evaluation results are not indicative of future funded account performance.
+  </p>
+</footer>
+
+<script data-cfasync="false" src="file:///C:/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── STARS ──
+(function(){
+  const c=document.getElementById('stars');
+  for(let i=0;i<120;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    const sz=Math.random()*2+0.5;
+    s.style.cssText=`
+      width:${sz}px;height:${sz}px;
+      top:${Math.random()*100}%;left:${Math.random()*100}%;
+      --d:${2+Math.random()*4}s;
+      --delay:-${Math.random()*5}s;
+      --min:${0.05+Math.random()*0.1};
+      --max:${0.4+Math.random()*0.6};
+    `;
+    c.appendChild(s);
+  }
+})();
+
+// ── INJECT LOGO SVG into nav, hero, footer ──
+(function(){
+  const tpl=document.getElementById('logo-tpl');
+  ['nav-logo','hero-logo','footer-logo'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      const clone=tpl.content.cloneNode(true);
+      el.prepend(clone);
+    }
+  });
+})();
+
+// ── FAQ TOGGLE ──
+function toggleFaq(btn){
+  </script></body></html>
