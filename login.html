@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///C:/Users/Administrator/Downloads/login_2.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login — Fortiq Funded</title>
-<link href="./login_files/css2" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -152,23 +152,23 @@ body{
 <div class="card">
 
   <!-- LOGO -->
-  <a href="file:///C:/Users/Administrator/Downloads/index.html" class="logo">
+  <a href="index.html" class="logo">
     <svg width="34" height="34" viewBox="0 0 38 38" fill="none">
       <defs>
-        <lineargradient id="lg1" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#a78bfa"></stop><stop offset="55%" stop-color="#6c3de8"></stop><stop offset="100%" stop-color="#3d7fff"></stop>
-        </lineargradient>
-        <lineargradient id="lg2" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#c9a84c"></stop><stop offset="100%" stop-color="#e8c96a"></stop>
-        </lineargradient>
+        <linearGradient id="lg1" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#a78bfa"/><stop offset="55%" stop-color="#6c3de8"/><stop offset="100%" stop-color="#3d7fff"/>
+        </linearGradient>
+        <linearGradient id="lg2" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#e8c96a"/>
+        </linearGradient>
       </defs>
-      <rect x="4" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"></rect>
-      <rect x="15.5" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"></rect>
-      <rect x="27" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"></rect>
-      <rect x="4" y="14" width="30" height="7" fill="url(#lg1)" opacity="0.85"></rect>
-      <polygon points="19,22 27,28 19,38 11,28" fill="url(#lg2)" opacity="0.95"></polygon>
-      <polygon points="19,22 27,28 19,26 11,28" fill="url(#lg1)" opacity="0.7"></polygon>
-      <polygon points="16,24 19,22 19,26" fill="#fff" opacity="0.25"></polygon>
+      <rect x="4" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"/>
+      <rect x="15.5" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"/>
+      <rect x="27" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"/>
+      <rect x="4" y="14" width="30" height="7" fill="url(#lg1)" opacity="0.85"/>
+      <polygon points="19,22 27,28 19,38 11,28" fill="url(#lg2)" opacity="0.95"/>
+      <polygon points="19,22 27,28 19,26 11,28" fill="url(#lg1)" opacity="0.7"/>
+      <polygon points="16,24 19,22 19,26" fill="#fff" opacity="0.25"/>
     </svg>
     <span class="logo-wordmark">Fortiq <span>Funded</span></span>
   </a>
@@ -189,18 +189,18 @@ body{
     <div class="msg" id="msg1"></div>
     <div class="field">
       <label>Email Address</label>
-      <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
+      <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email"/>
     </div>
     <div class="field">
       <label>Password</label>
-      <input type="password" id="login-password" placeholder="Your password" autocomplete="current-password">
+      <input type="password" id="login-password" placeholder="Your password" autocomplete="current-password"/>
     </div>
     <div style="text-align:right;margin-bottom:1.2rem">
-      <a href="file:///C:/Users/Administrator/Downloads/reset.html" style="font-size:12px;color:var(--purple3);text-decoration:none">Forgot password?</a>
+      <a href="reset.html" style="font-size:12px;color:var(--purple3);text-decoration:none">Forgot password?</a>
     </div>
     <button class="btn" id="btn1" onclick="handleStep1()">Continue</button>
     <div class="divider"><span>don't have an account?</span></div>
-    <div class="signup-link"><a href="file:///C:/Users/Administrator/Downloads/signup.html">Create a free account →</a></div>
+    <div class="signup-link"><a href="signup.html">Create a free account →</a></div>
   </div>
 
   <!-- SCREEN 2: SLIDER PUZZLE -->
@@ -230,14 +230,14 @@ body{
       <span style="font-size:12px;color:var(--muted2)">Code expires in 10 minutes</span>
     </div>
     <div class="otp-wrap">
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp0">
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp1">
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp2">
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp3">
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp4">
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp5">
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp0"/>
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp1"/>
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp2"/>
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp3"/>
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp4"/>
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp5"/>
     </div>
-    <button class="btn" id="btn3" onclick="handleOTP()">Verify &amp; Sign In</button>
+    <button class="btn" id="btn3" onclick="handleOTP()">Verify & Sign In</button>
     <div class="resend-wrap">
       <button class="resend-btn" id="resend-btn" onclick="resendOTP()">Resend code</button>
       <div class="timer" id="timer-display"></div>
@@ -247,8 +247,8 @@ body{
 
 </div>
 
-<script src="./login_files/supabase-js@2"></script>
-<script>
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 // ── STARS ──
 (function(){
   const c=document.getElementById('stars');
@@ -263,7 +263,7 @@ body{
 // ── SUPABASE ──
 const SUPABASE_URL='https://qhfsvazxpnjwfxhamkea.supabase.co';
 const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo';
-const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+const supabase=createClient(SUPABASE_URL,SUPABASE_ANON);
 
 let currentEmail='';
 let resendCount=0;
@@ -423,6 +423,5 @@ document.addEventListener('keydown',e=>{
   }
 });
 </script>
-
-
-</body></html>
+</body>
+</html>
