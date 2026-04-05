@@ -244,8 +244,8 @@ body{
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm" type="module"></script>
 <script type="module">
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 // ── STARS ──
 (function(){
   const c=document.getElementById('stars');
@@ -263,7 +263,7 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
 
 // ── PASSWORD STRENGTH ──
-function checkPassword(val){
+window.checkPassword = function(val){
   const reqs={
     len: val.length>=8,
     upper: /[A-Z]/.test(val),
@@ -285,7 +285,7 @@ function checkPassword(val){
 }
 
 // ── REFERRAL TOGGLE ──
-function toggleReferral(){
+window.toggleReferral = function(){
   const f=document.getElementById('referral-field');
   f.style.display=f.style.display==='none'?'block':'none';
 }
@@ -302,7 +302,7 @@ function generateUserId(num){
 }
 
 // ── SIGNUP ──
-async function handleSignup(){
+window.handleSignup = async function(){
   const fullname=document.getElementById('fullname').value.trim();
   const email=document.getElementById('email').value.trim();
   const password=document.getElementById('password').value;
