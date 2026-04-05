@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)file:///C:/Users/Administrator/Downloads/login.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Fortiq Funded</title>
+<link href="./Login — Fortiq Funded_files/css2" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#04060f;--bg2:#070b18;--surface:#0f1829;--surface2:#162038;
+  --purple:#6c3de8;--purple2:#8b5cf6;--purple3:#a78bfa;
+  --blue:#1e5fff;--cyan:#00d4ff;
+  --text:#f0eeff;--muted:#7a7a9a;--muted2:#555575;
+  --border:rgba(108,61,232,0.25);--border2:rgba(255,255,255,0.06);
+  --success:#00d68f;--error:#ff4d4d;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:2rem;overflow-x:hidden;
+}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s)}
+@keyframes twinkle{0%,100%{opacity:var(--min,0.1)}50%{opacity:var(--max,0.7)}}
+.glow{position:fixed;top:-100px;left:50%;transform:translateX(-50%);
+  width:700px;height:500px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(108,61,232,0.15) 0%,transparent 70%);
+  pointer-events:none;z-index:0;}
+.card{
+  position:relative;z-index:1;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:2.5rem;width:100%;max-width:440px;
+  box-shadow:0 0 60px rgba(108,61,232,0.15);
+}
+.logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:2rem;text-decoration:none}
+.logo-wordmark{font-family:'Cinzel',serif;font-weight:700;font-size:20px;letter-spacing:1px;
+  background:linear-gradient(135deg,#a78bfa,#6c3de8,#3d7fff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-wordmark span{background:linear-gradient(135deg,#c9a84c,#e8c96a);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.card-title{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:0.4rem}
+.card-sub{color:var(--muted);font-size:14px;text-align:center;font-weight:300;margin-bottom:2rem}
+
+/* STEPS INDICATOR */
+.steps-indicator{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:2rem}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;border:1px solid var(--border2);color:var(--muted);background:var(--surface2);
+  transition:all 0.3s;}
+.step-dot.active{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border-color:transparent;box-shadow:0 0 12px rgba(108,61,232,0.4)}
+.step-dot.done{background:rgba(0,214,143,0.15);color:var(--success);border-color:rgba(0,214,143,0.3)}
+.step-line{width:32px;height:1px;background:var(--border2)}
+
+/* FIELD */
+.field{margin-bottom:1.2rem}
+.field label{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:6px}
+.field input{
+  width:100%;background:var(--surface2);border:1px solid var(--border2);
+  border-radius:10px;padding:12px 16px;color:var(--text);
+  font-family:'Outfit',sans-serif;font-size:14px;
+  transition:border-color 0.2s,box-shadow 0.2s;outline:none;
+}
+.field input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(108,61,232,0.15)}
+.field input::placeholder{color:var(--muted2)}
+
+/* MSG */
+.msg{padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:1.2rem;display:none}
+.msg.error{background:rgba(255,77,77,0.1);border:1px solid rgba(255,77,77,0.3);color:#ff6b6b}
+.msg.success{background:rgba(0,214,143,0.1);border:1px solid rgba(0,214,143,0.3);color:#00d68f}
+.msg.show{display:block}
+
+/* BUTTON */
+.btn{width:100%;background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:#fff;border:none;padding:14px;border-radius:10px;
+  font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;
+  cursor:pointer;transition:opacity 0.2s,transform 0.15s;
+  box-shadow:0 0 30px rgba(108,61,232,0.3);}
+.btn:hover:not(:disabled){opacity:0.9;transform:translateY(-1px)}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--muted);
+  box-shadow:none;margin-top:0.8rem;}
+.btn-ghost:hover:not(:disabled){border-color:var(--border);color:var(--text);background:rgba(108,61,232,0.05)}
+
+/* SLIDER PUZZLE */
+.slider-wrap{margin-bottom:1.5rem}
+.slider-label{font-size:13px;color:var(--muted);margin-bottom:10px;font-weight:500}
+.slider-track{
+  position:relative;height:48px;background:var(--surface2);
+  border:1px solid var(--border2);border-radius:10px;overflow:hidden;
+  user-select:none;
+}
+.slider-fill{
+  position:absolute;left:0;top:0;height:100%;
+  background:linear-gradient(135deg,rgba(108,61,232,0.3),rgba(30,95,255,0.2));
+  transition:width 0.05s;border-radius:10px 0 0 10px;
+}
+.slider-handle{
+  position:absolute;top:4px;left:4px;width:40px;height:40px;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  border-radius:8px;cursor:grab;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:18px;transition:box-shadow 0.2s;
+  box-shadow:0 0 12px rgba(108,61,232,0.4);
+}
+.slider-handle:active{cursor:grabbing}
+.slider-handle.success{background:linear-gradient(135deg,#00d68f,#00a86b);box-shadow:0 0 12px rgba(0,214,143,0.4)}
+.slider-text{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:12px;color:var(--muted);pointer-events:none;white-space:nowrap;
+  transition:opacity 0.3s;
+}
+
+/* OTP INPUT */
+.otp-wrap{display:flex;gap:8px;justify-content:center;margin-bottom:1.5rem}
+.otp-input{
+  width:48px;height:56px;background:var(--surface2);
+  border:1px solid var(--border2);border-radius:10px;
+  color:var(--text);font-family:'Cinzel',serif;font-size:20px;font-weight:700;
+  text-align:center;outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+}
+.otp-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(108,61,232,0.15)}
+
+.otp-info{text-align:center;font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
+.otp-info strong{color:var(--purple3)}
+.resend-wrap{text-align:center;margin-top:0.8rem}
+.resend-btn{background:none;border:none;color:var(--purple3);font-family:'Outfit',sans-serif;
+  font-size:13px;cursor:pointer;text-decoration:underline;}
+.resend-btn:disabled{color:var(--muted2);cursor:not-allowed;text-decoration:none}
+.timer{color:var(--muted2);font-size:12px;margin-top:4px}
+
+.divider{display:flex;align-items:center;gap:1rem;margin:1.5rem 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border2)}
+.divider span{color:var(--muted2);font-size:12px}
+.signup-link{text-align:center;font-size:13px;color:var(--muted)}
+.signup-link a{color:var(--purple3);text-decoration:none;font-weight:500}
+.signup-link a:hover{text-decoration:underline}
+
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);
+  border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SCREEN VISIBILITY */
+.screen{display:none}
+.screen.active{display:block}
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+<div class="glow"></div>
+
+<div class="card">
+
+  <!-- LOGO -->
+  <a href="file:///C:/Users/Administrator/Downloads/index.html" class="logo">
+    <svg width="34" height="34" viewBox="0 0 38 38" fill="none">
+      <defs>
+        <lineargradient id="lg1" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#a78bfa"></stop><stop offset="55%" stop-color="#6c3de8"></stop><stop offset="100%" stop-color="#3d7fff"></stop>
+        </lineargradient>
+        <lineargradient id="lg2" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#c9a84c"></stop><stop offset="100%" stop-color="#e8c96a"></stop>
+        </lineargradient>
+      </defs>
+      <rect x="4" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"></rect>
+      <rect x="15.5" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"></rect>
+      <rect x="27" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"></rect>
+      <rect x="4" y="14" width="30" height="7" fill="url(#lg1)" opacity="0.85"></rect>
+      <polygon points="19,22 27,28 19,38 11,28" fill="url(#lg2)" opacity="0.95"></polygon>
+      <polygon points="19,22 27,28 19,26 11,28" fill="url(#lg1)" opacity="0.7"></polygon>
+      <polygon points="16,24 19,22 19,26" fill="#fff" opacity="0.25"></polygon>
+    </svg>
+    <span class="logo-wordmark">Fortiq <span>Funded</span></span>
+  </a>
+
+  <!-- STEP INDICATOR -->
+  <div class="steps-indicator">
+    <div class="step-dot active" id="dot1">1</div>
+    <div class="step-line"></div>
+    <div class="step-dot" id="dot2">2</div>
+    <div class="step-line"></div>
+    <div class="step-dot" id="dot3">3</div>
+  </div>
+
+  <!-- SCREEN 1: EMAIL + PASSWORD -->
+  <div class="screen active" id="screen1">
+    <h2 class="card-title">Welcome Back</h2>
+    <p class="card-sub">Sign in to your Fortiq Funded account</p>
+    <div class="msg" id="msg1"></div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="Your password" autocomplete="current-password">
+    </div>
+    <div style="text-align:right;margin-bottom:1.2rem">
+      <a href="file:///C:/Users/Administrator/Downloads/reset.html" style="font-size:12px;color:var(--purple3);text-decoration:none">Forgot password?</a>
+    </div>
+    <button class="btn" id="btn1" onclick="handleStep1()">Continue</button>
+    <div class="divider"><span>don't have an account?</span></div>
+    <div class="signup-link"><a href="file:///C:/Users/Administrator/Downloads/signup.html">Create a free account →</a></div>
+  </div>
+
+  <!-- SCREEN 2: SLIDER PUZZLE -->
+  <div class="screen" id="screen2">
+    <h2 class="card-title">Security Check</h2>
+    <p class="card-sub">Slide to confirm you're human</p>
+    <div class="msg" id="msg2"></div>
+    <div class="slider-wrap">
+      <div class="slider-label">Drag the slider all the way to the right</div>
+      <div class="slider-track" id="slider-track">
+        <div class="slider-fill" id="slider-fill"></div>
+        <div class="slider-handle" id="slider-handle">›</div>
+        <div class="slider-text" id="slider-text">slide to verify →</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost" onclick="goBack(1)">← Go back</button>
+  </div>
+
+  <!-- SCREEN 3: OTP -->
+  <div class="screen" id="screen3">
+    <h2 class="card-title">Enter Your Code</h2>
+    <p class="card-sub">One-time verification</p>
+    <div class="msg" id="msg3"></div>
+    <div class="otp-info">
+      We sent a 6-digit code to<br>
+      <strong id="otp-email-display"></strong><br>
+      <span style="font-size:12px;color:var(--muted2)">Code expires in 10 minutes</span>
+    </div>
+    <div class="otp-wrap">
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp0">
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp1">
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp2">
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp3">
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp4">
+      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="otp5">
+    </div>
+    <button class="btn" id="btn3" onclick="handleOTP()">Verify &amp; Sign In</button>
+    <div class="resend-wrap">
+      <button class="resend-btn" id="resend-btn" onclick="resendOTP()">Resend code</button>
+      <div class="timer" id="timer-display"></div>
+    </div>
+    <button class="btn btn-ghost" style="margin-top:1rem" onclick="goBack(2)">← Go back</button>
+  </div>
+
+</div>
+
+<script src="./Login — Fortiq Funded_files/supabase-js@2"></script>
+<script>
+// ── STARS ──
+(function(){
+  const c=document.getElementById('stars');
+  for(let i=0;i<80;i++){
+    const s=document.createElement('div');s.className='star';
+    const sz=Math.random()*2+0.5;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:-${Math.random()*5}s;--min:${0.05+Math.random()*0.1};--max:${0.4+Math.random()*0.6}`;
+    c.appendChild(s);
+  }
+})();
+
+// ── SUPABASE ──
+const SUPABASE_URL='https://qhfsvazxpnjwfxhamkea.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo';
+const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+
+let currentEmail='';
+let resendCount=0;
+let resendTimer=null;
+
+// ── HELPERS ──
+function showMsg(id,text,type){
+  const el=document.getElementById(id);
+  el.textContent=text;el.className='msg '+type+' show';
+}
+function hideMsg(id){document.getElementById(id).className='msg'}
+function setStep(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById('screen'+i).className='screen'+(i===n?' active':'');
+    const dot=document.getElementById('dot'+i);
+    if(i<n)dot.className='step-dot done';
+    else if(i===n)dot.className='step-dot active';
+    else dot.className='step-dot';
+  });
+}
+function goBack(n){setStep(n);hideMsg('msg'+(n+1))}
+function setLoading(btnId,loading,text){
+  const b=document.getElementById(btnId);
+  b.disabled=loading;
+  b.innerHTML=loading?'<span class="spinner"></span>Please wait...':text;
+}
+
+// ── STEP 1: CREDENTIALS ──
+async function handleStep1(){
+  const email=document.getElementById('login-email').value.trim();
+  const password=document.getElementById('login-password').value;
+  if(!email||!email.includes('@')){showMsg('msg1','Please enter a valid email address.','error');return}
+  if(!password){showMsg('msg1','Please enter your password.','error');return}
+  setLoading('btn1',true,'Continue');
+  try{
+    // Verify credentials without full session
+    const {data,error}=await supabase.auth.signInWithPassword({email,password});
+    if(error)throw error;
+    // Sign out immediately — we'll complete login after OTP
+    await supabase.auth.signOut();
+    currentEmail=email;
+    // Send OTP
+    await sendOTP(email);
+    document.getElementById('otp-email-display').textContent=email;
+    setStep(2);
+    initSlider();
+  }catch(err){
+    showMsg('msg1',err.message==='Invalid login credentials'?'Incorrect email or password. Please try again.':err.message,'error');
+  }
+  setLoading('btn1',false,'Continue');
+}
+
+// ── SEND OTP ──
+async function sendOTP(email){
+  await supabase.auth.signInWithOtp({email,options:{shouldCreateUser:false}});
+}
+
+// ── STEP 2: SLIDER PUZZLE ──
+function initSlider(){
+  const track=document.getElementById('slider-track');
+  const handle=document.getElementById('slider-handle');
+  const fill=document.getElementById('slider-fill');
+  const text=document.getElementById('slider-text');
+  let dragging=false,startX=0,verified=false;
+  const maxX=track.offsetWidth-handle.offsetWidth-8;
+
+  function move(x){
+    const pos=Math.max(0,Math.min(x,maxX));
+    handle.style.left=(pos+4)+'px';
+    fill.style.width=(pos+44)+'px';
+    const pct=pos/maxX;
+    text.style.opacity=1-pct*2;
+    if(pos>=maxX-5&&!verified){
+      verified=true;
+      handle.classList.add('success');
+      handle.innerHTML='✓';
+      setTimeout(()=>setStep(3),600);
+    }
+  }
+
+  handle.addEventListener('mousedown',e=>{dragging=true;startX=e.clientX-handle.offsetLeft;e.preventDefault()});
+  document.addEventListener('mousemove',e=>{if(dragging)move(e.clientX-startX-4)});
+  document.addEventListener('mouseup',()=>{
+    if(dragging&&!verified){move(0);handle.style.left='4px';fill.style.width='0'}
+    dragging=false;
+  });
+  handle.addEventListener('touchstart',e=>{dragging=true;startX=e.touches[0].clientX-handle.offsetLeft;e.preventDefault()},{passive:false});
+  document.addEventListener('touchmove',e=>{if(dragging)move(e.touches[0].clientX-startX-4)},{passive:true});
+  document.addEventListener('touchend',()=>{
+    if(dragging&&!verified){handle.style.left='4px';fill.style.width='0'}
+    dragging=false;
+  });
+}
+
+// ── STEP 3: OTP ──
+// Auto-advance OTP inputs
+for(let i=0;i<6;i++){
+  document.getElementById('otp'+i).addEventListener('input',function(){
+    this.value=this.value.replace(/[^0-9]/g,'');
+    if(this.value&&i<5)document.getElementById('otp'+(i+1)).focus();
+    if(i===5&&this.value)handleOTP();
+  });
+  document.getElementById('otp'+i).addEventListener('keydown',function(e){
+    if(e.key==='Backspace'&&!this.value&&i>0)document.getElementById('otp'+(i-1)).focus();
+  });
+}
+
+function getOTPValue(){
+  return [0,1,2,3,4,5].map(i=>document.getElementById('otp'+i).value).join('');
+}
+
+async function handleOTP(){
+  const token=getOTPValue();
+  if(token.length!==6){showMsg('msg3','Please enter the full 6-digit code.','error');return}
+  setLoading('btn3',true,'Verify & Sign In');
+  try{
+    const {data,error}=await supabase.auth.verifyOtp({
+      email:currentEmail,token,type:'email'
+    });
+    if(error)throw error;
+    // Success — redirect to dashboard
+    window.location.href='dashboard.html';
+  }catch(err){
+    showMsg('msg3','Invalid or expired code. Please try again.','error');
+    setLoading('btn3',false,'Verify & Sign In');
+  }
+}
+
+// ── RESEND OTP ──
+async function resendOTP(){
+  if(resendCount>=3){showMsg('msg3','Maximum resend limit reached. Please try again in an hour.','error');return}
+  const btn=document.getElementById('resend-btn');
+  btn.disabled=true;
+  resendCount++;
+  await sendOTP(currentEmail);
+  showMsg('msg3','A new code has been sent to your email.','success');
+  // 60 second cooldown
+  let secs=60;
+  const display=document.getElementById('timer-display');
+  display.textContent='Resend available in '+secs+'s';
+  resendTimer=setInterval(()=>{
+    secs--;
+    display.textContent='Resend available in '+secs+'s';
+    if(secs<=0){
+      clearInterval(resendTimer);
+      display.textContent='';
+      if(resendCount<3)btn.disabled=false;
+    }
+  },1000);
+}
+
+// Enter key support
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    const s1=document.getElementById('screen1');
+    if(s1.classList.contains('active'))handleStep1();
+  }
+});
+</script>
+
+
+</body></html>
