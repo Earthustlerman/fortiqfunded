@@ -362,8 +362,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm" type="module"></script>
 <script type="module">
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const SUPABASE_URL='https://qhfsvazxpnjwfxhamkea.supabase.co';
 const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo';
 const supabase=createClient(SUPABASE_URL,SUPABASE_ANON);
@@ -372,7 +372,7 @@ let profile=null;
 let account=null;
 
 // ── AUTH GUARD ──
-async function init(){
+window.init = async function(){
   const {data:{session}}=await supabase.auth.getSession();
   if(!session){window.location.href='login.html';return}
   await loadProfile(session.user);
@@ -404,7 +404,7 @@ function statusClass(s){
 }
 
 // ── RENDER ALL PAGES ──
-function renderAll(){
+window.renderAll = function(){
   renderOverview();
   renderChallenge();
   renderBilling();
@@ -412,7 +412,7 @@ function renderAll(){
   renderAffiliate();
 }
 
-function renderOverview(){
+window.renderOverview = function(){
   const el=document.getElementById('overview-account-section');
   if(!account){
     el.innerHTML=`
@@ -490,12 +490,12 @@ function renderOverview(){
     </div>`;
 }
 
-function renderChallenge(){
+window.renderChallenge = function(){
   document.getElementById('challenge-section').innerHTML=
     document.getElementById('overview-account-section').innerHTML;
 }
 
-function renderBilling(){
+window.renderBilling = function(){
   const el=document.getElementById('billing-section');
   if(!account){
     el.innerHTML=`<div class="empty-state"><div class="empty-icon">💳</div><h3>No Payments Yet</h3><p>Your payment history will appear here after you purchase a challenge.</p><a href="index.html#challenge" class="btn-primary">Buy Challenge — $150</a></div>`;
@@ -517,7 +517,7 @@ function renderBilling(){
     </div>`;
 }
 
-function renderPayouts(){
+window.renderPayouts = function(){
   const el=document.getElementById('payouts-section');
   if(!account||account.account_type!=='funded'){
     el.innerHTML=`<div class="empty-state"><div class="empty-icon">💰</div><h3>No Payouts Yet</h3><p>Payouts become available once you pass the challenge and receive your funded account. Your profit split is 80%.</p></div>`;
@@ -549,7 +549,7 @@ function renderPayouts(){
     </div>`;
 }
 
-function renderAffiliate(){
+window.renderAffiliate = function(){
   const el=document.getElementById('affiliate-section');
   const uid=profile?.user_id||'USR-000000';
   const refLink=`https://fortiqfunded.com/signup.html?ref=${uid}`;
@@ -570,7 +570,7 @@ function renderAffiliate(){
     </div>`;
 }
 
-function copyLink(link){
+window.copyLink = function(link){
   navigator.clipboard.writeText(link).then(()=>{
     const btn=document.querySelector('.copy-btn');
     btn.textContent='Copied!';
@@ -579,7 +579,7 @@ function copyLink(link){
 }
 
 // ── NAV ──
-function showPage(name){
+window.showPage = function(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
@@ -587,7 +587,7 @@ function showPage(name){
 }
 
 // ── LOGOUT ──
-async function handleLogout(){
+window.handleLogout = async function(){
   await supabase.auth.signOut();
   window.location.href='login.html';
 }
