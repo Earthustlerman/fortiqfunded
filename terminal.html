@@ -6,7 +6,7 @@
 <title>Trading Terminal — Fortiq Funded</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -374,23 +374,14 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
       <button class="tf-btn active" onclick="setTF('1h',this)">1h</button>
       <button class="tf-btn" onclick="setTF('4h',this)">4h</button>
       <button class="tf-btn" onclick="setTF('1d',this)">1D</button>
-      <div class="toolbar-sep"></div>
-      <span style="font-size:11px;color:var(--muted)">MA</span>
-      <button class="tf-btn active" id="ma5-toggle" onclick="toggleMA('ma5')">5</button>
-      <button class="tf-btn active" id="ma10-toggle" onclick="toggleMA('ma10')">10</button>
-      <button class="tf-btn active" id="ma30-toggle" onclick="toggleMA('ma30')">30</button>
+
     </div>
 
     <!-- Chart + Order Book row -->
     <div class="center-and-book" style="flex:1;overflow:hidden;">
-      <!-- Chart -->
+      <!-- Chart — TradingView Widget -->
       <div class="chart-wrap" style="flex:1;">
-        <div id="chart"></div>
-        <div class="ma-legend" id="ma-legend">
-          <div class="ma-tag"><div class="ma-dot" style="background:#f59e0b"></div><span style="color:#f59e0b" id="ma5-val">MA5 —</span></div>
-          <div class="ma-tag"><div class="ma-dot" style="background:#60a5fa"></div><span style="color:#60a5fa" id="ma10-val">MA10 —</span></div>
-          <div class="ma-tag"><div class="ma-dot" style="background:#c084fc"></div><span style="color:#c084fc" id="ma30-val">MA30 —</span></div>
-        </div>
+        <div id="tv-chart-container" style="width:100%;height:100%;"></div>
       </div>
       <!-- Order Book -->
       <div class="order-book">
@@ -568,105 +559,98 @@ function loadAccount() {
     });
 }
 
-// ── CHART ──
-function initChart() {
-  var el = document.getElementById('chart');
-  var wrap = el.parentElement;
-  // Use a short delay to allow DOM to fully render before measuring
-  setTimeout(function() {
-    var w = wrap.clientWidth || (window.innerWidth - 185 - 200 - 270);
-    var h = wrap.clientHeight || (window.innerHeight - 48 - 42 - 170);
-    if (h < 200) h = window.innerHeight - 48 - 42 - 170;
-    el.style.width = w + 'px';
-    el.style.height = h + 'px';
-    chart = LightweightCharts.createChart(el, {
-      width: w,
-      height: h,
-      layout: { background: { color: '#04060f' }, textColor: '#6b6b8f' },
-      grid: { vertLines: { color: 'rgba(255,255,255,0.03)' }, horzLines: { color: 'rgba(255,255,255,0.03)' } },
-      crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-      rightPriceScale: { borderColor: 'rgba(255,255,255,0.06)' },
-      timeScale: { borderColor: 'rgba(255,255,255,0.06)', timeVisible: true, secondsVisible: false },
-      handleScroll: true,
-      handleScale: true,
-    });
-    candleSeries = chart.addCandlestickSeries({
-      upColor: '#00c97a', downColor: '#f03d3d',
-      borderUpColor: '#00c97a', borderDownColor: '#f03d3d',
-      wickUpColor: '#00c97a', wickDownColor: '#f03d3d',
-    });
-    ma5Series = chart.addLineSeries({ color: '#f59e0b', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
-    ma10Series = chart.addLineSeries({ color: '#60a5fa', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
-    ma30Series = chart.addLineSeries({ color: '#c084fc', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+// ── CHART (TradingView Widget) ──
+var tvWidget = null;
 
-    window.addEventListener('resize', function() {
-      var nw = wrap.clientWidth;
-      var nh = wrap.clientHeight;
-      el.style.width = nw + 'px';
-      el.style.height = nh + 'px';
-      if (chart) chart.applyOptions({ width: nw, height: nh });
-    });
-
-    loadKlineData();
-  }, 100);
+// Map our pair names to TradingView symbols
+function getTVSymbol(pair) {
+  return 'BINANCE:' + pair;
 }
 
-function calcMA(data, period) {
-  var result = [];
-  for (var i = period - 1; i < data.length; i++) {
-    var sum = 0;
-    for (var j = i - period + 1; j <= i; j++) sum += data[j].close;
-    result.push({ time: data[i].time, value: sum / period });
-  }
-  return result;
+// Map our timeframe to TradingView interval
+function getTVInterval(tf) {
+  var map = { '1m':'1', '5m':'5', '15m':'15', '1h':'60', '4h':'240', '1d':'1D' };
+  return map[tf] || '60';
+}
+
+function initChart() {
+  renderTVChart();
+}
+
+function renderTVChart() {
+  var container = document.getElementById('tv-chart-container');
+  container.innerHTML = '';
+  tvWidget = new TradingView.widget({
+    container_id: 'tv-chart-container',
+    autosize: true,
+    symbol: getTVSymbol(currentPair),
+    interval: getTVInterval(currentTF),
+    timezone: 'Etc/UTC',
+    theme: 'dark',
+    style: '1',
+    locale: 'en',
+    toolbar_bg: '#04060f',
+    enable_publishing: false,
+    hide_top_toolbar: false,
+    hide_legend: false,
+    save_image: false,
+    backgroundColor: '#04060f',
+    gridColor: 'rgba(255,255,255,0.03)',
+    hide_volume: false,
+    studies: ['MASimple@tv-studioslibrary'],
+    overrides: {
+      'mainSeriesProperties.candleStyle.upColor': '#00c97a',
+      'mainSeriesProperties.candleStyle.downColor': '#f03d3d',
+      'mainSeriesProperties.candleStyle.borderUpColor': '#00c97a',
+      'mainSeriesProperties.candleStyle.borderDownColor': '#f03d3d',
+      'mainSeriesProperties.candleStyle.wickUpColor': '#00c97a',
+      'mainSeriesProperties.candleStyle.wickDownColor': '#f03d3d',
+      'paneProperties.background': '#04060f',
+      'paneProperties.vertGridProperties.color': 'rgba(255,255,255,0.03)',
+      'paneProperties.horzGridProperties.color': 'rgba(255,255,255,0.03)',
+      'scalesProperties.textColor': '#6b6b8f',
+    },
+    loading_screen: { backgroundColor: '#04060f', foregroundColor: '#6c3de8' },
+    withdateranges: false,
+    allow_symbol_change: false,
+    watchlist: [],
+    details: false,
+    hotlist: false,
+    calendar: false,
+  });
 }
 
 function loadKlineData() {
-  var tfMap = { '1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'4h','1d':'1d' };
-  var interval = tfMap[currentTF] || '1h';
-  fetch('https://api.binance.com/api/v3/klines?symbol=' + currentPair + '&interval=' + interval + '&limit=500')
+  // For price display only — fetch latest price from Binance REST
+  fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=' + currentPair)
     .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (!Array.isArray(data)) return;
-      var candles = data.map(function(d) {
-        return { time: d[0]/1000, open: parseFloat(d[1]), high: parseFloat(d[2]), low: parseFloat(d[3]), close: parseFloat(d[4]) };
-      });
-      klineHistory = candles;
-      candleSeries.setData(candles);
-      updateMAs(candles);
-      if (candles.length > 0) {
-        var last = candles[candles.length - 1];
-        currentPrice = last.close;
-        updateMaLegend(last.close);
-      }
-      connectKlineWS();
+    .then(function(d) {
+      currentPrice = parseFloat(d.lastPrice);
+      updateTopBar(
+        parseFloat(d.lastPrice),
+        parseFloat(d.openPrice),
+        parseFloat(d.highPrice),
+        parseFloat(d.lowPrice),
+        parseFloat(d.volume)
+      );
     }).catch(function() {});
 }
 
-function updateMAs(candles) {
-  if (maVisible.ma5) ma5Series.setData(calcMA(candles, 5));
-  else ma5Series.setData([]);
-  if (maVisible.ma10) ma10Series.setData(calcMA(candles, 10));
-  else ma10Series.setData([]);
-  if (maVisible.ma30) ma30Series.setData(calcMA(candles, 30));
-  else ma30Series.setData([]);
-}
-
-function toggleMA(key) {
-  maVisible[key] = !maVisible[key];
-  var btn = document.getElementById(key + '-toggle');
-  btn.classList.toggle('active', maVisible[key]);
-  updateMAs(klineHistory);
-}
-
-function updateMaLegend(price) {
-  // Show last value of each MA
-  var ma5data = calcMA(klineHistory, 5);
-  var ma10data = calcMA(klineHistory, 10);
-  var ma30data = calcMA(klineHistory, 30);
-  if (ma5data.length) document.getElementById('ma5-val').textContent = 'MA5 ' + formatPrice(ma5data[ma5data.length-1].value);
-  if (ma10data.length) document.getElementById('ma10-val').textContent = 'MA10 ' + formatPrice(ma10data[ma10data.length-1].value);
-  if (ma30data.length) document.getElementById('ma30-val').textContent = 'MA30 ' + formatPrice(ma30data[ma30data.length-1].value);
+function updateMAs() {} // No-op, TradingView handles MAs
+function toggleMA() {}  // No-op
+function updateMaLegend() {} // No-op
+function connectKlineWS() {
+  // TradingView handles chart updates. We still use WS for price ticker.
+  if (wsKline) wsKline.close();
+  var tfMap = { '1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'4h','1d':'1d' };
+  wsKline = new WebSocket('wss://stream.binance.com:9443/ws/' + currentPair.toLowerCase() + '@ticker');
+  wsKline.onmessage = function(e) {
+    var d = JSON.parse(e.data);
+    currentPrice = parseFloat(d.c);
+    updateTopBar(parseFloat(d.c), parseFloat(d.o), parseFloat(d.h), parseFloat(d.l), parseFloat(d.v));
+    updateOpenPnL();
+    updateSummary();
+  };
 }
 
 // ── WEBSOCKETS ──
@@ -839,6 +823,12 @@ function changePair(pair) {
   var el = document.getElementById('pi-' + pair);
   if (el) el.classList.add('active');
   closePairModal();
+  // Update TradingView widget symbol
+  if (tvWidget && tvWidget.chart) {
+    try { tvWidget.chart().setSymbol(getTVSymbol(pair)); } catch(e) { renderTVChart(); }
+  } else {
+    renderTVChart();
+  }
   loadKlineData();
   connectOrderBook();
   updateSummary();
@@ -846,10 +836,12 @@ function changePair(pair) {
 
 function setTF(tf, btn) {
   currentTF = tf;
-  document.querySelectorAll('.tf-btn').forEach(function(b) {
-    if (['1m','5m','15m','1h','4h','1D'].some(function(t){return b.textContent===t;})) b.classList.remove('active');
-  });
+  document.querySelectorAll('.tf-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
+  // Update TradingView widget interval
+  if (tvWidget && tvWidget.chart) {
+    try { tvWidget.chart().setResolution(getTVInterval(tf)); } catch(e) {}
+  }
   loadKlineData();
 }
 
