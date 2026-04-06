@@ -140,8 +140,8 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 .ob-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 #ob-cols{display:flex;justify-content:space-between;padding:3px 9px;font-size:9px;color:var(--muted2);text-transform:uppercase;flex-shrink:0;}
-#ob-asks{flex:1;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;min-height:0;}
-#ob-bids{flex:1;overflow:hidden;min-height:0;}
+#ob-asks{flex:1;overflow-y:auto;min-height:0;}
+#ob-bids{flex:1;overflow-y:auto;min-height:0;}
 #ob-mid{padding:4px 9px;background:var(--surface);border-top:1px solid var(--b2);border-bottom:1px solid var(--b2);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
 #ob-mid-price{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;}
 #ob-mid-right{text-align:right;}
@@ -760,7 +760,7 @@ function pad(n){return String(n).padStart(2,'0');}
 // ── ORDER BOOK ──
 function renderBook(bids,asks){
   var aEl=g2('ob-asks'),bEl=g2('ob-bids');
-  var topA=asks.slice(0,12).reverse(),topB=bids.slice(0,12);
+  var topA=asks.slice(0,15).reverse(),topB=bids.slice(0,15);
   var maxA=topA.reduce(function(m,r){return Math.max(m,+r[1]);},0);
   var maxB=topB.reduce(function(m,r){return Math.max(m,+r[1]);},0);
   var ah='',bh='',av=0,bv=0;
