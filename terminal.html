@@ -6,7 +6,6 @@
 <title>Trading Terminal — Fortiq Funded</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://s3.tradingview.com/tv.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -623,33 +622,28 @@ function loadAccount(){
 }
 
 // ── TRADINGVIEW ──
-function initTV(){
-  document.getElementById('tv-container').innerHTML='';
-  // Show loading overlay
+function getTVUrl() {
+  var sym = 'BINANCE:' + pair;
+  var interval = TV_TF[tf] || '60';
+  return 'https://s.tradingview.com/widgetembed/?frameElementId=tv_chart&symbol=' + encodeURIComponent(sym) +
+    '&interval=' + interval +
+    '&theme=dark&style=1&locale=en' +
+    '&toolbar_bg=%23070b18&hide_side_toolbar=0' +
+    '&allow_symbol_change=0&save_image=0' +
+    '&withdateranges=0&details=0&hotlist=0&calendar=0' +
+    '&backgroundColor=rgba(4%2C6%2C15%2C1)';
+}
+
+function initTV() {
+  var container = document.getElementById('tv-container');
   var loader = document.getElementById('tv-loading');
-  if(loader) loader.style.display='flex';
-  new TradingView.widget({
-    container_id:'tv-container', autosize:true,
-    symbol:'BINANCE:'+pair, interval:TV_TF[tf]||'60',
-    timezone:'Etc/UTC', theme:'dark', style:'1', locale:'en',
-    toolbar_bg:'#070b18', enable_publishing:false, allow_symbol_change:false,
-    hide_top_toolbar:false, hide_legend:false, hide_side_toolbar:false,
-    withdateranges:false, details:false, hotlist:false, calendar:false, save_image:false,
-    backgroundColor:'rgba(4,6,15,1)', gridColor:'rgba(255,255,255,0.03)',
-    loading_screen:{backgroundColor:'#04060f',foregroundColor:'#6c3de8'},
-    overrides:{
-      'paneProperties.background':'#04060f','paneProperties.backgroundType':'solid',
-      'paneProperties.vertGridProperties.color':'rgba(255,255,255,0.03)',
-      'paneProperties.horzGridProperties.color':'rgba(255,255,255,0.03)',
-      'scalesProperties.textColor':'#6b6b8f','scalesProperties.backgroundColor':'#04060f',
-      'mainSeriesProperties.candleStyle.upColor':'#00c97a',
-      'mainSeriesProperties.candleStyle.downColor':'#f03d3d',
-      'mainSeriesProperties.candleStyle.borderUpColor':'#00c97a',
-      'mainSeriesProperties.candleStyle.borderDownColor':'#f03d3d',
-      'mainSeriesProperties.candleStyle.wickUpColor':'#00c97a',
-      'mainSeriesProperties.candleStyle.wickDownColor':'#f03d3d',
-    }
-  });
+  var iframe = document.createElement('iframe');
+  iframe.src = getTVUrl();
+  iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
+  iframe.onload = function() { if(loader) loader.style.display='none'; };
+  container.innerHTML = '';
+  container.appendChild(iframe);
+  setTimeout(function(){ if(loader) loader.style.display='none'; }, 6000);
 }
 
 // ── WEBSOCKETS ──
@@ -1264,7 +1258,7 @@ function fmt(p){
   return p.toFixed(6);
 }
 
-// Boot sequence - runs after all inline JS is parsed
+// Boot terminal when DOM is ready
 function bootTerminal() {
   renderPairsList(PAIRS);
   renderModalList(PAIRS);
@@ -1276,25 +1270,10 @@ function bootTerminal() {
   initTV();
 }
 
-// Wait for TradingView script to be available
-function waitForTV(tries) {
-  tries = tries || 0;
-  if (typeof TradingView !== 'undefined') {
-    bootTerminal();
-  } else if (tries < 30) {
-    setTimeout(function(){ waitForTV(tries + 1); }, 200);
-  } else {
-    // TV failed to load - show error in loading screen
-    var loader = document.getElementById('tv-loading');
-    if(loader) loader.innerHTML = '<div style="text-align:center;color:#f03d3d;font-size:12px;">Chart failed to load.<br>Please refresh the page.</div>';
-  }
-}
-
-// Start when DOM is ready
 if(document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', function(){ waitForTV(); });
+  document.addEventListener('DOMContentLoaded', bootTerminal);
 } else {
-  waitForTV();
+  bootTerminal();
 }
 </script>
 </body>
