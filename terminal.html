@@ -411,6 +411,7 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
         <div class="ot-tab active" id="ot-limit" onclick="setOrderType('limit')">Limit</div>
         <div class="ot-tab" id="ot-market" onclick="setOrderType('market')">Market</div>
         <div class="ot-tab" id="ot-trigger" onclick="setOrderType('trigger')">Trigger</div>
+        <div class="ot-tab" id="ot-trailing" onclick="setOrderType('trailing')">Trailing</div>
       </div>
 
       <!-- Buy/Sell -->
@@ -425,10 +426,18 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
         <span class="avail-val" id="avail-bal">$5,000.00 USDT</span>
       </div>
 
-      <!-- Price (for Limit) -->
+      <!-- Price (for Limit/Trigger) -->
       <div class="field" id="price-field">
         <label>Price (USDT)</label>
         <input type="number" id="limit-price" placeholder="Enter limit price..." oninput="updateSummary()"/>
+      </div>
+      <!-- Trailing callback rate -->
+      <div class="field" id="trailing-field" style="display:none;">
+        <label>Callback Rate (%)</label>
+        <div class="amt-input-wrap">
+          <input type="number" id="trailing-rate" placeholder="0.1 – 10" min="0.1" max="10" step="0.1"/>
+          <span class="amt-suffix">%</span>
+        </div>
       </div>
 
       <!-- Amount with currency selector -->
@@ -743,19 +752,27 @@ function renderBook(bids,asks){
 }
 
 // ── PAIRS ──
+// Coin emoji map
+var COIN_ICONS={'BTC':'₿','ETH':'Ξ','BNB':'◈','SOL':'◎','XRP':'✕','DOGE':'Ð','ADA':'₳','AVAX':'△','DOT':'●','LINK':'⬡','UNI':'🦄','LTC':'Ł','BCH':'₿','ATOM':'⚛','TRX':'◈','NEAR':'Ⓝ','ARB':'◆','OP':'◉','SUI':'◇','INJ':'◈','WLD':'◎'};
+function getCoinIcon(base){return COIN_ICONS[base]||'◈';}
+
 function renderPairsList(list){
   var el=document.getElementById('pairs-list'); el.innerHTML='';
   list.forEach(function(p){
     var info=prices[p]||{price:0,chg:0}; var isUp=parseFloat(info.chg)>=0;
     var base=p.replace('USDT','');
+    var icon=getCoinIcon(base);
     var div=document.createElement('div');
     div.className='pair-row'+(p===pair?' active':''); div.id='pr-'+p;
     div.innerHTML=
       '<div class="pr-top">'+
-        '<span class="pr-name">'+base+'/USDT</span>'+
+        '<span style="display:flex;align-items:center;gap:5px;">'+
+          '<span style="font-size:11px;color:var(--gold);width:14px;text-align:center;">'+icon+'</span>'+
+          '<span class="pr-name">'+base+'/USDT</span>'+
+        '</span>'+
         '<span class="pr-chg '+(isUp?'up':'down')+'">'+(isUp?'+':'')+info.chg+'%</span>'+
       '</div>'+
-      '<span class="pr-price">'+(info.price?'$'+fmt(info.price):'—')+'</span>';
+      '<span class="pr-price" style="padding-left:19px;">'+(info.price?'$'+fmt(info.price):'—')+'</span>';
     div.onclick=function(){changePair(p);}; el.appendChild(div);
   });
 }
@@ -876,11 +893,14 @@ function updateAmtCurrencyLabels() {
 // ── ORDER CONTROLS ──
 function setOrderType(t){
   orderType=t;
-  ['limit','market','trigger'].forEach(function(x){
+  ['limit','market','trigger','trailing'].forEach(function(x){
     document.getElementById('ot-'+x).className='ot-tab'+(t===x?' active':'');
   });
   // Show/hide limit price field
-  document.getElementById('price-field').style.display=t==='market'?'none':'block';
+  document.getElementById('price-field').style.display=(t==='market'||t==='trailing')?'none':'block';
+  // Show trailing callback field
+  var tcb=document.getElementById('trailing-field');
+  if(tcb) tcb.style.display=t==='trailing'?'block':'none';
   updateSummary();
 }
 
@@ -1069,22 +1089,38 @@ function showTab(tab){
 function renderOpen(){
   var el=document.getElementById('pos-scroll');
   if(!openPos.length){el.innerHTML='<div class="no-pos">No open positions — place a trade to begin</div>';return;}
-  var h='<table><thead><tr><th>Contract</th><th>Side</th><th>Amount</th><th>Size</th><th>Entry</th><th>Mark</th><th>Unrealised P&L</th><th>TP / SL</th><th>Operation</th></tr></thead><tbody>';
+  var h='<table><thead><tr>'+
+    '<th>Contract</th><th>Side</th><th>Size (USDT)</th><th>Size (Coin)</th>'+
+    '<th>Entry Price</th><th>Mark Price</th><th>Est. Liq. Price</th>'+
+    '<th>Position Margin</th><th>Unrealised PnL (ROE%)</th>'+
+    '<th>TP / SL</th><th>Opened</th><th>Operation</th>'+
+  '</tr></thead><tbody>';
   openPos.forEach(function(p){
     var cur=prices[p.symbol]?prices[p.symbol].price:p.entry_price;
     var pnl=p.direction==='long'?(cur-p.entry_price)*p.size/p.entry_price:(p.entry_price-cur)*p.size/p.entry_price;
-    var pct=(pnl/p.amount*100).toFixed(2); var pc=pnl>=0?'td-profit':'td-loss';
-    var tpsl='<span style="color:var(--green)">'+(p.take_profit?'$'+fmt(p.take_profit):'—')+'</span> / <span style="color:var(--red)">'+(p.stop_loss?'$'+fmt(p.stop_loss):'—')+'</span>';
+    var roe=(pnl/p.amount*100).toFixed(2);
+    var pc=pnl>=0?'td-profit':'td-loss';
+    var marginType=document.getElementById('margin-type')?document.getElementById('margin-type').value:'cross';
+    var mt=marginType.charAt(0).toUpperCase()+marginType.slice(1);
+    var base=p.symbol.replace('USDT','');
+    var coinSize=(parseFloat(p.size)/parseFloat(p.entry_price)).toFixed(4);
+    var liqPrice=p.direction==='long'?p.entry_price-(p.entry_price/p.leverage):p.entry_price+(p.entry_price/p.leverage);
+    var openedDt=p.opened_at?new Date(p.opened_at).toLocaleString('en-GB',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+    var tpsl='<span style="color:var(--green);font-size:10px">'+(p.take_profit?'$'+fmt(p.take_profit):'—')+'</span><br>'+
+             '<span style="color:var(--red);font-size:10px">'+(p.stop_loss?'$'+fmt(p.stop_loss):'—')+'</span>';
     h+='<tr>';
-    h+='<td class="td-sym">'+p.symbol.replace('USDT',' Perp')+'<br><span style="font-size:9px;color:var(--muted)">'+p.leverage+'x-'+((document.getElementById('margin-type')||{}).value||'Cross').charAt(0).toUpperCase()+((document.getElementById('margin-type')||{}).value||'cross').slice(1)+'</span></td>';
+    h+='<td class="td-sym">'+base+'/USDT Perp<br><span style="font-size:9px;color:var(--purple3)">'+p.leverage+'x · '+mt+'</span></td>';
     h+='<td class="'+(p.direction==='long'?'td-long':'td-short')+'">'+(p.direction==='long'?'▲ Long':'▼ Short')+'</td>';
-    h+='<td class="td-n">$'+parseFloat(p.amount).toFixed(2)+'</td>';
     h+='<td class="td-n">$'+parseFloat(p.size).toFixed(2)+'</td>';
+    h+='<td class="td-n">'+coinSize+' '+base+'</td>';
     h+='<td class="td-n">$'+fmt(p.entry_price)+'</td>';
     h+='<td class="td-n">$'+fmt(cur)+'</td>';
-    h+='<td class="'+pc+'">'+(pnl>=0?'+':'')+pnl.toFixed(2)+'<br><span style="font-size:10px">'+(pnl>=0?'+':'')+pct+'%</span></td>';
-    h+='<td style="font-size:10px">'+tpsl+'</td>';
-    h+='<td><button class="close-btn" onclick="closePos(\''+p.id+'\',false)">Close</button></td>';
+    h+='<td style="color:var(--red);font-family:'JetBrains Mono',monospace;font-size:11px;">$'+fmt(liqPrice)+'</td>';
+    h+='<td class="td-n">$'+parseFloat(p.amount).toFixed(2)+'</td>';
+    h+='<td class="'+pc+'">'+(pnl>=0?'+':'')+pnl.toFixed(2)+' USDT<br><span style="font-size:10px">(ROE '+(pnl>=0?'+':'')+roe+'%)</span></td>';
+    h+='<td>'+tpsl+'</td>';
+    h+='<td class="td-m" style="font-size:10px;">'+openedDt+'</td>';
+    h+='<td><button class="close-btn" onclick="closePos(''+p.id+'',false)">Close</button></td>';
     h+='</tr>';
   });
   el.innerHTML=h+'</tbody></table>';
