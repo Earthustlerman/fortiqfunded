@@ -49,21 +49,22 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 .layout{position:fixed;top:44px;left:0;right:0;bottom:0;display:flex;}
 
 /* ══ PAIRS SIDEBAR ══ */
-.pairs-col{width:175px;background:var(--bg2);border-right:1px solid var(--border2);display:flex;flex-direction:column;flex-shrink:0;}
-.pairs-search{padding:6px;border-bottom:1px solid var(--border2);}
-.pairs-search input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:5px;padding:5px 8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:11px;outline:none;}
+.pairs-col{width:190px;background:var(--bg2);border-right:1px solid var(--border2);display:flex;flex-direction:column;flex-shrink:0;}
+.pairs-search{padding:7px 8px;border-bottom:1px solid var(--border2);}
+.pairs-search input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:5px;padding:6px 9px;color:var(--text);font-family:'Outfit',sans-serif;font-size:12px;outline:none;}
 .pairs-search input::placeholder{color:var(--muted2)}
 .pairs-list{flex:1;overflow-y:auto;}
 .pairs-list::-webkit-scrollbar{width:2px}
 .pairs-list::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:2px}
-.pair-row{display:flex;flex-direction:column;padding:6px 8px;cursor:pointer;border-left:2px solid transparent;transition:background 0.12s;}
+.pair-row{display:flex;flex-direction:column;padding:9px 10px;cursor:pointer;border-left:2px solid transparent;transition:background 0.12s;border-bottom:1px solid rgba(255,255,255,0.03);}
 .pair-row:hover{background:rgba(108,61,232,0.07)}
 .pair-row.active{background:rgba(108,61,232,0.13);border-left-color:var(--purple)}
-.pr-top{display:flex;justify-content:space-between;margin-bottom:1px;}
-.pr-name{font-size:11px;font-weight:700;color:var(--text)}
-.pr-chg{font-size:10px;font-weight:600}
-.pr-chg.up{color:var(--green)}.pr-chg.down{color:var(--red)}
-.pr-price{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.pr-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
+.pr-name{font-size:12px;font-weight:700;color:var(--text);letter-spacing:0.2px;}
+.pr-chg{font-size:11px;font-weight:700;padding:1px 5px;border-radius:3px;}
+.pr-chg.up{color:var(--green);background:rgba(0,201,122,0.08);}
+.pr-chg.down{color:var(--red);background:rgba(240,61,61,0.08);}
+.pr-price{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
 
 /* ══ CENTER ══ */
 .center-col{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
@@ -190,6 +191,29 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 .tpsl-field input::placeholder{color:var(--muted2);font-family:'Outfit',sans-serif;font-size:11px;}
 .tpsl-suffix{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--muted);pointer-events:none;margin-top:6px;}
 
+/* Amount currency selector */
+.amt-label-row{display:flex;align-items:center;gap:0;margin-bottom:4px;position:relative;}
+.amt-currency-btn{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:0.4px;cursor:pointer;padding:2px 5px 2px 0;border:none;background:none;transition:color 0.15s;}
+.amt-currency-btn:hover{color:var(--purple3)}
+.amt-currency-arrow{font-size:8px;color:var(--muted);}
+.amt-currency-dropdown{position:absolute;top:100%;left:0;z-index:200;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;overflow:hidden;min-width:260px;box-shadow:0 8px 24px rgba(0,0,0,0.5);display:none;}
+.amt-currency-dropdown.open{display:block;}
+.amt-currency-opt{padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--border2);transition:background 0.12s;display:flex;align-items:flex-start;gap:10px;}
+.amt-currency-opt:last-child{border-bottom:none;}
+.amt-currency-opt:hover{background:rgba(108,61,232,0.1)}
+.amt-currency-opt.selected{background:rgba(201,168,76,0.08);border-left:2px solid var(--gold);}
+.amt-opt-radio{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--muted);margin-top:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.amt-opt-radio.on{border-color:var(--gold);background:var(--gold);}
+.amt-opt-radio.on::after{content:'';width:6px;height:6px;border-radius:50%;background:#000;}
+.amt-opt-body{}
+.amt-opt-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.amt-opt-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+
+/* Amount input suffix */
+.amt-input-wrap{position:relative;}
+.amt-input-wrap input{padding-right:52px;}
+.amt-suffix{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:var(--muted);pointer-events:none;font-family:'JetBrains Mono',monospace;}
+
 /* Leverage buttons */
 .lev-btns{display:flex;gap:3px;margin-bottom:10px;}
 .lev-btn{flex:1;background:var(--surface2);border:1px solid var(--border2);color:var(--muted);padding:6px 2px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;text-align:center;transition:all 0.12s;}
@@ -267,10 +291,12 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
   </a>
 
   <div class="tb-pair" onclick="openModal()">
-    <span class="tb-pair-name" id="tb-pair">BTC/USDT</span>
+    <span style="font-size:10px;color:var(--muted);margin-right:2px;">₿</span>
+    <span class="tb-pair-name" id="tb-pair">BTC/USDT Perpetual</span>
+    <span class="tb-arrow" style="font-size:11px;color:var(--muted);">▼</span>
+    <span style="width:1px;height:20px;background:var(--border2);margin:0 8px;"></span>
     <span class="tb-pair-price" id="tb-price">$0.00</span>
     <span class="tb-pair-chg up" id="tb-chg">+0.00%</span>
-    <span class="tb-arrow">▼</span>
   </div>
 
   <div class="tb-stats">
@@ -405,10 +431,42 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
         <input type="number" id="limit-price" placeholder="Enter limit price..." oninput="updateSummary()"/>
       </div>
 
-      <!-- Amount -->
+      <!-- Amount with currency selector -->
       <div class="field">
-        <label>Amount (USDT)</label>
-        <input type="number" id="amt" placeholder="Enter amount..." min="1" oninput="onAmtInput()"/>
+        <div class="amt-label-row">
+          <span style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-right:6px;">Amount</span>
+          <button class="amt-currency-btn" onclick="toggleAmtDropdown(event)" id="amt-currency-btn">
+            <span id="amt-currency-label">USDT</span>
+            <span class="amt-currency-arrow">▼</span>
+          </button>
+          <div class="amt-currency-dropdown" id="amt-currency-dropdown">
+            <div class="amt-currency-opt selected" id="opt-usdt" onclick="selectAmtCurrency('USDT',event)">
+              <div class="amt-opt-radio on" id="radio-usdt"></div>
+              <div class="amt-opt-body">
+                <div class="amt-opt-title">USDT</div>
+                <div class="amt-opt-desc">When the cost value of the transaction is used, the cost of opening a position does not change according to the leverage.</div>
+              </div>
+            </div>
+            <div class="amt-currency-opt" id="opt-coin" onclick="selectAmtCurrency('COIN',event)">
+              <div class="amt-opt-radio" id="radio-coin"></div>
+              <div class="amt-opt-body">
+                <div class="amt-opt-title" id="opt-coin-title">BTC</div>
+                <div class="amt-opt-desc">Please enter your order quantity in <span id="opt-coin-desc">BTC</span>.</div>
+              </div>
+            </div>
+            <div class="amt-currency-opt" id="opt-contracts" onclick="selectAmtCurrency('CONTRACTS',event)">
+              <div class="amt-opt-radio" id="radio-contracts"></div>
+              <div class="amt-opt-body">
+                <div class="amt-opt-title">Contracts</div>
+                <div class="amt-opt-desc">Please enter your order quantity in Contracts. 1 Contract = 0.001 <span id="opt-contracts-desc">BTC</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="amt-input-wrap">
+          <input type="number" id="amt" placeholder="Enter amount..." min="0" step="any" oninput="onAmtInput()"/>
+          <span class="amt-suffix" id="amt-suffix">USDT</span>
+        </div>
       </div>
 
       <!-- % Slider -->
@@ -555,7 +613,7 @@ function initTV(){
     symbol:'BINANCE:'+pair, interval:TV_TF[tf]||'60',
     timezone:'Etc/UTC', theme:'dark', style:'1', locale:'en',
     toolbar_bg:'#070b18', enable_publishing:false, allow_symbol_change:false,
-    hide_top_toolbar:false, hide_legend:false, hide_side_toolbar:true,
+    hide_top_toolbar:false, hide_legend:false, hide_side_toolbar:false,
     withdateranges:false, details:false, hotlist:false, calendar:false, save_image:false,
     backgroundColor:'rgba(4,6,15,1)', gridColor:'rgba(255,255,255,0.03)',
     loading_screen:{backgroundColor:'#04060f',foregroundColor:'#6c3de8'},
@@ -594,7 +652,7 @@ function connectTickerWS(){
     var d=JSON.parse(e.data); price=parseFloat(d.c);
     var chg=((parseFloat(d.c)-parseFloat(d.o))/parseFloat(d.o)*100).toFixed(2);
     var isUp=parseFloat(chg)>=0;
-    set('tb-pair',pair.replace('USDT','/USDT'));
+    set('tb-pair',pair.replace('USDT','/USDT Perpetual'));
     set('tb-price','$'+fmt(price));
     var ce=document.getElementById('tb-chg');
     ce.textContent=(isUp?'+':'')+chg+'%'; ce.className='tb-pair-chg '+(isUp?'up':'down');
@@ -689,9 +747,15 @@ function renderPairsList(list){
   var el=document.getElementById('pairs-list'); el.innerHTML='';
   list.forEach(function(p){
     var info=prices[p]||{price:0,chg:0}; var isUp=parseFloat(info.chg)>=0;
+    var base=p.replace('USDT','');
     var div=document.createElement('div');
     div.className='pair-row'+(p===pair?' active':''); div.id='pr-'+p;
-    div.innerHTML='<div class="pr-top"><span class="pr-name">'+p.replace('USDT','/USDT')+'</span><span class="pr-chg '+(isUp?'up':'down')+'">'+(isUp?'+':'')+info.chg+'%</span></div><span class="pr-price">'+(info.price?'$'+fmt(info.price):'—')+'</span>';
+    div.innerHTML=
+      '<div class="pr-top">'+
+        '<span class="pr-name">'+base+'/USDT</span>'+
+        '<span class="pr-chg '+(isUp?'up':'down')+'">'+(isUp?'+':'')+info.chg+'%</span>'+
+      '</div>'+
+      '<span class="pr-price">'+(info.price?'$'+fmt(info.price):'—')+'</span>';
     div.onclick=function(){changePair(p);}; el.appendChild(div);
   });
 }
@@ -709,7 +773,7 @@ function changePair(p){
   document.querySelectorAll('.pair-row').forEach(function(r){r.classList.remove('active');});
   var el=document.getElementById('pr-'+p); if(el)el.classList.add('active');
   closeModal(); initTV(); connectBookWS(); connectTickerWS();
-  fetchFundingRate(); fetchIndexPrice();
+  fetchFundingRate(); fetchIndexPrice(); updateAmtCurrencyLabels();
   document.getElementById('limit-price').value='';
   updateSummary();
 }
@@ -731,6 +795,83 @@ function renderModalList(list){
   });
 }
 function filterModal(q){renderModalList(PAIRS.filter(function(p){return p.toLowerCase().includes(q.toLowerCase());}));}
+
+// ── AMOUNT CURRENCY SELECTOR ──
+var amtCurrency = 'USDT'; // USDT | COIN | CONTRACTS
+
+function toggleAmtDropdown(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('amt-currency-dropdown');
+  dd.classList.toggle('open');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function() {
+  var dd = document.getElementById('amt-currency-dropdown');
+  if (dd) dd.classList.remove('open');
+});
+
+function selectAmtCurrency(cur, e) {
+  if (e) e.stopPropagation();
+  amtCurrency = cur;
+  var base = pair.replace('USDT','');
+
+  // Update selected styles
+  ['usdt','coin','contracts'].forEach(function(k) {
+    document.getElementById('opt-'+k).className = 'amt-currency-opt' + (k === cur.toLowerCase() ? ' selected' : '');
+    document.getElementById('radio-'+k).className = 'amt-opt-radio' + (k === cur.toLowerCase() ? ' on' : '');
+  });
+
+  // Update label and suffix
+  var label = cur === 'USDT' ? 'USDT' : cur === 'COIN' ? base : 'Cont';
+  document.getElementById('amt-currency-label').textContent = label;
+  document.getElementById('amt-suffix').textContent = cur === 'USDT' ? 'USDT' : cur === 'COIN' ? base : 'Cont';
+
+  // Update placeholder
+  var input = document.getElementById('amt');
+  if (cur === 'USDT') input.placeholder = 'Enter USDT amount...';
+  else if (cur === 'COIN') input.placeholder = 'Enter '+base+' quantity...';
+  else input.placeholder = 'Enter contracts...';
+
+  // Update coin labels
+  document.getElementById('opt-coin-title').textContent = base;
+  document.getElementById('opt-coin-desc').textContent = base;
+  document.getElementById('opt-contracts-desc').textContent = base;
+
+  // Close dropdown
+  document.getElementById('amt-currency-dropdown').classList.remove('open');
+
+  // Clear amount and reset slider
+  input.value = '';
+  document.getElementById('pct-slider').value = 0;
+  updateSummary();
+}
+
+// Convert entered amount to USDT for internal calculations
+function getAmtInUSDT() {
+  var raw = parseFloat(document.getElementById('amt').value) || 0;
+  if (amtCurrency === 'USDT') return raw;
+  var ep = getEntryPrice() || price;
+  if (amtCurrency === 'COIN') return raw * ep;
+  if (amtCurrency === 'CONTRACTS') return raw * 0.001 * ep; // 1 contract = 0.001 BTC
+  return raw;
+}
+
+// Update coin labels when pair changes
+function updateAmtCurrencyLabels() {
+  var base = pair.replace('USDT','');
+  document.getElementById('opt-coin-title').textContent = base;
+  document.getElementById('opt-coin-desc').textContent = base;
+  document.getElementById('opt-contracts-desc').textContent = base;
+  if (amtCurrency === 'COIN') {
+    document.getElementById('amt-currency-label').textContent = base;
+    document.getElementById('amt-suffix').textContent = base;
+  }
+  if (amtCurrency === 'CONTRACTS') {
+    document.getElementById('amt-currency-label').textContent = 'Cont';
+    document.getElementById('amt-suffix').textContent = 'Cont';
+  }
+}
 
 // ── ORDER CONTROLS ──
 function setOrderType(t){
@@ -777,16 +918,21 @@ function toggleTPSL(){
 }
 
 function onAmtInput(){
-  var amt=parseFloat(document.getElementById('amt').value)||0;
+  var amtUsdt=getAmtInUSDT();
   var bal=parseFloat(account?account.balance:5000);
-  var pct=bal>0?Math.min(100,Math.round(amt/bal*100)):0;
+  var pct=bal>0?Math.min(100,Math.round(amtUsdt/bal*100)):0;
   document.getElementById('pct-slider').value=pct;
   updateSummary();
 }
 function onSliderInput(v){
   var bal=parseFloat(account?account.balance:5000);
-  var amt=(bal*parseInt(v)/100).toFixed(2);
-  document.getElementById('amt').value=amt;
+  var amtUsdt=bal*parseInt(v)/100;
+  var ep=getEntryPrice()||price||1;
+  var displayAmt;
+  if(amtCurrency==='USDT') displayAmt=amtUsdt.toFixed(2);
+  else if(amtCurrency==='COIN') displayAmt=(amtUsdt/ep).toFixed(4);
+  else displayAmt=(amtUsdt/(0.001*ep)).toFixed(0);
+  document.getElementById('amt').value=displayAmt;
   updateSummary();
 }
 function setPct(v){
@@ -801,7 +947,7 @@ function getEntryPrice(){
 }
 
 function updateSummary(){
-  var amt=parseFloat(document.getElementById('amt').value)||0;
+  var amt=getAmtInUSDT();
   var ep=getEntryPrice();
   var sz=amt*lev;
   var margin=amt; // simplified: margin = amount for cross
@@ -833,7 +979,7 @@ function showMsg(txt,type){
 
 // ── PLACE ORDER ──
 function placeOrder(dir){
-  var amt=parseFloat(document.getElementById('amt').value);
+  var amt=getAmtInUSDT();
   var ep=getEntryPrice();
   var tp=tpslOn?parseFloat(document.getElementById('tp-price').value)||null:null;
   var sl=tpslOn?parseFloat(document.getElementById('sl-price').value)||null:null;
