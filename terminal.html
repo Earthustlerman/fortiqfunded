@@ -75,7 +75,7 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 .tf-sep{width:1px;height:14px;background:var(--border2);margin:0 4px;}
 
 .chart-row{flex:1;display:flex;overflow:hidden;min-height:0;}
-.tv-wrap{flex:1;overflow:hidden;background:var(--bg);}
+.tv-wrap{flex:1;overflow:hidden;background:var(--bg);position:relative;}
 #tv-container{width:100%;height:100%;}
 
 /* ══ ORDER BOOK ══ */
@@ -338,7 +338,15 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
     </div>
 
     <div class="chart-row">
-      <div class="tv-wrap"><div id="tv-container"></div></div>
+      <div class="tv-wrap">
+        <div id="tv-container"></div>
+        <div id="tv-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:5;pointer-events:none;">
+          <div style="text-align:center;">
+            <div style="font-family:'Cinzel',serif;font-size:13px;background:linear-gradient(135deg,#a78bfa,#6c3de8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;">Fortiq Funded</div>
+            <div style="font-size:11px;color:var(--muted);">Loading chart...</div>
+          </div>
+        </div>
+      </div>
 
       <!-- ORDER BOOK -->
       <div class="ob-col">
@@ -592,21 +600,24 @@ var PAIRS=['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','ADAUSDT','DOGEUSDT
 'MASKUSDT','MINAUSDT','CFXUSDT','MAGICUSDT','HOOKUSDT','SKLUSDT','STORJUSDT','KNCUSDT','OMGUSDT','ZRXUSDT'];
 
 // ── AUTH ──
-// Show chart immediately on load — don't wait for auth
-initTV();
-renderPairsList(PAIRS);
-renderModalList(PAIRS);
-connectPriceWS();
-connectBookWS();
-connectTickerWS();
-fetchFundingRate();
-fetchIndexPrice();
+// Start everything on page load
+window.addEventListener('DOMContentLoaded', function() {
+  // Step 1: Show chart and market data immediately
+  initTV();
+  renderPairsList(PAIRS);
+  renderModalList(PAIRS);
+  connectPriceWS();
+  connectBookWS();
+  connectTickerWS();
+  fetchFundingRate();
+  fetchIndexPrice();
 
-// Then load account in background
-sb.auth.getSession().then(function(r){
-  if(!r.data.session){window.location.href='login.html';return;}
-  userId=r.data.session.user.id;
-  loadAccount();
+  // Step 2: Check auth and load account data in background
+  sb.auth.getSession().then(function(r){
+    if(!r.data.session){window.location.href='login.html';return;}
+    userId=r.data.session.user.id;
+    loadAccount();
+  });
 });
 
 function loadAccount(){
@@ -627,6 +638,9 @@ function loadAccount(){
 // ── TRADINGVIEW ──
 function initTV(){
   document.getElementById('tv-container').innerHTML='';
+  // Show loading overlay
+  var loader = document.getElementById('tv-loading');
+  if(loader) loader.style.display='flex';
   new TradingView.widget({
     container_id:'tv-container', autosize:true,
     symbol:'BINANCE:'+pair, interval:TV_TF[tf]||'60',
