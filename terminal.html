@@ -6,6 +6,7 @@
 <title>Trading Terminal — Fortiq Funded</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -67,11 +68,20 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 
 /* ══ CENTER ══ */
 .center-col{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
-.tf-bar{height:36px;display:flex;align-items:center;gap:2px;padding:0 8px;background:var(--surface);border-bottom:1px solid var(--border2);flex-shrink:0;}
+.tf-bar{height:40px;display:flex;align-items:center;gap:2px;padding:0 8px;background:var(--surface);border-bottom:1px solid var(--border2);flex-shrink:0;}
 .tf-btn{background:transparent;border:none;color:var(--muted);font-family:'Outfit',sans-serif;font-size:11px;font-weight:500;padding:4px 8px;border-radius:4px;cursor:pointer;transition:all 0.12s;}
 .tf-btn:hover{color:var(--text);background:rgba(255,255,255,0.05)}
 .tf-btn.active{background:rgba(108,61,232,0.22);color:var(--purple3)}
 .tf-sep{width:1px;height:14px;background:var(--border2);margin:0 4px;}
+.ma-control{display:flex;align-items:center;gap:3px;padding:2px 6px;border-radius:5px;cursor:pointer;border:1px solid var(--border2);background:var(--surface2);transition:all 0.15s;}
+.ma-control:hover{border-color:var(--borderp)}
+.ma-control.off{opacity:0.35;}
+.ma-dot{width:8px;height:2px;border-radius:1px;flex-shrink:0;}
+.ma-lbl{font-size:11px;font-weight:600;color:var(--muted);user-select:none;}
+.ma-input{width:30px;background:transparent;border:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;outline:none;text-align:center;padding:0;-moz-appearance:textfield;}
+.ma-input::-webkit-inner-spin-button,.ma-input::-webkit-outer-spin-button{-webkit-appearance:none;}
+.ma-x{font-size:9px;color:var(--muted2);cursor:pointer;line-height:1;transition:color 0.15s;}
+.ma-x:hover{color:var(--red)}
 
 .chart-row{flex:1;display:flex;overflow:hidden;min-height:0;}
 .tv-wrap{flex:1;overflow:hidden;background:var(--bg);position:relative;}
@@ -333,18 +343,33 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
       <button class="tf-btn" onclick="setTF('4h',this)">4h</button>
       <button class="tf-btn" onclick="setTF('1d',this)">1D</button>
       <div class="tf-sep"></div>
+      <div class="ma-control" id="ma1-ctrl">
+        <span class="ma-dot" style="background:#f59e0b"></span>
+        <span class="ma-lbl" onclick="toggleMA(1)">MA</span>
+        <input class="ma-input" id="ma1-period" type="number" value="5" min="1" max="200" onchange="updateMA(1)" onclick="event.stopPropagation()"/>
+        <span class="ma-x" onclick="toggleMA(1)" id="ma1-x">✕</span>
+      </div>
+      <div class="ma-control" id="ma2-ctrl">
+        <span class="ma-dot" style="background:#60a5fa"></span>
+        <span class="ma-lbl" onclick="toggleMA(2)">MA</span>
+        <input class="ma-input" id="ma2-period" type="number" value="10" min="1" max="200" onchange="updateMA(2)" onclick="event.stopPropagation()"/>
+        <span class="ma-x" onclick="toggleMA(2)" id="ma2-x">✕</span>
+      </div>
+      <div class="ma-control" id="ma3-ctrl">
+        <span class="ma-dot" style="background:#c084fc"></span>
+        <span class="ma-lbl" onclick="toggleMA(3)">MA</span>
+        <input class="ma-input" id="ma3-period" type="number" value="30" min="1" max="200" onchange="updateMA(3)" onclick="event.stopPropagation()"/>
+        <span class="ma-x" onclick="toggleMA(3)" id="ma3-x">✕</span>
+      </div>
+      <button class="tf-btn" onclick="addMA()" style="padding:3px 7px;font-size:11px;">+MA</button>
+    </div>
+      <div class="tf-sep"></div>
       <span style="font-size:10px;color:var(--muted);padding:0 4px;">Indicators</span>
     </div>
 
     <div class="chart-row">
       <div class="tv-wrap">
-        <div id="tv-container"></div>
-        <div id="tv-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:5;pointer-events:none;">
-          <div style="text-align:center;">
-            <div style="font-family:'Cinzel',serif;font-size:13px;background:linear-gradient(135deg,#a78bfa,#6c3de8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;">Fortiq Funded</div>
-            <div style="font-size:11px;color:var(--muted);">Loading chart...</div>
-          </div>
-        </div>
+        <div id="tv-container" style="width:100%;height:100%;"></div>
       </div>
 
       <!-- ORDER BOOK -->
@@ -622,29 +647,205 @@ function loadAccount(){
 }
 
 // ── TRADINGVIEW ──
-function getTVUrl() {
-  var sym = 'BINANCE:' + pair;
-  var interval = TV_TF[tf] || '60';
-  return 'https://s.tradingview.com/widgetembed/?frameElementId=tv_chart&symbol=' + encodeURIComponent(sym) +
-    '&interval=' + interval +
-    '&theme=dark&style=1&locale=en' +
-    '&toolbar_bg=%23070b18&hide_side_toolbar=0' +
-    '&allow_symbol_change=0&save_image=0' +
-    '&withdateranges=0&details=0&hotlist=0&calendar=0' +
-    '&backgroundColor=rgba(4%2C6%2C15%2C1)';
-}
+var chart = null;
+var candleSeries = null;
+var ma5Series = null;
+var ma10Series = null;
+var ma30Series = null;
+var klineData = [];
 
 function initTV() {
   var container = document.getElementById('tv-container');
-  var loader = document.getElementById('tv-loading');
-  var iframe = document.createElement('iframe');
-  iframe.src = getTVUrl();
-  iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
-  iframe.onload = function() { if(loader) loader.style.display='none'; };
+  if (!container) return;
+
+  // Get actual pixel dimensions
+  var w = container.clientWidth || (window.innerWidth - 185 - 190);
+  var h = container.clientHeight || (window.innerHeight - 44 - 36 - 170);
+  if (w < 100) w = window.innerWidth - 185 - 190;
+  if (h < 100) h = window.innerHeight - 44 - 36 - 170;
+
+  // Destroy old chart
+  if (chart) { try { chart.remove(); } catch(e){} chart = null; }
   container.innerHTML = '';
-  container.appendChild(iframe);
-  setTimeout(function(){ if(loader) loader.style.display='none'; }, 6000);
+
+  chart = LightweightCharts.createChart(container, {
+    width: w, height: h,
+    layout: { background: { color: '#04060f' }, textColor: '#6b6b8f' },
+    grid: { vertLines: { color: 'rgba(255,255,255,0.04)' }, horzLines: { color: 'rgba(255,255,255,0.04)' } },
+    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+    rightPriceScale: { borderColor: 'rgba(255,255,255,0.08)' },
+    timeScale: { borderColor: 'rgba(255,255,255,0.08)', timeVisible: true, secondsVisible: false },
+  });
+
+  candleSeries = chart.addCandlestickSeries({
+    upColor: '#00c97a', downColor: '#f03d3d',
+    borderUpColor: '#00c97a', borderDownColor: '#f03d3d',
+    wickUpColor: '#00c97a', wickDownColor: '#f03d3d',
+  });
+  ma5Series = chart.addLineSeries({ color: '#f59e0b', lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crossHairMarkerVisible: false });
+  ma10Series = chart.addLineSeries({ color: '#60a5fa', lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crossHairMarkerVisible: false });
+  ma30Series = chart.addLineSeries({ color: '#c084fc', lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crossHairMarkerVisible: false });
+
+  // Resize observer
+  if (window._chartRO) window._chartRO.disconnect();
+  window._chartRO = new ResizeObserver(function() {
+    if (chart && container.clientWidth > 0 && container.clientHeight > 0) {
+      chart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
+    }
+  });
+  window._chartRO.observe(container);
+
+  loadKlineData();
 }
+
+// ── MA MANAGEMENT ──
+var maVisible = {1: true, 2: true, 3: true};
+var maColors = {1: '#f59e0b', 2: '#60a5fa', 3: '#c084fc'};
+var maSeries = {1: null, 2: null, 3: null};
+var maNextId = 4;
+
+function getMASeriesRef(id) {
+  if (id === 1) return ma5Series;
+  if (id === 2) return ma10Series;
+  if (id === 3) return ma30Series;
+  return maSeries[id] || null;
+}
+
+function setMASeriesRef(id, series) {
+  if (id === 1) ma5Series = series;
+  else if (id === 2) ma10Series = series;
+  else if (id === 3) ma30Series = series;
+  else maSeries[id] = series;
+}
+
+function toggleMA(id) {
+  maVisible[id] = !maVisible[id];
+  var ctrl = document.getElementById('ma'+id+'-ctrl');
+  if (ctrl) ctrl.className = 'ma-control' + (maVisible[id] ? '' : ' off');
+  var series = getMASeriesRef(id);
+  if (series) {
+    if (maVisible[id]) {
+      var period = parseInt(document.getElementById('ma'+id+'-period').value) || 5;
+      series.setData(calcMA(klineData, period));
+    } else {
+      series.setData([]);
+    }
+  }
+}
+
+function updateMA(id) {
+  if (!maVisible[id]) return;
+  var period = parseInt(document.getElementById('ma'+id+'-period').value) || 5;
+  var series = getMASeriesRef(id);
+  if (series && klineData.length) series.setData(calcMA(klineData, period));
+}
+
+function addMA() {
+  if (maNextId > 6) { alert('Maximum 6 MAs allowed.'); return; }
+  var id = maNextId++;
+  var colors = ['#f59e0b','#60a5fa','#c084fc','#34d399','#fb923c','#f472b6'];
+  var color = colors[id - 1] || '#ffffff';
+  maColors[id] = color;
+  maVisible[id] = true;
+  // Add new series to chart
+  if (chart) {
+    var newSeries = chart.addLineSeries({ color: color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crossHairMarkerVisible: false });
+    setMASeriesRef(id, newSeries);
+    newSeries.setData(calcMA(klineData, 20));
+  }
+  // Add control to toolbar
+  var tfbar = document.querySelector('.tf-bar');
+  var addBtn = tfbar.querySelector('button:last-child');
+  var div = document.createElement('div');
+  div.className = 'ma-control';
+  div.id = 'ma'+id+'-ctrl';
+  div.innerHTML =
+    '<span class="ma-dot" style="background:'+color+'"></span>' +
+    '<span class="ma-lbl" onclick="toggleMA('+id+')">MA</span>' +
+    '<input class="ma-input" id="ma'+id+'-period" type="number" value="20" min="1" max="200" onchange="updateMA('+id+')" onclick="event.stopPropagation()"/>' +
+    '<span class="ma-x" onclick="removeMA('+id+')" id="ma'+id+'-x">✕</span>';
+  tfbar.insertBefore(div, addBtn);
+}
+
+function removeMA(id) {
+  // Can't remove the default 3
+  if (id <= 3) { toggleMA(id); return; }
+  var series = getMASeriesRef(id);
+  if (series && chart) { try { chart.removeSeries(series); } catch(e){} }
+  maSeries[id] = null;
+  var ctrl = document.getElementById('ma'+id+'-ctrl');
+  if (ctrl) ctrl.remove();
+}
+
+function refreshAllMAs() {
+  [1,2,3].forEach(function(id) {
+    var period = parseInt((document.getElementById('ma'+id+'-period')||{value:id===1?5:id===2?10:30}).value);
+    var series = getMASeriesRef(id);
+    if (series && maVisible[id] && klineData.length) series.setData(calcMA(klineData, period));
+    else if (series) series.setData([]);
+  });
+  // Extra MAs
+  Object.keys(maSeries).forEach(function(id) {
+    var s = maSeries[id];
+    if (s && maVisible[id] && klineData.length) {
+      var period = parseInt((document.getElementById('ma'+id+'-period')||{value:20}).value);
+      s.setData(calcMA(klineData, period));
+    }
+  });
+}
+
+function calcMA(data, period) {
+  var result = [];
+  for (var i = period - 1; i < data.length; i++) {
+    var sum = 0;
+    for (var j = i - period + 1; j <= i; j++) sum += data[j].close;
+    result.push({ time: data[i].time, value: +(sum / period).toFixed(6) });
+  }
+  return result;
+}
+
+function loadKlineData() {
+  var tfMap = {'1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'4h','1d':'1d'};
+  var interval = tfMap[tf] || '1h';
+  fetch('https://api.binance.com/api/v3/klines?symbol=' + pair + '&interval=' + interval + '&limit=500')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!Array.isArray(data)) return;
+      klineData = data.map(function(d){
+        return { time: d[0]/1000, open: +d[1], high: +d[2], low: +d[3], close: +d[4] };
+      });
+      if (candleSeries) candleSeries.setData(klineData);
+      refreshAllMAs();
+      connectKlineWS();
+    }).catch(function(e){ console.log('Kline error:', e); });
+}
+
+function connectKlineWS() {
+  if (window._wsKline) { try { window._wsKline.close(); } catch(e){} }
+  var tfMap = {'1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'4h','1d':'1d'};
+  var interval = tfMap[tf] || '1h';
+  window._wsKline = new WebSocket('wss://stream.binance.com:9443/ws/' + pair.toLowerCase() + '@kline_' + interval);
+  window._wsKline.onmessage = function(e) {
+    var msg = JSON.parse(e.data);
+    if (!msg.k) return;
+    var k = msg.k;
+    var candle = { time: k.t/1000, open: +k.o, high: +k.h, low: +k.l, close: +k.c };
+    if (candleSeries) candleSeries.update(candle);
+    // Update last kline
+    if (klineData.length && klineData[klineData.length-1].time === candle.time) {
+      klineData[klineData.length-1] = candle;
+    } else {
+      klineData.push(candle);
+      if (klineData.length > 500) klineData.shift();
+    }
+    // Update MAs
+    var tail = klineData.slice(-50);
+    var m5 = calcMA(tail, 5); if (m5.length && ma5Series) ma5Series.update(m5[m5.length-1]);
+    var m10 = calcMA(tail, 10); if (m10.length && ma10Series) ma10Series.update(m10[m10.length-1]);
+    var m30 = calcMA(klineData.slice(-60), 30); if (m30.length && ma30Series) ma30Series.update(m30[m30.length-1]);
+  };
+}
+
 
 // ── WEBSOCKETS ──
 function connectPriceWS(){
@@ -794,13 +995,25 @@ function changePair(p){
   pair=p;
   document.querySelectorAll('.pair-row').forEach(function(r){r.classList.remove('active');});
   var el=document.getElementById('pr-'+p); if(el)el.classList.add('active');
-  closeModal(); initTV(); connectBookWS(); connectTickerWS();
+  closeModal();
+  klineData = [];
+  loadKlineData();
+  connectBookWS(); connectTickerWS();
   fetchFundingRate(); fetchIndexPrice(); updateAmtCurrencyLabels();
   document.getElementById('limit-price').value='';
   updateSummary();
 }
 function setTF(t,btn){
-  tf=t; document.querySelectorAll('.tf-btn').forEach(function(b){b.classList.remove('active');}); btn.classList.add('active'); initTV();
+  tf=t;
+  document.querySelectorAll('.tf-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  // Reload kline data with new timeframe
+  klineData = [];
+  if(candleSeries) candleSeries.setData([]);
+  if(ma5Series) ma5Series.setData([]);
+  if(ma10Series) ma10Series.setData([]);
+  if(ma30Series) ma30Series.setData([]);
+  loadKlineData();
 }
 
 // ── MODAL ──
