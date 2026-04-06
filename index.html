@@ -340,7 +340,7 @@ footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid va
     <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Can I hold trades over the weekend?<div class="faq-chevron">▾</div></button><div class="faq-answer"><p>Yes. Weekend holding is fully allowed on both the challenge account and the funded account. Crypto markets run 24/7.</p></div></div>
     <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">How does the funded account payout work?<div class="faq-chevron">▾</div></button><div class="faq-answer"><p>Each funded account has a $5,000 lifetime profit cap. Once you hit that cap with all positions closed, your payout is triggered automatically in USDT (TRC20).</p></div></div>
     <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Is hedging allowed?<div class="faq-chevron">▾</div></button><div class="faq-answer"><p>Cross-asset positions are allowed. However, hedging on the same asset is not allowed. You cannot have a BTC long and a BTC short open simultaneously.</p></div></div>
-    <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">How do I contact Fortiq Funded for support?<div class="faq-chevron">▾</div></button><div class="faq-answer"><p>You can reach our support team at <strong style="color:var(--purple3)">support@fortiqfunded.com</strong>. We aim to respond within 24 hours on business days.</p></div></div>
+    <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">How do I contact Fortiq Funded for support?<div class="faq-chevron">▾</div></button><div class="faq-answer"><p>You can reach our support team at <strong style="color:var(--purple3)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="671412171708151327010815130e160112090302034904080a">[email&#160;protected]</a></strong>. We aim to respond within 24 hours on business days.</p></div></div>
   </div>
 </section>
 
@@ -404,7 +404,7 @@ footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid va
         <li><a href="#how">About Us</a></li>
         <li><a href="#affiliate">Affiliate Program</a></li>
         <li><a href="#">Leaderboard (Coming Soon)</a></li>
-        <li><a href="mailto:support@fortiqfunded.com">Contact Us</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#20535550504f525460464f5254495146554e4445440e434f4d">Contact Us</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -424,22 +424,11 @@ footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid va
   <p class="disclaimer">Risk Disclosure: Fortiq Funded offers simulated proprietary trading challenges. All trading accounts operate in a simulated environment using demo capital. Fortiq Prop Digital does not provide financial advice and is not regulated as a financial services provider. Trading cryptocurrency involves substantial risk of loss. Challenge fees are non-refundable.</p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function(){
   const c=document.getElementById('stars');
   for(let i=0;i<120;i++){
     const s=document.createElement('div');s.className='star';
     const sz=Math.random()*2+0.5;
     s.style.cssText='width:'+sz+'px;height:'+sz+'px;top:'+Math.random()*100+'%;left:'+Math.random()*100+'%;--d:'+(2+Math.random()*4)+'s;--delay:-'+(Math.random()*5)+'s;--min:'+(0.05+Math.random()*0.1)+';--max:'+(0.4+Math.random()*0.6);
-    c.appendChild(s);
-  }
-})();
-function toggleFaq(btn){
-  const item=btn.parentElement;
-  const wasOpen=item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
-  if(!wasOpen)item.classList.add('open');
-}
-</script>
-</body>
-</html>
+    c.append
