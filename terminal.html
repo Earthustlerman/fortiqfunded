@@ -600,8 +600,8 @@ var PAIRS=['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','ADAUSDT','DOGEUSDT
 'MASKUSDT','MINAUSDT','CFXUSDT','MAGICUSDT','HOOKUSDT','SKLUSDT','STORJUSDT','KNCUSDT','OMGUSDT','ZRXUSDT'];
 
 // ── AUTH ──
-// Start everything on page load
-window.addEventListener('DOMContentLoaded', function() {
+// Start everything once page is fully loaded (window.onload waits for all scripts)
+window.onload = function() {
   // Step 1: Show chart and market data immediately
   initTV();
   renderPairsList(PAIRS);
@@ -618,7 +618,7 @@ window.addEventListener('DOMContentLoaded', function() {
     userId=r.data.session.user.id;
     loadAccount();
   });
-});
+};
 
 function loadAccount(){
   sb.from('accounts').select('*').eq('user_id',userId)
