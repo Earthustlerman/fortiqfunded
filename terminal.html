@@ -592,6 +592,17 @@ var PAIRS=['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','ADAUSDT','DOGEUSDT
 'MASKUSDT','MINAUSDT','CFXUSDT','MAGICUSDT','HOOKUSDT','SKLUSDT','STORJUSDT','KNCUSDT','OMGUSDT','ZRXUSDT'];
 
 // ── AUTH ──
+// Show chart immediately on load — don't wait for auth
+initTV();
+renderPairsList(PAIRS);
+renderModalList(PAIRS);
+connectPriceWS();
+connectBookWS();
+connectTickerWS();
+fetchFundingRate();
+fetchIndexPrice();
+
+// Then load account in background
 sb.auth.getSession().then(function(r){
   if(!r.data.session){window.location.href='login.html';return;}
   userId=r.data.session.user.id;
@@ -606,8 +617,7 @@ function loadAccount(){
       if(!r.data||!r.data.length){window.location.href='dashboard.html';return;}
       account=r.data[0]; accountId=account.account_id;
       document.getElementById('top-acc').textContent=accountId;
-      updateStats(); loadPositions(); initTV();
-      renderPairsList(PAIRS); renderModalList(PAIRS);
+      updateStats(); loadPositions();
       connectPriceWS(); connectBookWS(); connectTickerWS();
       fetchFundingRate();
       fetchIndexPrice();
