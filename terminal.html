@@ -600,25 +600,12 @@ var PAIRS=['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','ADAUSDT','DOGEUSDT
 'MASKUSDT','MINAUSDT','CFXUSDT','MAGICUSDT','HOOKUSDT','SKLUSDT','STORJUSDT','KNCUSDT','OMGUSDT','ZRXUSDT'];
 
 // ── AUTH ──
-// Start everything once page is fully loaded (window.onload waits for all scripts)
-window.onload = function() {
-  // Step 1: Show chart and market data immediately
-  initTV();
-  renderPairsList(PAIRS);
-  renderModalList(PAIRS);
-  connectPriceWS();
-  connectBookWS();
-  connectTickerWS();
-  fetchFundingRate();
-  fetchIndexPrice();
-
-  // Step 2: Check auth and load account data in background
-  sb.auth.getSession().then(function(r){
-    if(!r.data.session){window.location.href='login.html';return;}
-    userId=r.data.session.user.id;
-    loadAccount();
-  });
-};
+// Auth check and account load
+sb.auth.getSession().then(function(r){
+  if(!r.data.session){window.location.href='login.html';return;}
+  userId=r.data.session.user.id;
+  loadAccount();
+});
 
 function loadAccount(){
   sb.from('accounts').select('*').eq('user_id',userId)
@@ -1275,6 +1262,39 @@ function fmt(p){
   if(p>=1000) return p.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});
   if(p>=1) return p.toFixed(4);
   return p.toFixed(6);
+}
+
+// Boot sequence - runs after all inline JS is parsed
+function bootTerminal() {
+  renderPairsList(PAIRS);
+  renderModalList(PAIRS);
+  connectPriceWS();
+  connectBookWS();
+  connectTickerWS();
+  fetchFundingRate();
+  fetchIndexPrice();
+  initTV();
+}
+
+// Wait for TradingView script to be available
+function waitForTV(tries) {
+  tries = tries || 0;
+  if (typeof TradingView !== 'undefined') {
+    bootTerminal();
+  } else if (tries < 30) {
+    setTimeout(function(){ waitForTV(tries + 1); }, 200);
+  } else {
+    // TV failed to load - show error in loading screen
+    var loader = document.getElementById('tv-loading');
+    if(loader) loader.innerHTML = '<div style="text-align:center;color:#f03d3d;font-size:12px;">Chart failed to load.<br>Please refresh the page.</div>';
+  }
+}
+
+// Start when DOM is ready
+if(document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function(){ waitForTV(); });
+} else {
+  waitForTV();
 }
 </script>
 </body>
