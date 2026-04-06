@@ -55,12 +55,12 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 .back-btn:hover{color:var(--text);border-color:var(--border)}
 
 /* ── MAIN LAYOUT ── */
-.terminal-body{display:flex;flex:1;overflow:hidden;height:calc(100vh - 48px);}
+.terminal-body{display:flex;overflow:hidden;position:fixed;top:48px;left:0;right:0;bottom:0;}
 
 /* ── LEFT — PAIRS LIST ── */
 .pairs-sidebar{
   width:185px;background:var(--bg2);border-right:1px solid var(--border2);
-  display:flex;flex-direction:column;flex-shrink:0;
+  display:flex;flex-direction:column;flex-shrink:0;height:100%;
 }
 .sidebar-search{padding:8px;border-bottom:1px solid var(--border2);}
 .sidebar-search input{
@@ -85,7 +85,7 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 .pi-chg.up{color:var(--green)}.pi-chg.down{color:var(--red)}
 
 /* ── CENTER ── */
-.chart-center{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.chart-center{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;height:100%;}
 
 /* Chart toolbar */
 .chart-toolbar{
@@ -103,10 +103,10 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 
 /* Chart container — FIXED HEIGHT */
 .chart-wrap{
-  flex:1;position:relative;overflow:hidden;min-height:0;
-  background:var(--bg);
+  flex:1;position:relative;overflow:hidden;
+  background:var(--bg);min-height:200px;
 }
-#chart{width:100%;height:100%;}
+#chart{position:absolute;top:0;left:0;}
 
 /* MA legend */
 .ma-legend{
@@ -571,32 +571,44 @@ function loadAccount() {
 // ── CHART ──
 function initChart() {
   var el = document.getElementById('chart');
-  el.style.width = '100%';
-  el.style.height = '100%';
-  chart = LightweightCharts.createChart(el, {
-    layout: { background: { color: '#04060f' }, textColor: '#6b6b8f' },
-    grid: { vertLines: { color: 'rgba(255,255,255,0.03)' }, horzLines: { color: 'rgba(255,255,255,0.03)' } },
-    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-    rightPriceScale: { borderColor: 'rgba(255,255,255,0.06)' },
-    timeScale: { borderColor: 'rgba(255,255,255,0.06)', timeVisible: true, secondsVisible: false },
-    handleScroll: true,
-    handleScale: true,
-  });
-  candleSeries = chart.addCandlestickSeries({
-    upColor: '#00c97a', downColor: '#f03d3d',
-    borderUpColor: '#00c97a', borderDownColor: '#f03d3d',
-    wickUpColor: '#00c97a', wickDownColor: '#f03d3d',
-  });
-  ma5Series = chart.addLineSeries({ color: '#f59e0b', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
-  ma10Series = chart.addLineSeries({ color: '#60a5fa', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
-  ma30Series = chart.addLineSeries({ color: '#c084fc', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+  var wrap = el.parentElement;
+  // Use a short delay to allow DOM to fully render before measuring
+  setTimeout(function() {
+    var w = wrap.clientWidth || (window.innerWidth - 185 - 200 - 270);
+    var h = wrap.clientHeight || (window.innerHeight - 48 - 42 - 170);
+    if (h < 200) h = window.innerHeight - 48 - 42 - 170;
+    el.style.width = w + 'px';
+    el.style.height = h + 'px';
+    chart = LightweightCharts.createChart(el, {
+      width: w,
+      height: h,
+      layout: { background: { color: '#04060f' }, textColor: '#6b6b8f' },
+      grid: { vertLines: { color: 'rgba(255,255,255,0.03)' }, horzLines: { color: 'rgba(255,255,255,0.03)' } },
+      crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+      rightPriceScale: { borderColor: 'rgba(255,255,255,0.06)' },
+      timeScale: { borderColor: 'rgba(255,255,255,0.06)', timeVisible: true, secondsVisible: false },
+      handleScroll: true,
+      handleScale: true,
+    });
+    candleSeries = chart.addCandlestickSeries({
+      upColor: '#00c97a', downColor: '#f03d3d',
+      borderUpColor: '#00c97a', borderDownColor: '#f03d3d',
+      wickUpColor: '#00c97a', wickDownColor: '#f03d3d',
+    });
+    ma5Series = chart.addLineSeries({ color: '#f59e0b', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+    ma10Series = chart.addLineSeries({ color: '#60a5fa', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+    ma30Series = chart.addLineSeries({ color: '#c084fc', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
 
-  var ro = new ResizeObserver(function() {
-    if (chart) chart.applyOptions({ width: el.clientWidth, height: el.clientHeight });
-  });
-  ro.observe(el);
+    window.addEventListener('resize', function() {
+      var nw = wrap.clientWidth;
+      var nh = wrap.clientHeight;
+      el.style.width = nw + 'px';
+      el.style.height = nh + 'px';
+      if (chart) chart.applyOptions({ width: nw, height: nh });
+    });
 
-  loadKlineData();
+    loadKlineData();
+  }, 100);
 }
 
 function calcMA(data, period) {
