@@ -760,7 +760,7 @@ function pad(n){return String(n).padStart(2,'0');}
 // ── ORDER BOOK ──
 function renderBook(bids,asks){
   var aEl=g2('ob-asks'),bEl=g2('ob-bids');
-  var topA=asks.slice(0,15).reverse(),topB=bids.slice(0,15);
+  var topA=asks.slice(0,20).reverse(),topB=bids.slice(0,20);
   var maxA=topA.reduce(function(m,r){return Math.max(m,+r[1]);},0);
   var maxB=topB.reduce(function(m,r){return Math.max(m,+r[1]);},0);
   var ah='',bh='',av=0,bv=0;
