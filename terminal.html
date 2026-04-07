@@ -73,6 +73,7 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
   flex:1;min-width:0;
   display:flex;flex-direction:column;overflow:hidden;
 }
+.chart-row{flex:1;display:flex;overflow:hidden;min-height:0;}
 /* TF bar */
 #tf-bar{
   height:38px;flex-shrink:0;
@@ -449,6 +450,7 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
         <button class="dt-btn" title="Delete all drawings" style="color:var(--red);" onclick="deleteAllDrawings()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
       </div>
       <div id="chart-wrap"><div id="chart-el"></div></div>
+    </div><!-- end chart-row -->
     <!-- Positions -->
     <div id="pos-area">
       <div id="pos-tabs-row">
@@ -707,7 +709,7 @@ function setAllMAs(){
 }
 
 function loadKlines(){
-  fetch('https://api.binance.com/api/v3/klines?symbol='+pair+'&interval='+(TV_TF[tf]||'1h')+'&limit=500')
+  fetch('https://api.binance.com/api/v3/klines?symbol='+pair+'&interval='+(TV_TF[tf]||'1h')+'&limit=1000')
     .then(function(r){return r.json();})
     .then(function(d){
       if(!Array.isArray(d))return;
