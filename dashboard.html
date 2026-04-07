@@ -102,7 +102,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .spinner-wrap{text-align:center;padding:4rem;color:var(--muted)}
 .spinner{display:inline-block;width:32px;height:32px;border:3px solid var(--border2);border-top-color:var(--purple);border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* PAYOUT */
 .payout-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
 .payout-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top right,rgba(201,168,76,0.06),transparent 60%);pointer-events:none;}
 .payout-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem;}
@@ -128,7 +127,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .payout-paid{background:rgba(0,214,143,0.08);border:1px solid rgba(0,214,143,0.3);border-radius:12px;padding:2rem;margin-top:1.5rem;text-align:center;}
 .payout-paid h4{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;color:var(--success);margin-bottom:0.5rem;}
 .rules-notice{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:1rem 1.2rem;font-size:12px;color:var(--warning);line-height:1.7;margin-top:1rem;}
-/* AFFILIATE */
 .aff-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem;}
 .aff-stat{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:1.2rem;}
 .aff-stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem;}
@@ -404,6 +402,30 @@ function renderAffiliate(user){
     var approved=refs.filter(function(x){return x.status==='approved';});
     var pending=refs.filter(function(x){return x.status==='pending';});
     var earned=approved.length*50;
+    var pendingPayout=approved.filter(function(x){return !x.paid;});
+
+
+    // Use same wallet as trading payout - no separate input needed
+    var walletSection='';
+    if(pendingPayout.length>0){
+      var affWallet=account?account.payout_wallet:'';
+      if(affWallet){
+        walletSection=
+          '<div class="payout-submitted" style="margin-bottom:1.5rem;">'+
+            '<h4>💳 Commission Payout Ready</h4>'+
+            '<p>Your commission of <strong style="color:var(--gold)">$'+(pendingPayout.length*50)+' USDT</strong> will be sent to your registered wallet:</p>'+
+            '<p style="margin-top:0.5rem;font-family:Courier New,monospace;color:var(--purple3);font-size:12px;">'+affWallet+'</p>'+
+            '<p style="margin-top:0.8rem;font-size:12px;color:var(--muted2);">Processed within 7 business days of approval. Same wallet as your trading payout.</p>'+
+          '</div>';
+      } else {
+        walletSection=
+          '<div class="rules-notice" style="margin-bottom:1.5rem;">'+
+            '💰 You have <strong>$'+(pendingPayout.length*50)+' USDT</strong> in approved commissions! To receive payment, submit your TRC20 wallet in the <a href="#" onclick="showPage('payouts',document.querySelectorAll('.nav-item')[3]);return false;" style="color:var(--warning);">Payouts</a> section — we use the same wallet for affiliate commissions.'+
+          '</div>';
+      }
+    }
+
+
     el.innerHTML=
       '<div class="aff-stat-grid">'+
         '<div class="aff-stat"><div class="aff-stat-label">Total Referrals</div><div class="aff-stat-value" style="color:var(--purple3)">'+refs.length+'</div></div>'+
@@ -411,6 +433,7 @@ function renderAffiliate(user){
         '<div class="aff-stat"><div class="aff-stat-label">Pending Review</div><div class="aff-stat-value" style="color:var(--warning)">'+pending.length+'</div></div>'+
         '<div class="aff-stat"><div class="aff-stat-label">Total Earned</div><div class="aff-stat-value" style="color:var(--gold)">$'+earned+' USDT</div></div>'+
       '</div>'+
+      walletSection+
       '<div class="account-card">'+
         '<h3 style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;margin-bottom:0.5rem">Your Referral Link</h3>'+
         '<p style="color:var(--muted);font-size:13px;font-weight:300;margin-bottom:1rem">Share this link and earn <strong style="color:var(--gold)">$50 USDT</strong> for every trader who buys and activates a challenge.</p>'+
@@ -426,7 +449,7 @@ function renderAffiliate(user){
           '</div>'+
         '</div>'+
       '</div>'+
-      (refs.length>0?'<div class="account-card" style="margin-top:1rem;"><h3 style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;margin-bottom:1rem;">Referral History</h3>'+refs.map(function(r){return '<div class="aff-ref-row"><span style="color:var(--muted);font-size:12px;">Referral: '+r.referred_id+'</span><span style="display:flex;align-items:center;gap:0.8rem;"><span style="color:var(--gold);font-size:12px;">'+(r.status==='approved'?'$50 USDT':'Pending')+'</span><span class="pill '+(r.status==='approved'?'pill-green':r.status==='rejected'?'pill-red':'pill-yellow')+'">'+r.status+'</span></span></div>';}).join('')+'</div>':'')+''+
+      (refs.length>0?'<div class="account-card" style="margin-top:1rem;"><h3 style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;margin-bottom:1rem;">Referral History</h3>'+refs.map(function(ref){return '<div class="aff-ref-row"><span style="color:var(--muted);font-size:12px;">Referral: '+ref.referred_id+'</span><span style="display:flex;align-items:center;gap:0.8rem;"><span style="color:var(--gold);font-size:12px;">'+(ref.status==='approved'?'$50 USDT':'Pending')+'</span><span class="pill '+(ref.status==='approved'?'pill-green':ref.status==='rejected'?'pill-red':'pill-yellow')+'">'+ref.status+'</span></span></div>';}).join('')+'</div>':'')+
       '<div class="info-box" style="margin-top:1rem;">'+
         '• Commissions paid in USDT TRC20 after your referral\'s payment is confirmed.<br>'+
         '• Fraud checks apply: same IP, device, or email pattern will be flagged and rejected.<br>'+
@@ -435,6 +458,8 @@ function renderAffiliate(user){
       '</div>';
   });
 }
+
+
 </script>
 </body>
 </html>
