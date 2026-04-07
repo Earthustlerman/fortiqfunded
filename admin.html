@@ -615,17 +615,37 @@ function openPayoutModal(accountId,userId,profit,wallet){
   html+='<div class="modal-row"><span class="mk">TRC20 Wallet</span><span class="mv" style="font-size:10px;word-break:break-all;">'+wallet+'</span></div>';
   html+='<div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:#f59e0b;">⚠ Send exactly <strong>$'+payout+' USDT TRC20</strong> to the wallet above, then click "Mark as Paid".</div>';
   document.getElementById('payout-modal-content').innerHTML=html;
-  document.getElementById('payout-confirm-btn').onclick=function(){confirmPayout(accountId,parseFloat(payout));};
+  document.getElementById('payout-confirm-btn').onclick=function(){confirmPayout(accountId,parseFloat(payout),wallet);};
   document.getElementById('payout-modal').classList.add('open');
 }
 
 function closePayoutModal(){document.getElementById('payout-modal').classList.remove('open');}
 
-function confirmPayout(accountId,amount){
+function confirmPayout(accountId,amount,wallet){
+  // 1. Mark as paid in Supabase
   sb.from('accounts').update({paid_out:true,payout_amount:amount}).eq('account_id',accountId).then(function(r){
     if(r.error){showNotif('Error: '+r.error.message,'err');return;}
+
+    // 2. Call Render backend to send email to trader
+    fetch('https://fortiqfunded-backend.onrender.com/notify-payout',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        account_id:accountId,
+        payout_amount:amount,
+        wallet_address:wallet
+      })
+    }).then(function(res){return res.json();}).then(function(data){
+      if(data.success){
+        showNotif('✓ Payout marked as paid & trader notified by email!','ok');
+      } else {
+        showNotif('✓ Paid but email failed: '+( data.error||'unknown'),'err');
+      }
+    }).catch(function(){
+      showNotif('✓ Paid but could not reach email server.','err');
+    });
+
     closePayoutModal();
-    showNotif('✓ Payout marked as paid for '+accountId,'ok');
     loadOverview();loadPayouts();
   });
 }
