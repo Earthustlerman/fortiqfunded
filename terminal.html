@@ -1192,6 +1192,7 @@ window.onload = boot;
 
 // ── ADVANCED TP/SL ──
 var advSide = 'long';
+var advEP = 0;
 
 function openAdvModal() {
   var ep = getEP() || price;
@@ -1204,6 +1205,8 @@ function openAdvModal() {
   g2('adv-pair-info').innerHTML = pair.replace('USDT','') + 'USDT · ' + mt +
     ' <span class="adv-pair-badge">·' + (side==='buy'?'Long':'Short') + '·' + lev + 'X</span>';
 
+  // Store entry price for calculations
+  advEP = ep;
   // Update prices
   g('adv-cur-price', '$' + fmt(price) + ' USDT');
   g('adv-mark-price', '$' + fmt(price) + ' USDT');
@@ -1250,54 +1253,58 @@ function clearAdvSL() {
 }
 
 function updateAdvTPEst() {
-  var ep = getEP() || price;
-  var tpPrice = parseFloat(g2('adv-tp-price').value) || 0;
-  var amt = getAmtUSDT() || 100; // default for display
+  var ep = advEP || getEP() || price;
+  var amt = getAmtUSDT() || 100;
   var sz = amt * lev;
 
-  // Auto-calculate price from slider
+  // Slider drives price input
   var pct = parseFloat(g2('adv-tp-pct').value) || 0;
-  if (pct > 0 && !g2('adv-tp-price').value) {
+  if (pct > 0) {
     var calcTP = advSide === 'long'
       ? ep * (1 + pct / 100 / lev)
       : ep * (1 - pct / 100 / lev);
     g2('adv-tp-price').value = calcTP.toFixed(2);
-    tpPrice = calcTP;
   }
 
-  if (!tpPrice || !ep) return;
+  var tpPrice = parseFloat(g2('adv-tp-price').value) || 0;
+  if (!tpPrice || !ep) {
+    g('adv-tp-est', 'When the Last Price reaches -- USDT, a MARKET order will close the position, with an estimated profit of -- USDT (--).');
+    return;
+  }
 
   var pnl = advSide === 'long'
     ? (tpPrice - ep) * sz / ep
     : (ep - tpPrice) * sz / ep;
-  var pnlPct = (pnl / amt * 100).toFixed(2);
+  var pnlPct = amt > 0 ? (pnl / amt * 100).toFixed(2) : '0.00';
 
   var estEl = g2('adv-tp-est');
-  if (estEl) estEl.innerHTML = 'When the Last Price reaches <strong>' + fmt(tpPrice) + ' USDT</strong>, a MARKET order will close the position, with an estimated profit of <strong style="color:var(--green)">' + (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + ' USDT (' + (pnl >= 0 ? '+' : '') + pnlPct + '%)</strong>.';
+  if (estEl) estEl.innerHTML = 'When the Last Price reaches <strong>' + fmt(tpPrice) + ' USDT</strong>, a MARKET order will close the position, with an estimated profit of <strong style="color:var(--green)">' + (pnl>=0?'+':'') + pnl.toFixed(2) + ' USDT (' + (pnl>=0?'+':'') + pnlPct + '%)</strong>.';
 }
 
 function updateAdvSLEst() {
-  var ep = getEP() || price;
-  var slPrice = parseFloat(g2('adv-sl-price').value) || 0;
+  var ep = advEP || getEP() || price;
   var amt = getAmtUSDT() || 100;
   var sz = amt * lev;
 
-  // Auto-calculate from slider
+  // Slider drives price input
   var pct = parseFloat(g2('adv-sl-pct').value) || 0;
-  if (pct > 0 && !g2('adv-sl-price').value) {
+  if (pct > 0) {
     var calcSL = advSide === 'long'
       ? ep * (1 - pct / 100 / lev)
       : ep * (1 + pct / 100 / lev);
     g2('adv-sl-price').value = calcSL.toFixed(2);
-    slPrice = calcSL;
   }
 
-  if (!slPrice || !ep) return;
+  var slPrice = parseFloat(g2('adv-sl-price').value) || 0;
+  if (!slPrice || !ep) {
+    g('adv-sl-est', 'When the Last Price reaches -- USDT, a MARKET order will close the position, with an estimated loss of -- USDT (--).');
+    return;
+  }
 
   var pnl = advSide === 'long'
     ? (slPrice - ep) * sz / ep
     : (ep - slPrice) * sz / ep;
-  var pnlPct = (pnl / amt * 100).toFixed(2);
+  var pnlPct = amt > 0 ? (pnl / amt * 100).toFixed(2) : '0.00';
 
   var estEl = g2('adv-sl-est');
   if (estEl) estEl.innerHTML = 'When the Last Price reaches <strong>' + fmt(slPrice) + ' USDT</strong>, a MARKET order will close the position, with an estimated loss of <strong style="color:var(--red)">' + pnl.toFixed(2) + ' USDT (' + pnlPct + '%)</strong>.';
@@ -1343,7 +1350,7 @@ function confirmAdvTPSL() {
           <button class="adv-clear" onclick="clearAdvTP()">🗑 Clear</button>
         </div>
         <div class="adv-input-row">
-          <input class="adv-inp" id="adv-tp-price" type="number" placeholder="Trigger Price..."/>
+          <input class="adv-inp" id="adv-tp-price" type="number" placeholder="Trigger Price..." oninput="updateAdvTPEst()"/>
           <div class="adv-type-btn">USDT | Last Price ▾</div>
         </div>
         <input class="adv-pct-sl" id="adv-tp-pct" type="range" min="0" max="150" value="0" oninput="updateAdvTPEst()"/>
@@ -1362,7 +1369,7 @@ function confirmAdvTPSL() {
           <button class="adv-clear" onclick="clearAdvSL()">🗑 Clear</button>
         </div>
         <div class="adv-input-row">
-          <input class="adv-inp" id="adv-sl-price" type="number" placeholder="Trigger Price..."/>
+          <input class="adv-inp" id="adv-sl-price" type="number" placeholder="Trigger Price..." oninput="updateAdvSLEst()"/>
           <div class="adv-type-btn">USDT | Last Price ▾</div>
         </div>
         <input class="adv-pct-sl" id="adv-sl-pct" type="range" min="0" max="100" value="0" oninput="updateAdvSLEst()"/>
