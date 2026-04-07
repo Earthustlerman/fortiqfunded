@@ -227,8 +227,8 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 .tpsl-fields{display:none;flex-direction:column;gap:5px;margin-bottom:8px;}
 .tpsl-fields.show{display:flex;}
 .tpsl-fld label{font-size:10px;color:var(--muted);display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.3px;}
-.tpsl-fld input{width:100%;background:var(--surface2);border:1px solid var(--b2);border-radius:5px;padding:6px 9px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;}
-.tpsl-fld input:focus{border-color:var(--gold)}
+.tpsl-fld input{width:100%;background:var(--surface2);border:1px solid var(--b2);border-radius:5px;padding:6px 9px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;position:relative;z-index:10;cursor:text;}
+.tpsl-fld input:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,168,76,0.15);}
 .tpsl-fld input::placeholder{color:var(--muted2);font-family:'Outfit',sans-serif;font-size:10px;}
 /* Leverage buttons */
 .lev-row{display:flex;gap:3px;margin-bottom:9px;}
@@ -530,7 +530,7 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
         <span class="tpsl-lbl" id="tpsl-lbl">TP / SL</span>
         <span class="tpsl-adv" onclick="openAdvModal()" style="cursor:pointer;">Advanced</span>
       </div>
-      <div class="tpsl-fields" id="tpsl-fields">
+      <div class="tpsl-fields" id="tpsl-fields" onclick="event.stopPropagation()">
         <div class="tpsl-fld"><label>Take Profit (USDT)</label><input type="number" id="inp-tp" placeholder="Take profit price..." oninput="syncToAdv('tp',this.value)" style="transition:border-color 0.3s;"/></div>
         <div class="tpsl-fld"><label>Stop Loss (USDT)</label><input type="number" id="inp-sl" placeholder="Stop loss price..." oninput="syncToAdv('sl',this.value)" style="transition:border-color 0.3s;"/></div>
       </div>
@@ -1269,12 +1269,29 @@ function clearAdvSL() {
   g('adv-sl-est', 'When the Last Price reaches -- USDT, a MARKET order will be placed to close the position, with an estimated loss of -- USDT (--).');
 }
 
-function updateAdvTPEst() {
-  var ep = advEP || getEP() || price;
-  var amt = getAmtUSDT() || 100;
+function calcAdvPnl(targetPrice, ep, amt, dir) {
   var sz = amt * lev;
+  return dir === 'long'
+    ? (targetPrice - ep) * sz / ep
+    : (ep - targetPrice) * sz / ep;
+}
 
-  // Slider drives price input
+function priceToPct(targetPrice, ep, dir) {
+  // What % slider position does this price correspond to?
+  // Slider goes 0-150 for TP, 0-100 for SL
+  // pct = ((target/ep) - 1) * lev * 100 for long TP
+  if (!ep) return 0;
+  var raw = dir === 'long'
+    ? (targetPrice / ep - 1) * lev * 100
+    : (1 - targetPrice / ep) * lev * 100;
+  return Math.max(0, raw);
+}
+
+function updateAdvTPEst() {
+  // Called when SLIDER moves → update price input
+  var ep = advEP || getEP() || price;
+  if (!ep) return;
+  var amt = getAmtUSDT() || 100;
   var pct = parseFloat(g2('adv-tp-pct').value) || 0;
   if (pct > 0) {
     var calcTP = advSide === 'long'
@@ -1282,28 +1299,39 @@ function updateAdvTPEst() {
       : ep * (1 - pct / 100 / lev);
     g2('adv-tp-price').value = calcTP.toFixed(2);
   }
+  _renderTPEst(ep, amt);
+}
 
+function updateAdvTPEstAndSlider() {
+  // Called when PRICE INPUT changes → update slider
+  var ep = advEP || getEP() || price;
+  if (!ep) return;
+  var amt = getAmtUSDT() || 100;
+  var tpPrice = parseFloat(g2('adv-tp-price').value) || 0;
+  if (tpPrice) {
+    var pct = priceToPct(tpPrice, ep, advSide);
+    g2('adv-tp-pct').value = Math.min(pct, 150);
+  }
+  _renderTPEst(ep, amt);
+}
+
+function _renderTPEst(ep, amt) {
   var tpPrice = parseFloat(g2('adv-tp-price').value) || 0;
   if (!tpPrice || !ep) {
     g('adv-tp-est', 'When the Last Price reaches -- USDT, a MARKET order will close the position, with an estimated profit of -- USDT (--).');
     return;
   }
-
-  var pnl = advSide === 'long'
-    ? (tpPrice - ep) * sz / ep
-    : (ep - tpPrice) * sz / ep;
+  var pnl = calcAdvPnl(tpPrice, ep, amt, advSide);
   var pnlPct = amt > 0 ? (pnl / amt * 100).toFixed(2) : '0.00';
-
   var estEl = g2('adv-tp-est');
   if (estEl) estEl.innerHTML = 'When the Last Price reaches <strong>' + fmt(tpPrice) + ' USDT</strong>, a MARKET order will close the position, with an estimated profit of <strong style="color:var(--green)">' + (pnl>=0?'+':'') + pnl.toFixed(2) + ' USDT (' + (pnl>=0?'+':'') + pnlPct + '%)</strong>.';
 }
 
 function updateAdvSLEst() {
+  // Called when SLIDER moves → update price input
   var ep = advEP || getEP() || price;
+  if (!ep) return;
   var amt = getAmtUSDT() || 100;
-  var sz = amt * lev;
-
-  // Slider drives price input
   var pct = parseFloat(g2('adv-sl-pct').value) || 0;
   if (pct > 0) {
     var calcSL = advSide === 'long'
@@ -1311,18 +1339,33 @@ function updateAdvSLEst() {
       : ep * (1 + pct / 100 / lev);
     g2('adv-sl-price').value = calcSL.toFixed(2);
   }
+  _renderSLEst(ep, amt);
+}
 
+function updateAdvSLEstAndSlider() {
+  // Called when PRICE INPUT changes → update slider
+  var ep = advEP || getEP() || price;
+  if (!ep) return;
+  var amt = getAmtUSDT() || 100;
+  var slPrice = parseFloat(g2('adv-sl-price').value) || 0;
+  if (slPrice) {
+    // For SL, slider represents loss %, so reverse direction
+    var pct = advSide === 'long'
+      ? (1 - slPrice / ep) * lev * 100
+      : (slPrice / ep - 1) * lev * 100;
+    g2('adv-sl-pct').value = Math.max(0, Math.min(pct, 100));
+  }
+  _renderSLEst(ep, amt);
+}
+
+function _renderSLEst(ep, amt) {
   var slPrice = parseFloat(g2('adv-sl-price').value) || 0;
   if (!slPrice || !ep) {
     g('adv-sl-est', 'When the Last Price reaches -- USDT, a MARKET order will close the position, with an estimated loss of -- USDT (--).');
     return;
   }
-
-  var pnl = advSide === 'long'
-    ? (slPrice - ep) * sz / ep
-    : (ep - slPrice) * sz / ep;
+  var pnl = calcAdvPnl(slPrice, ep, amt, advSide);
   var pnlPct = amt > 0 ? (pnl / amt * 100).toFixed(2) : '0.00';
-
   var estEl = g2('adv-sl-est');
   if (estEl) estEl.innerHTML = 'When the Last Price reaches <strong>' + fmt(slPrice) + ' USDT</strong>, a MARKET order will close the position, with an estimated loss of <strong style="color:var(--red)">' + pnl.toFixed(2) + ' USDT (' + pnlPct + '%)</strong>.';
 }
@@ -1381,7 +1424,7 @@ function confirmAdvTPSL() {
           <button class="adv-clear" onclick="clearAdvTP()">🗑 Clear</button>
         </div>
         <div class="adv-input-row">
-          <input class="adv-inp" id="adv-tp-price" type="number" placeholder="Trigger Price..." oninput="updateAdvTPEst()"/>
+          <input class="adv-inp" id="adv-tp-price" type="number" placeholder="Trigger Price..." oninput="updateAdvTPEstAndSlider()"/>
           <div class="adv-type-btn">USDT | Last Price ▾</div>
         </div>
         <input class="adv-pct-sl" id="adv-tp-pct" type="range" min="0" max="150" value="0" oninput="updateAdvTPEst()"/>
@@ -1400,7 +1443,7 @@ function confirmAdvTPSL() {
           <button class="adv-clear" onclick="clearAdvSL()">🗑 Clear</button>
         </div>
         <div class="adv-input-row">
-          <input class="adv-inp" id="adv-sl-price" type="number" placeholder="Trigger Price..." oninput="updateAdvSLEst()"/>
+          <input class="adv-inp" id="adv-sl-price" type="number" placeholder="Trigger Price..." oninput="updateAdvSLEstAndSlider()"/>
           <div class="adv-type-btn">USDT | Last Price ▾</div>
         </div>
         <input class="adv-pct-sl" id="adv-sl-pct" type="range" min="0" max="100" value="0" oninput="updateAdvSLEst()"/>
