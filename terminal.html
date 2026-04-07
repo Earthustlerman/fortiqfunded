@@ -736,12 +736,20 @@ function changePair(p){
   pair=p;
   document.querySelectorAll('.pr').forEach(function(r){r.classList.remove('on');});
   var el=g2('pr-'+p);if(el)el.classList.add('on');
-  closeModal();klineData=[];loadKlines();
+  closeModal();
+  // Reload TradingView chart with new pair
+  initChart();
   connectBookWS();connectTickerWS();
   fetchFunding();fetchIndex();
   var base=p.replace('USDT','');
+  // Update topbar pair name and icon
+  var ICONS={'BTC':'₿','ETH':'Ξ','BNB':'◈','SOL':'◎','XRP':'✕','DOGE':'Ð','ADA':'₳','AVAX':'△','DOT':'●','LINK':'⬡','TRX':'◈','ARB':'◆','OP':'◉','SUI':'◇','INJ':'◈','LTC':'Ł','NEAR':'Ⓝ','ATOM':'⚛','UNI':'🦄','MATIC':'⬡'};
+  var icon=ICONS[base]||'◈';
+  var iconEl=g2('tb-coin-icon');if(iconEl)iconEl.textContent=icon;
+  var pairEl=g2('tb-pair');if(pairEl)pairEl.textContent=base+'/USDT Perpetual';
   g('aopt-coin-title',base);g('aopt-coin-desc',base);g('aopt-cont-desc',base);
   var lp=g2('inp-price');if(lp)lp.value='';
+  price=0;
   updateSum();
 }
 function setTF(t,btn){
