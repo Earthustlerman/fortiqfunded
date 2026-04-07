@@ -53,6 +53,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .divider span{color:var(--muted2);font-size:12px}
 .login-link{text-align:center;font-size:13px;color:var(--muted)}
 .login-link a{color:var(--purple3);text-decoration:none;font-weight:500}
+.ref-badge{background:rgba(108,61,232,0.1);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--purple3);margin-bottom:1.2rem;display:none;}
 </style>
 </head>
 <body>
@@ -79,6 +80,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     <h2 class="card-title">Create Your Account</h2>
     <p class="card-sub">Join Fortiq Funded and start your challenge</p>
     <div class="msg" id="msg"></div>
+    <div class="ref-badge" id="ref-badge">🔗 Referred by a friend — referral code applied!</div>
     <div class="field">
       <label>Full Name</label>
       <input type="text" id="fullname" placeholder="Your full name"/>
@@ -115,7 +117,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
     <div class="terms-wrap">
       <input type="checkbox" id="terms"/>
-      <label for="terms">I agree to the <a href="terms.html" target="_blank">Terms & Conditions</a>, <a href="privacy.html" target="_blank">Privacy Policy</a>, and <a href="crypto-disclaimer.html" target="_blank">Crypto Payment Disclaimer</a></label>
+      <label for="terms">I agree to the <a href="terms.html" target="_blank">Terms &amp; Conditions</a>, <a href="privacy.html" target="_blank">Privacy Policy</a>, and <a href="crypto-disclaimer.html" target="_blank">Crypto Payment Disclaimer</a></label>
     </div>
     <button class="btn-submit" id="signup-btn" onclick="doSignup()">Create Account</button>
     <div class="divider"><span>already have an account?</span></div>
@@ -131,7 +133,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 </div>
 
 <script>
-// Stars
 (function(){
   var c=document.getElementById('stars');
   for(var i=0;i<80;i++){
@@ -142,7 +143,20 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
   }
 })();
 
-// Password checker
+// Auto-fill referral code from URL ?ref= parameter
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var refCode=params.get('ref');
+  if(refCode){
+    var refField=document.getElementById('reffield');
+    var refInput=document.getElementById('referral');
+    var refBadge=document.getElementById('ref-badge');
+    if(refField)refField.style.display='block';
+    if(refInput)refInput.value=refCode;
+    if(refBadge)refBadge.style.display='block';
+  }
+})();
+
 function checkPwd(v){
   var r={len:v.length>=8,upper:/[A-Z]/.test(v),num:/[0-9]/.test(v),sp:/[!@#$%^&*(),.?":{}|<>]/.test(v)};
   document.getElementById('r1').className='req-item'+(r.len?' met':'');
@@ -152,18 +166,21 @@ function checkPwd(v){
   var score=[r.len,r.upper,r.num,r.sp].filter(Boolean).length;
   var colors=['','#ff4d4d','#ff9f43','#c9a84c','#00d68f'];
   var labels=['','Weak','Fair','Good','Strong'];
-  for(var i=1;i<=4;i++) document.getElementById('s'+i).style.background=i<=score?colors[score]:'rgba(255,255,255,0.06)';
+  for(var i=1;i<=4;i++)document.getElementById('s'+i).style.background=i<=score?colors[score]:'rgba(255,255,255,0.06)';
   document.getElementById('slabel').textContent=v?labels[score]:'Enter a password';
   document.getElementById('slabel').style.color=v?colors[score]:'var(--muted)';
 }
 
-// Show message
 function showMsg(txt,type){
   var el=document.getElementById('msg');
   el.textContent=txt;el.className='msg '+type;
 }
 
-// Signup
+var sb=window.supabase.createClient(
+  'https://qhfsvazxpnjwfxhamkea.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo'
+);
+
 function doSignup(){
   var name=document.getElementById('fullname').value.trim();
   var email=document.getElementById('email').value.trim();
@@ -172,22 +189,17 @@ function doSignup(){
   var terms=document.getElementById('terms').checked;
   var ref=document.getElementById('referral').value.trim();
 
-  if(!name){showMsg('Please enter your full name.','error');return}
-  if(!email||!email.includes('@')){showMsg('Please enter a valid email address.','error');return}
-  if(pwd.length<8){showMsg('Password must be at least 8 characters.','error');return}
-  if(!/[A-Z]/.test(pwd)){showMsg('Password must contain an uppercase letter.','error');return}
-  if(!/[0-9]/.test(pwd)){showMsg('Password must contain a number.','error');return}
-  if(!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)){showMsg('Password must contain a special character.','error');return}
-  if(pwd!==conf){showMsg('Passwords do not match.','error');return}
-  if(!terms){showMsg('Please accept the Terms & Conditions.','error');return}
+  if(!name){showMsg('Please enter your full name.','error');return;}
+  if(!email||!email.includes('@')){showMsg('Please enter a valid email address.','error');return;}
+  if(pwd.length<8){showMsg('Password must be at least 8 characters.','error');return;}
+  if(!/[A-Z]/.test(pwd)){showMsg('Password must contain an uppercase letter.','error');return;}
+  if(!/[0-9]/.test(pwd)){showMsg('Password must contain a number.','error');return;}
+  if(!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)){showMsg('Password must contain a special character.','error');return;}
+  if(pwd!==conf){showMsg('Passwords do not match.','error');return;}
+  if(!terms){showMsg('Please accept the Terms & Conditions.','error');return;}
 
   var btn=document.getElementById('signup-btn');
   btn.disabled=true;btn.textContent='Creating account...';
-
-  var sb=window.supabase.createClient(
-    'https://qhfsvazxpnjwfxhamkea.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo'
-  );
 
   sb.auth.signUp({
     email:email,
@@ -201,6 +213,23 @@ function doSignup(){
       showMsg(res.error.message,'error');
       btn.disabled=false;btn.textContent='Create Account';
     } else {
+      var newUserId=res.data.user?res.data.user.id:null;
+      // Track referral if a referral code was provided
+      if(ref&&newUserId){
+        setTimeout(function(){
+          sb.from('profiles').select('user_id').eq('id',newUserId).single().then(function(pr){
+            if(pr.data&&pr.data.user_id){
+              fetch('https://fortiqfunded-backend.onrender.com/track-referral',{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({referrer_code:ref,referred_user_id:pr.data.user_id})
+              }).then(function(r){return r.json();}).then(function(d){
+                console.log('Referral tracked:',d);
+              }).catch(function(e){console.log('Referral tracking failed:',e);});
+            }
+          });
+        },2000);
+      }
       document.getElementById('form-view').style.display='none';
       document.getElementById('cemail').textContent=email;
       document.getElementById('success-view').style.display='block';
