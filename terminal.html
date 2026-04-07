@@ -991,12 +991,37 @@ function updateSum(){
   g('s-amt',amt?'$'+amt.toFixed(2):'—');
   g('s-size',sz?'$'+sz.toFixed(2):'—');
   g('s-margin',margin?'$'+margin.toFixed(2):'—');
-  // Liq price depends on entry price and leverage only (cross margin)
+  // Liq price formula differs by margin type
   if(ep&&lev){
-    var mm=0.005;
-    var lq=side==='buy'
-      ? ep*(1 - 1/lev + mm)
-      : ep*(1 + 1/lev - mm);
+    var mm=0.005; // maintenance margin rate 0.5%
+    var marginMode=g2('margin-sel')?g2('margin-sel').value:'cross';
+    var lq;
+    if(marginMode==='isolated'&&amt>0){
+      // Isolated margin: liq price depends on amount (margin) put in
+      // Long:  liq = ep - (amt - amt*mm) / (sz/ep)
+      //      = ep - (amt*(1-mm)*ep) / sz
+      //      = ep * (1 - (1-mm)/lev)   simplified
+      // More accurate with actual margin:
+      // Long:  liq = ep * (1 - 1/lev + mm) + correction
+      // Simplified industry formula:
+      // Long:  liq = ep - (margin - ep*sz*mm/ep) / (sz/ep)
+      //            = ep - (amt - sz*mm) / (sz/ep)
+      var sz2=amt*lev;
+      if(side==='buy'){
+        lq = ep - (amt - sz2*mm) / (sz2/ep);
+      } else {
+        lq = ep + (amt - sz2*mm) / (sz2/ep);
+      }
+      // Clamp to sensible range
+      if(lq<0) lq=0;
+    } else {
+      // Cross margin: liq price depends only on entry and leverage
+      if(side==='buy'){
+        lq=ep*(1 - 1/lev + mm);
+      } else {
+        lq=ep*(1 + 1/lev - mm);
+      }
+    }
     g('s-liq','$'+fmt(lq));
   } else g('s-liq','—');
   if(tpslOn){
