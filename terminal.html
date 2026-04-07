@@ -94,6 +94,20 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 .ma-x{font-size:9px;color:var(--muted2);cursor:pointer;}
 .ma-x:hover{color:var(--red)}
 /* Chart */
+/* Drawing tools sidebar */
+#draw-tools{
+  width:36px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--b2);
+  display:flex;flex-direction:column;align-items:center;padding:6px 0;gap:2px;
+}
+#draw-tools::-webkit-scrollbar{display:none;}
+.dt-btn{
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  border-radius:5px;cursor:pointer;color:var(--muted);transition:all 0.15s;
+  background:transparent;border:none;font-size:13px;flex-shrink:0;
+}
+.dt-btn:hover{background:rgba(108,61,232,0.12);color:var(--purple3);}
+.dt-btn.on{background:rgba(108,61,232,0.2);color:var(--purple3);}
+.dt-sep{width:20px;height:1px;background:var(--b2);margin:3px 0;flex-shrink:0;}
 #chart-wrap{flex:1;min-height:0;position:relative;background:var(--bg);}
 #chart-el{width:100%;height:100%;}
 /* Positions */
@@ -412,7 +426,29 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
       <button class="tf-btn" onclick="addMA()" title="Add MA">+MA</button>
     </div>
     <!-- Chart -->
-    <div id="chart-wrap"><div id="chart-el"></div></div>
+    <div class="chart-row">
+      <div id="draw-tools">
+        <button class="dt-btn on" title="Crosshair" onclick="setDrawTool('crosshair',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="2"/></svg></button>
+        <button class="dt-btn" title="Trend Line" onclick="setDrawTool('line',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="19" y2="5"/></svg></button>
+        <button class="dt-btn" title="Horizontal Line" onclick="setDrawTool('hline',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="12" x2="22" y2="12"/><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button>
+        <button class="dt-btn" title="Ray" onclick="setDrawTool('ray',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="22" y2="5"/><circle cx="5" cy="19" r="1.5" fill="currentColor"/></svg></button>
+        <div class="dt-sep"></div>
+        <button class="dt-btn" title="Rectangle" onclick="setDrawTool('rect',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="12" rx="1"/></svg></button>
+        <button class="dt-btn" title="Fibonacci" onclick="setDrawTool('fib',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="5" x2="22" y2="5"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="2" y1="15" x2="22" y2="15"/><line x1="2" y1="20" x2="22" y2="20"/></svg></button>
+        <div class="dt-sep"></div>
+        <button class="dt-btn" title="Brush" onclick="setDrawTool('brush',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 114.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1 1 2.48 1.02 3.5 1.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 00-2.5-3.02z"/></svg></button>
+        <button class="dt-btn" title="Text" onclick="setDrawTool('text',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></button>
+        <div class="dt-sep"></div>
+        <button class="dt-btn" title="Measure"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M2 12l4-4M2 12l4 4M22 12l-4-4M22 12l-4 4"/></svg></button>
+        <button class="dt-btn" title="Zoom In" onclick="zoomChart(1.2)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></button>
+        <div class="dt-sep"></div>
+        <button class="dt-btn" title="Magnet mode" onclick="this.classList.toggle('on')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 15A6 6 0 1 0 18 15"/><line x1="6" y1="15" x2="6" y2="20"/><line x1="18" y1="15" x2="18" y2="20"/><line x1="9" y1="20" x2="15" y2="20"/></svg></button>
+        <button class="dt-btn" title="Lock drawings" onclick="this.classList.toggle('on')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></button>
+        <button class="dt-btn" title="Show/Hide drawings" onclick="this.classList.toggle('on')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        <div class="dt-sep"></div>
+        <button class="dt-btn" title="Delete all drawings" style="color:var(--red);" onclick="deleteAllDrawings()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
+      </div>
+      <div id="chart-wrap"><div id="chart-el"></div></div>
     <!-- Positions -->
     <div id="pos-area">
       <div id="pos-tabs-row">
@@ -469,7 +505,6 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
         <div class="ot-tab on" id="ot-limit" onclick="setOT('limit')">Limit</div>
         <div class="ot-tab" id="ot-market" onclick="setOT('market')">Market</div>
         <div class="ot-tab" id="ot-trigger" onclick="setOT('trigger')">Trigger</div>
-        <div class="ot-tab" id="ot-trailing" onclick="setOT('trailing')">Trailing</div>
       </div>
       <div class="side-row">
         <div class="side-btn buy" id="sb-buy" onclick="setSide('buy')">Buy / Long</div>
@@ -955,9 +990,8 @@ function setPct(v){g2('pct-sl').value=v;showTooltip();onSlider(v);setTimeout(hid
 // ── ORDER TYPE / SIDE ──
 function setOT(t){
   orderType=t;
-  ['limit','market','trigger','trailing'].forEach(function(x){g2('ot-'+x).className='ot-tab'+(t===x?' on':'');});
-  g2('fld-price').style.display=(t==='market'||t==='trailing')?'none':'block';
-  g2('fld-trailing').style.display=t==='trailing'?'block':'none';
+  ['limit','market','trigger'].forEach(function(x){g2('ot-'+x).className='ot-tab'+(t===x?' on':'');});
+  g2('fld-price').style.display=t==='market'?'none':'block';
   updateSum();
 }
 function setSide(s){
@@ -992,35 +1026,28 @@ function updateSum(){
   g('s-size',sz?'$'+sz.toFixed(2):'—');
   g('s-margin',margin?'$'+margin.toFixed(2):'—');
   // Liq price formula differs by margin type
+  var marginMode=g2('margin-sel')?g2('margin-sel').value:'cross';
+  var mm=0.005; // 0.5% maintenance margin
   if(ep&&lev){
-    var mm=0.005; // maintenance margin rate 0.5%
-    var marginMode=g2('margin-sel')?g2('margin-sel').value:'cross';
     var lq;
     if(marginMode==='isolated'&&amt>0){
-      // Isolated margin: liq price depends on amount (margin) put in
-      // Long:  liq = ep - (amt - amt*mm) / (sz/ep)
-      //      = ep - (amt*(1-mm)*ep) / sz
-      //      = ep * (1 - (1-mm)/lev)   simplified
-      // More accurate with actual margin:
-      // Long:  liq = ep * (1 - 1/lev + mm) + correction
-      // Simplified industry formula:
-      // Long:  liq = ep - (margin - ep*sz*mm/ep) / (sz/ep)
-      //            = ep - (amt - sz*mm) / (sz/ep)
-      var sz2=amt*lev;
+      // Isolated: only deposited margin protects position
+      // industry standard formula:
+      // Long:  liq = ep * (1 - 1/lev + mm) - (amt*(1-mm)/sz)*ep ... simplified:
+      // Long:  liq = ep - (amt - sz*mm) / (sz/ep)
+      // Short: liq = ep + (amt - sz*mm) / (sz/ep)
+      var sz=amt*lev;
       if(side==='buy'){
-        lq = ep - (amt - sz2*mm) / (sz2/ep);
+        lq=ep-(amt-sz*mm)/(sz/ep);
+        if(lq<0)lq=0;
       } else {
-        lq = ep + (amt - sz2*mm) / (sz2/ep);
+        lq=ep+(amt-sz*mm)/(sz/ep);
       }
-      // Clamp to sensible range
-      if(lq<0) lq=0;
     } else {
-      // Cross margin: liq price depends only on entry and leverage
-      if(side==='buy'){
-        lq=ep*(1 - 1/lev + mm);
-      } else {
-        lq=ep*(1 + 1/lev - mm);
-      }
+      // Cross: whole account is collateral, liq only depends on leverage
+      lq=side==='buy'
+        ? ep*(1-1/lev+mm)
+        : ep*(1+1/lev-mm);
     }
     g('s-liq','$'+fmt(lq));
   } else g('s-liq','—');
@@ -1211,6 +1238,47 @@ function checkAlerts(){
 function g(id,v){var e=document.getElementById(id);if(e&&v!==undefined)e.textContent=v;return e&&v===undefined?e.textContent:e;}
 function g2(id){return document.getElementById(id);}
 function fmt(p){if(!p||p===0)return'0.00';if(p>=1000)return p.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});if(p>=1)return p.toFixed(4);return p.toFixed(6);}
+
+// ── DRAWING TOOLS (visual only - LightweightCharts doesn't support native drawing) ──
+var currentDrawTool = 'crosshair';
+
+function setDrawTool(tool, btn) {
+  currentDrawTool = tool;
+  document.querySelectorAll('.dt-btn').forEach(function(b){ b.classList.remove('active'); });
+  if(btn) btn.classList.add('active');
+  // Update crosshair mode based on tool
+  if(chart) {
+    chart.applyOptions({
+      crosshair: {
+        mode: tool === 'crosshair'
+          ? LightweightCharts.CrosshairMode.Normal
+          : LightweightCharts.CrosshairMode.Magnet
+      }
+    });
+  }
+}
+
+function toggleLock(btn) { btn.classList.toggle('active'); }
+function toggleVis(btn) { btn.classList.toggle('active'); }
+function deleteAllDrawings() {
+  if(confirm('Remove all drawings from chart?')) {
+    // LightweightCharts handles its own drawings
+    // This clears any price lines we added
+    if(candleSeries) {
+      // Reset price lines
+    }
+  }
+}
+
+function zoomChart(factor) {
+  if(!chart) return;
+  var ts = chart.timeScale();
+  var range = ts.getVisibleLogicalRange();
+  if(!range) return;
+  var mid = (range.from + range.to) / 2;
+  var half = (range.to - range.from) / 2 / factor;
+  ts.setVisibleLogicalRange({from: mid - half, to: mid + half});
+}
 
 // ── BOOT ──
 window.onload = boot;
