@@ -71,7 +71,7 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 /* Col 2: Chart + positions */
 #col-center{
   flex:1;min-width:0;
-  display:flex;flex-direction:column;overflow:hidden;
+  display:flex;flex-direction:column;overflow:hidden;min-height:0;
 }
 .chart-row{flex:1;display:flex;overflow:hidden;min-height:0;}
 
@@ -103,7 +103,7 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
 .dt-btn:hover{background:rgba(108,61,232,0.12);color:var(--purple3);}
 .dt-btn.on{background:rgba(108,61,232,0.2);color:var(--purple3);}
 .dt-sep{width:20px;height:1px;background:var(--b2);margin:3px 0;flex-shrink:0;}
-#chart-wrap{flex:1;min-height:0;position:relative;background:var(--bg);}
+#chart-wrap{flex:1;min-height:0;position:relative;background:var(--bg);display:flex;flex-direction:column;}
 #chart-el{width:100%;height:100%;}
 /* Positions */
 #pos-area{
@@ -394,7 +394,7 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
     <!-- TF Bar -->
     <!-- Chart -->
     <div class="chart-row">
-      <div id="chart-wrap"><div id="tv-container" style="width:100%;height:100%;"></div></div>
+      <div id="chart-wrap"><div id="tv-container" style="width:100%;flex:1;min-height:0;"></div></div>
     </div><!-- end chart-row -->
     <!-- Positions -->
     <div id="pos-area">
@@ -608,46 +608,92 @@ function getTVInterval(t){
 function initChart() {
   var container = document.getElementById('tv-container');
   if(!container) return;
-  container.innerHTML = '';
+
+  // Show loading spinner while chart loads
+  container.innerHTML = '<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#04060f;gap:16px;">'
+    + '<div style="width:40px;height:40px;border:3px solid rgba(108,61,232,0.2);border-top-color:#6c3de8;border-radius:50%;animation:spin 0.8s linear infinite;"></div>'
+    + '<div style="color:#6b6b8f;font-size:13px;font-family:Outfit,sans-serif;">Loading chart...</div>'
+    + '</div>';
 
   var sym = 'BINANCE:' + pair.replace('USDT','') + 'USDT.P';
   var interval = getTVInterval(tf);
 
-  // TradingView Advanced Chart Widget - full drawing tools
-  var config = {
-    "autosize": true,
-    "symbol": sym,
-    "interval": interval,
-    "timezone": "Etc/UTC",
-    "theme": "dark",
-    "style": "1",
-    "locale": "en",
-    "backgroundColor": "rgba(4, 6, 15, 1)",
-    "gridColor": "rgba(255, 255, 255, 0.03)",
-    "withdateranges": true,
-    "hide_side_toolbar": false,
-    "allow_symbol_change": false,
-    "watchlist": [],
-    "details": false,
-    "hotlist": false,
-    "calendar": false,
-    "show_popup_button": false,
-    "popup_width": "1000",
-    "popup_height": "650",
-    "support_host": "https://www.tradingview.com"
-  };
+  // Use Advanced Chart Widget for full drawing tools
+  var wrapper = document.createElement('div');
+  wrapper.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;';
+  wrapper.className = 'tradingview-widget-container';
 
-  var div = document.createElement('div');
-  div.className = 'tradingview-widget-container__widget';
-  div.style.cssText = 'height:calc(100% - 32px);width:100%;';
-  container.appendChild(div);
+  var widgetDiv = document.createElement('div');
+  widgetDiv.className = 'tradingview-widget-container__widget';
+  widgetDiv.style.cssText = 'height:100%;width:100%;min-height:0;';
+  wrapper.appendChild(widgetDiv);
 
   var script = document.createElement('script');
   script.type = 'text/javascript';
   script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
   script.async = true;
-  script.innerHTML = JSON.stringify(config);
-  container.appendChild(script);
+
+  var config = {
+    autosize: true,
+    symbol: sym,
+    interval: interval,
+    timezone: 'Etc/UTC',
+    theme: 'dark',
+    style: '1',
+    locale: 'en',
+    backgroundColor: 'rgba(4,6,15,1)',
+    gridColor: 'rgba(255,255,255,0.03)',
+    withdateranges: true,
+    hide_side_toolbar: false,
+    allow_symbol_change: false,
+    details: false,
+    hotlist: false,
+    calendar: false,
+    save_image: true,
+    support_host: 'https://www.tradingview.com',
+    overrides: {
+      'paneProperties.background': '#04060f',
+      'paneProperties.backgroundType': 'solid',
+      'mainSeriesProperties.candleStyle.upColor': '#00c97a',
+      'mainSeriesProperties.candleStyle.downColor': '#f03d3d',
+      'mainSeriesProperties.candleStyle.borderUpColor': '#00c97a',
+      'mainSeriesProperties.candleStyle.borderDownColor': '#f03d3d',
+      'mainSeriesProperties.candleStyle.wickUpColor': '#00c97a',
+      'mainSeriesProperties.candleStyle.wickDownColor': '#f03d3d',
+    }
+  };
+
+  script.textContent = JSON.stringify(config);
+
+  // Replace spinner with widget after script loads
+  script.onload = function() {
+    container.innerHTML = '';
+    container.appendChild(wrapper);
+  };
+
+  // Fallback: if advanced widget fails after 8s, use iframe
+  var fallbackTimer = setTimeout(function() {
+    if(container.querySelector('.tradingview-widget-container__widget iframe')) return;
+    console.log('Advanced chart timeout, using iframe fallback');
+    var sym2 = pair.replace('USDT','') + 'USDT.P';
+    var src = 'https://s.tradingview.com/widgetembed/?frameElementId=tv-frame'
+      + '&symbol=BINANCE%3A' + encodeURIComponent(sym2)
+      + '&interval=' + interval
+      + '&hidesidetoolbar=0&hidetoptoolbar=0&theme=dark&style=1'
+      + '&timezone=Etc%2FUTC&withdateranges=1&locale=en';
+    container.innerHTML = '<iframe id="tv-frame" src="' + src + '" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>';
+  }, 8000);
+
+  // Append script to head to start loading
+  wrapper.appendChild(script);
+  document.head.appendChild(script);
+
+  // Show widget div immediately, spinner shows while JS loads
+  setTimeout(function() {
+    clearTimeout(fallbackTimer);
+    container.innerHTML = '';
+    container.appendChild(wrapper);
+  }, 500);
 }
 
 // Stub functions for MA controls (TradingView handles MAs internally)
