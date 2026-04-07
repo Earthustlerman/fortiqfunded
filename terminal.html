@@ -1378,7 +1378,7 @@ function updateAdvSLEstAndSlider() {
     var pct = advSide === 'long'
       ? (1 - slPrice / ep) * lev * 100
       : (slPrice / ep - 1) * lev * 100;
-    g2('adv-sl-pct').value = Math.max(0, Math.min(pct, 100));
+    g2('adv-sl-pct').value = Math.max(0, Math.min(pct, 150));
   }
   _renderSLEst(ep, amt);
 }
@@ -1471,8 +1471,8 @@ function confirmAdvTPSL() {
           <input class="adv-inp" id="adv-sl-price" type="number" placeholder="Trigger Price..." oninput="updateAdvSLEstAndSlider()"/>
           <div class="adv-type-btn">USDT | Last Price ▾</div>
         </div>
-        <input class="adv-pct-sl" id="adv-sl-pct" type="range" min="0" max="100" value="0" oninput="updateAdvSLEst()"/>
-        <div class="adv-pct-marks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+        <input class="adv-pct-sl" id="adv-sl-pct" type="range" min="0" max="150" value="0" oninput="updateAdvSLEst()"/>
+        <div class="adv-pct-marks"><span>0%</span><span>30%</span><span>60%</span><span>90%</span><span>120%</span><span>150%</span></div>
         <div class="adv-order-row">
           <div class="adv-order-inp">Order Price &nbsp;&nbsp;&nbsp; MARKET</div>
           <div class="adv-mkt-btn">MARKET ⇌</div>
