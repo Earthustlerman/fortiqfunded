@@ -991,8 +991,8 @@ function updateSum(){
   g('s-amt',amt?'$'+amt.toFixed(2):'—');
   g('s-size',sz?'$'+sz.toFixed(2):'—');
   g('s-margin',margin?'$'+margin.toFixed(2):'—');
-  if(amt&&ep&&lev){
-    // Liquidation price with 0.5% maintenance margin
+  // Liq price depends on entry price and leverage only (cross margin)
+  if(ep&&lev){
     var mm=0.005;
     var lq=side==='buy'
       ? ep*(1 - 1/lev + mm)
