@@ -546,7 +546,7 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
         <div class="sum-r"><span class="sk">Leverage</span><span class="sv" id="s-lev">1x</span></div>
         <div class="sum-r"><span class="sk">Position Size</span><span class="sv" id="s-size">—</span></div>
         <div class="sum-r"><span class="sk">Position Margin</span><span class="sv" id="s-margin">—</span></div>
-        <div class="sum-r"><span class="sk">Est. Liq. Price</span><span class="sv r" id="s-liq">—</span></div>
+        <div class="sum-r"><span class="sk">Est. Liq. Price <span style="font-size:9px;color:var(--muted2);">(leverage-based)</span></span><span class="sv r" id="s-liq">—</span></div>
         <div class="sum-r" id="s-tp-r" style="display:none"><span class="sk">Take Profit</span><span class="sv g" id="s-tp">—</span></div>
         <div class="sum-r" id="s-sl-r" style="display:none"><span class="sk">Stop Loss</span><span class="sv r" id="s-sl">—</span></div>
       </div>
@@ -624,27 +624,46 @@ function getTVInterval(t){
 function initChart() {
   var container = document.getElementById('tv-container');
   if(!container) return;
-  var sym = pair.replace('USDT','') + 'USDT.P';
+  container.innerHTML = '';
+
+  var sym = 'BINANCE:' + pair.replace('USDT','') + 'USDT.P';
   var interval = getTVInterval(tf);
-  var src = 'https://s.tradingview.com/widgetembed/?frameElementId=tv-container'
-    + '&symbol=BINANCE%3A' + sym
-    + '&interval=' + interval
-    + '&hidesidetoolbar=0'
-    + '&hidetoptoolbar=0'
-    + '&symboledit=0'
-    + '&saveimage=1'
-    + '&toolbarbg=0d1526'
-    + '&studies=[]'
-    + '&theme=dark'
-    + '&style=1'
-    + '&timezone=Etc%2FUTC'
-    + '&withdateranges=1'
-    + '&showpopupbutton=0'
-    + '&locale=en'
-    + '&utm_source=' + encodeURIComponent(window.location.hostname)
-    + '&utm_medium=widget'
-    + '&utm_campaign=chart';
-  container.innerHTML = '<iframe id="tv-iframe" src="' + src + '" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>';
+
+  // TradingView Advanced Chart Widget - full drawing tools
+  var config = {
+    "autosize": true,
+    "symbol": sym,
+    "interval": interval,
+    "timezone": "Etc/UTC",
+    "theme": "dark",
+    "style": "1",
+    "locale": "en",
+    "backgroundColor": "rgba(4, 6, 15, 1)",
+    "gridColor": "rgba(255, 255, 255, 0.03)",
+    "withdateranges": true,
+    "hide_side_toolbar": false,
+    "allow_symbol_change": false,
+    "watchlist": [],
+    "details": false,
+    "hotlist": false,
+    "calendar": false,
+    "show_popup_button": false,
+    "popup_width": "1000",
+    "popup_height": "650",
+    "support_host": "https://www.tradingview.com"
+  };
+
+  var div = document.createElement('div');
+  div.className = 'tradingview-widget-container__widget';
+  div.style.cssText = 'height:calc(100% - 32px);width:100%;';
+  container.appendChild(div);
+
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  script.async = true;
+  script.innerHTML = JSON.stringify(config);
+  container.appendChild(script);
 }
 
 // Stub functions for MA controls (TradingView handles MAs internally)
