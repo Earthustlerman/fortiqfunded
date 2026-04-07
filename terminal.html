@@ -621,28 +621,28 @@ function initChart() {
   var container = document.getElementById('tv-container');
   if(!container) return;
   container.innerHTML = '';
-  tvWidget = new TradingView.widget({
+  var tvPair = 'BINANCE:' + pair.replace('USDT','') + 'USDT.P';
+  new TradingView.widget({
     container_id: 'tv-container',
     autosize: true,
-    symbol: 'BINANCE:' + pair,
+    symbol: tvPair,
     interval: TV_TF[tf] || '60',
     timezone: 'Etc/UTC',
     theme: 'dark',
     style: '1',
     locale: 'en',
-    toolbar_bg: '#070b18',
+    toolbar_bg: '#0d1526',
     enable_publishing: false,
     allow_symbol_change: false,
     hide_top_toolbar: false,
     hide_legend: false,
     hide_side_toolbar: false,
-    withdateranges: false,
+    withdateranges: true,
     details: false,
     hotlist: false,
     calendar: false,
-    save_image: false,
+    save_image: true,
     backgroundColor: 'rgba(4,6,15,1)',
-    gridColor: 'rgba(255,255,255,0.03)',
     loading_screen: { backgroundColor: '#04060f', foregroundColor: '#6c3de8' },
     overrides: {
       'paneProperties.background': '#04060f',
@@ -650,7 +650,6 @@ function initChart() {
       'paneProperties.vertGridProperties.color': 'rgba(255,255,255,0.03)',
       'paneProperties.horzGridProperties.color': 'rgba(255,255,255,0.03)',
       'scalesProperties.textColor': '#6b6b8f',
-      'scalesProperties.backgroundColor': '#04060f',
       'mainSeriesProperties.candleStyle.upColor': '#00c97a',
       'mainSeriesProperties.candleStyle.downColor': '#f03d3d',
       'mainSeriesProperties.candleStyle.borderUpColor': '#00c97a',
@@ -662,6 +661,13 @@ function initChart() {
       'volume.volume.color.0': 'rgba(240,61,61,0.4)',
       'volume.volume.color.1': 'rgba(0,201,122,0.4)',
     },
+    disabled_features: [
+      'use_localstorage_for_settings',
+    ],
+    enabled_features: [
+      'study_templates',
+      'side_toolbar_in_fullscreen_mode',
+    ],
   });
 }
 
