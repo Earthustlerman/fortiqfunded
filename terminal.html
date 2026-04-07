@@ -531,8 +531,8 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
         <span class="tpsl-adv" onclick="openAdvModal()" style="cursor:pointer;">Advanced</span>
       </div>
       <div class="tpsl-fields" id="tpsl-fields">
-        <div class="tpsl-fld"><label>Take Profit (USDT)</label><input type="number" id="inp-tp" placeholder="Take profit price..."/></div>
-        <div class="tpsl-fld"><label>Stop Loss (USDT)</label><input type="number" id="inp-sl" placeholder="Stop loss price..."/></div>
+        <div class="tpsl-fld"><label>Take Profit (USDT)</label><input type="number" id="inp-tp" placeholder="Take profit price..." oninput="syncToAdv('tp',this.value)" style="transition:border-color 0.3s;"/></div>
+        <div class="tpsl-fld"><label>Stop Loss (USDT)</label><input type="number" id="inp-sl" placeholder="Stop loss price..." oninput="syncToAdv('sl',this.value)" style="transition:border-color 0.3s;"/></div>
       </div>
       <div class="lev-row">
         <div class="lev-btn on" onclick="setLev(1,this)">1x</div>
@@ -1228,6 +1228,23 @@ function closeAdvModal() {
   g2('adv-tpsl-bg').classList.remove('open');
 }
 
+function syncToAdv(type, val) {
+  // Sync main panel inputs to advanced modal
+  if (type === 'tp' && g2('adv-tp-price')) {
+    g2('adv-tp-price').value = val;
+    updateAdvTPEst();
+  }
+  if (type === 'sl' && g2('adv-sl-price')) {
+    g2('adv-sl-price').value = val;
+    updateAdvSLEst();
+  }
+  // Update summary
+  if (val) {
+    if (type === 'tp') { g('s-tp', '$' + fmt(parseFloat(val))); g2('s-tp-r').style.display = 'flex'; }
+    if (type === 'sl') { g('s-sl', '$' + fmt(parseFloat(val))); g2('s-sl-r').style.display = 'flex'; }
+  }
+}
+
 function closeAdvTPSL(e) {
   if (e.target === g2('adv-tpsl-bg')) closeAdvModal();
 }
@@ -1314,12 +1331,26 @@ function confirmAdvTPSL() {
   var tp = g2('adv-tp-price').value;
   var sl = g2('adv-sl-price').value;
 
-  // Copy values back to main order panel
-  if (g2('inp-tp') && tp) g2('inp-tp').value = tp;
-  if (g2('inp-sl') && sl) g2('inp-sl').value = sl;
-
-  // Make sure TP/SL toggle is on
+  // Always activate TP/SL toggle first
   if (!tpslOn) toggleTPSL();
+
+  // Copy values to main TP/SL fields
+  if (tp && g2('inp-tp')) {
+    g2('inp-tp').value = tp;
+    g2('inp-tp').style.borderColor = 'rgba(0,201,122,0.5)';
+  }
+  if (sl && g2('inp-sl')) {
+    g2('inp-sl').value = sl;
+    g2('inp-sl').style.borderColor = 'rgba(240,61,61,0.5)';
+  }
+
+  // Show TP/SL summary in order summary
+  var tpEl = g2('s-tp-r');
+  var slEl = g2('s-sl-r');
+  if (tpEl) tpEl.style.display = tp ? 'flex' : 'none';
+  if (slEl) slEl.style.display = sl ? 'flex' : 'none';
+  if (tp) g('s-tp', '$' + fmt(parseFloat(tp)));
+  if (sl) g('s-sl', '$' + fmt(parseFloat(sl)));
 
   updateSum();
   closeAdvModal();
