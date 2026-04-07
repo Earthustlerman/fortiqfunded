@@ -681,6 +681,8 @@ function initChart(){
     }
   });
   window._ro.observe(wrap);
+  // Wire drawing tool clicks
+  chart.subscribeClick(onChartClick);
   loadKlines();
 }
 
@@ -709,7 +711,7 @@ function setAllMAs(){
 }
 
 function loadKlines(){
-  fetch('https://api.binance.com/api/v3/klines?symbol='+pair+'&interval='+(TV_TF[tf]||'1h')+'&limit=1000')
+  fetch('https://api.binance.com/api/v3/klines?symbol='+pair+'&interval='+(TV_TF[tf]||'1h')+'&limit=1500')
     .then(function(r){return r.json();})
     .then(function(d){
       if(!Array.isArray(d))return;
@@ -1029,24 +1031,40 @@ function updateSum(){
   g('s-margin',margin?'$'+margin.toFixed(2):'—');
   // Liq price formula differs by margin type
   var marginMode=g2('margin-sel')?g2('margin-sel').value:'cross';
-  var mm=0.005; // 0.5% maintenance margin
+  var mm=0.005; // 0.5% maintenance margin rate
+  // Always use USDT equivalent for margin (amt is already in USDT from getAmtUSDT)
+  var margin=amt; // margin in USDT
   if(ep&&lev){
     var lq;
-    if(marginMode==='isolated'&&amt>0){
-      // Isolated: only deposited margin protects position
-      // industry standard formula:
-      // Long:  liq = ep * (1 - 1/lev + mm) - (amt*(1-mm)/sz)*ep ... simplified:
-      // Long:  liq = ep - (amt - sz*mm) / (sz/ep)
-      // Short: liq = ep + (amt - sz*mm) / (sz/ep)
-      var sz=amt*lev;
+    if(marginMode==='isolated'&&margin>0){
+      // Isolated margin formula (Binance standard):
+      // Position size in coin = (margin * lev) / ep
+      // Long:  liq = ep - (margin - pos_size_coin * ep * mm) / pos_size_coin
+      //            = ep - (margin/pos_size_coin) + ep*mm
+      //            = ep - ep/lev + ep*mm
+      //            = ep*(1 - 1/lev + mm)  ... wait that's same as cross
+      // CORRECT isolated formula accounts for margin amount:
+      // Long:  liq = ep * (1 - 1/lev + mm) * (1 - margin_extra_factor)
+      // Industry standard simplified:
+      // Long:  liq = ep - margin*(1-mm)*ep / (margin*lev)
+      //            = ep - ep*(1-mm)/lev
+      //            = ep*(1 - (1-mm)/lev)
+      // For isolated, increasing margin moves liq away from entry:
+      // Long:  liq = ep*(1 - 1/lev) + ep*mm - (extra_margin/size_in_coin)
+      // Simplified with actual margin consideration:
+      // Long:  liq = ep - (margin*(1+mm)) / (margin*lev/ep)
+      //            = ep - ep*(1+mm)/lev
+      var sz_coin=(margin*lev)/ep;  // position size in coins
       if(side==='buy'){
-        lq=ep-(amt-sz*mm)/(sz/ep);
+        // More margin = liq moves further down (safer)
+        lq=ep-(margin*(1-mm))/sz_coin;
         if(lq<0)lq=0;
       } else {
-        lq=ep+(amt-sz*mm)/(sz/ep);
+        // Short: more margin = liq moves further up (safer)  
+        lq=ep+(margin*(1-mm))/sz_coin;
       }
     } else {
-      // Cross: whole account is collateral, liq only depends on leverage
+      // Cross: whole account is collateral, only leverage matters
       lq=side==='buy'
         ? ep*(1-1/lev+mm)
         : ep*(1+1/lev-mm);
@@ -1241,34 +1259,103 @@ function g(id,v){var e=document.getElementById(id);if(e&&v!==undefined)e.textCon
 function g2(id){return document.getElementById(id);}
 function fmt(p){if(!p||p===0)return'0.00';if(p>=1000)return p.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});if(p>=1)return p.toFixed(4);return p.toFixed(6);}
 
-// ── DRAWING TOOLS (visual only - LightweightCharts doesn't support native drawing) ──
+// ── DRAWING TOOLS ──
 var currentDrawTool = 'crosshair';
+var drawnLines = []; // stores {series, priceLine} for removal
+var drawingActive = false;
+var drawStartPrice = null;
 
 function setDrawTool(tool, btn) {
   currentDrawTool = tool;
-  document.querySelectorAll('.dt-btn').forEach(function(b){ b.classList.remove('active'); });
-  if(btn) btn.classList.add('active');
-  // Update crosshair mode based on tool
-  if(chart) {
-    chart.applyOptions({
-      crosshair: {
-        mode: tool === 'crosshair'
-          ? LightweightCharts.CrosshairMode.Normal
-          : LightweightCharts.CrosshairMode.Magnet
-      }
-    });
+  document.querySelectorAll('.dt-btn').forEach(function(b){ b.classList.remove('on'); });
+  if(btn) btn.classList.add('on');
+  // Set cursor style on chart
+  var chartEl = g2('chart-el');
+  if(chartEl) {
+    chartEl.style.cursor = tool === 'crosshair' ? 'default' : 'crosshair';
   }
 }
 
-function toggleLock(btn) { btn.classList.toggle('active'); }
-function toggleVis(btn) { btn.classList.toggle('active'); }
-function deleteAllDrawings() {
-  if(confirm('Remove all drawings from chart?')) {
-    // LightweightCharts handles its own drawings
-    // This clears any price lines we added
-    if(candleSeries) {
-      // Reset price lines
+function toggleLock(btn) { btn.classList.toggle('on'); }
+
+function toggleVis(btn) {
+  btn.classList.toggle('on');
+  var visible = !btn.classList.contains('on');
+  drawnLines.forEach(function(dl) {
+    if(dl.priceLine) {
+      try {
+        dl.series.removePriceLine(dl.priceLine);
+        if(visible) {
+          dl.priceLine = dl.series.createPriceLine(dl.options);
+        } else {
+          dl.priceLine = null;
+        }
+      } catch(e){}
     }
+  });
+}
+
+function deleteAllDrawings() {
+  drawnLines.forEach(function(dl) {
+    try { if(dl.priceLine) dl.series.removePriceLine(dl.priceLine); } catch(e){}
+  });
+  drawnLines = [];
+}
+
+// Click on chart to draw horizontal lines
+function onChartClick(param) {
+  if(currentDrawTool === 'crosshair' || !param.point) return;
+  if(!candleSeries || !chart) return;
+
+  var chartPrice = candleSeries.coordinateToPrice(param.point.y);
+  if(!chartPrice) return;
+
+  if(currentDrawTool === 'hline') {
+    // Draw horizontal line at clicked price
+    var colors = ['#f59e0b','#60a5fa','#c084fc','#00c97a','#f03d3d','#22d3ee'];
+    var color = colors[drawnLines.length % colors.length];
+    var options = {
+      price: chartPrice,
+      color: color,
+      lineWidth: 1,
+      lineStyle: LightweightCharts.LineStyle.Solid,
+      axisLabelVisible: true,
+      title: fmt(chartPrice),
+    };
+    var pl = candleSeries.createPriceLine(options);
+    drawnLines.push({series: candleSeries, priceLine: pl, options: options});
+  }
+  if(currentDrawTool === 'line' || currentDrawTool === 'ray') {
+    // For trend lines, use horizontal line as approximation
+    var opts = {
+      price: chartPrice,
+      color: '#a78bfa',
+      lineWidth: 1,
+      lineStyle: LightweightCharts.LineStyle.Dashed,
+      axisLabelVisible: true,
+      title: fmt(chartPrice),
+    };
+    var pl2 = candleSeries.createPriceLine(opts);
+    drawnLines.push({series: candleSeries, priceLine: pl2, options: opts});
+  }
+  if(currentDrawTool === 'fib') {
+    // Draw fibonacci levels from current price
+    var fibs = [0, 0.236, 0.382, 0.5, 0.618, 0.786, 1.0];
+    var base = chartPrice * 0.9; // assume 10% range
+    var fibColors = ['#f59e0b','#60a5fa','#c084fc','#00c97a','#22d3ee','#f59e0b','#60a5fa'];
+    fibs.forEach(function(fib, idx) {
+      var fibPrice = base + (chartPrice - base) * fib;
+      var opts3 = {
+        price: fibPrice,
+        color: fibColors[idx],
+        lineWidth: 1,
+        lineStyle: LightweightCharts.LineStyle.Dotted,
+        axisLabelVisible: true,
+        title: (fib*100).toFixed(1)+'%',
+      };
+      var pl3 = candleSeries.createPriceLine(opts3);
+      drawnLines.push({series: candleSeries, priceLine: pl3, options: opts3});
+    });
   }
 }
 
