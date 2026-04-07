@@ -406,50 +406,11 @@ html,body{height:100%;overflow:hidden;font-family:'Outfit',sans-serif;background
       <button class="tf-btn" onclick="setTF('4h',this)">4h</button>
       <button class="tf-btn" onclick="setTF('1d',this)">1D</button>
       <div class="tf-sep"></div>
-      <div class="ma-pill" id="ma1-pill">
-        <span class="ma-dot" style="background:#f59e0b"></span>
-        <span class="ma-lbl" onclick="toggleMA(1)">MA</span>
-        <input class="ma-num" id="ma1-n" type="number" value="5" min="1" max="500" onchange="rebuildMA(1)" onclick="event.stopPropagation()"/>
-        <span class="ma-x" onclick="toggleMA(1)">✕</span>
-      </div>
-      <div class="ma-pill" id="ma2-pill">
-        <span class="ma-dot" style="background:#60a5fa"></span>
-        <span class="ma-lbl" onclick="toggleMA(2)">MA</span>
-        <input class="ma-num" id="ma2-n" type="number" value="10" min="1" max="500" onchange="rebuildMA(2)" onclick="event.stopPropagation()"/>
-        <span class="ma-x" onclick="toggleMA(2)">✕</span>
-      </div>
-      <div class="ma-pill" id="ma3-pill">
-        <span class="ma-dot" style="background:#c084fc"></span>
-        <span class="ma-lbl" onclick="toggleMA(3)">MA</span>
-        <input class="ma-num" id="ma3-n" type="number" value="30" min="1" max="500" onchange="rebuildMA(3)" onclick="event.stopPropagation()"/>
-        <span class="ma-x" onclick="toggleMA(3)">✕</span>
-      </div>
-      <button class="tf-btn" onclick="addMA()" title="Add MA">+MA</button>
+      <span style="font-size:10px;color:var(--muted);padding:0 6px;">Indicators via chart toolbar ↑</span>
     </div>
     <!-- Chart -->
     <div class="chart-row">
-      <div id="draw-tools">
-        <button class="dt-btn on" title="Crosshair" onclick="setDrawTool('crosshair',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="2"/></svg></button>
-        <button class="dt-btn" title="Trend Line" onclick="setDrawTool('line',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="19" y2="5"/></svg></button>
-        <button class="dt-btn" title="Horizontal Line" onclick="setDrawTool('hline',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="12" x2="22" y2="12"/><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button>
-        <button class="dt-btn" title="Ray" onclick="setDrawTool('ray',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="22" y2="5"/><circle cx="5" cy="19" r="1.5" fill="currentColor"/></svg></button>
-        <div class="dt-sep"></div>
-        <button class="dt-btn" title="Rectangle" onclick="setDrawTool('rect',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="12" rx="1"/></svg></button>
-        <button class="dt-btn" title="Fibonacci" onclick="setDrawTool('fib',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="5" x2="22" y2="5"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="2" y1="15" x2="22" y2="15"/><line x1="2" y1="20" x2="22" y2="20"/></svg></button>
-        <div class="dt-sep"></div>
-        <button class="dt-btn" title="Brush" onclick="setDrawTool('brush',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 114.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1 1 2.48 1.02 3.5 1.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 00-2.5-3.02z"/></svg></button>
-        <button class="dt-btn" title="Text" onclick="setDrawTool('text',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></button>
-        <div class="dt-sep"></div>
-        <button class="dt-btn" title="Measure"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M2 12l4-4M2 12l4 4M22 12l-4-4M22 12l-4 4"/></svg></button>
-        <button class="dt-btn" title="Zoom In" onclick="zoomChart(1.2)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></button>
-        <div class="dt-sep"></div>
-        <button class="dt-btn" title="Magnet mode" onclick="this.classList.toggle('on')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 15A6 6 0 1 0 18 15"/><line x1="6" y1="15" x2="6" y2="20"/><line x1="18" y1="15" x2="18" y2="20"/><line x1="9" y1="20" x2="15" y2="20"/></svg></button>
-        <button class="dt-btn" title="Lock drawings" onclick="this.classList.toggle('on')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></button>
-        <button class="dt-btn" title="Show/Hide drawings" onclick="this.classList.toggle('on')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        <div class="dt-sep"></div>
-        <button class="dt-btn" title="Delete all drawings" style="color:var(--red);" onclick="deleteAllDrawings()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
-      </div>
-      <div id="chart-wrap"><div id="chart-el"></div></div>
+      <div id="chart-wrap"><div id="tv-container" style="width:100%;height:100%;"></div></div>
     </div><!-- end chart-row -->
     <!-- Positions -->
     <div id="pos-area">
@@ -629,9 +590,7 @@ var price=0,userId=null,accountId=null,account=null;
 var openPos=[],activeTab='open';
 var wsPrice=null,wsBook=null,wsTicker=null,wsFund=null;
 var prices={};
-var chart=null,candleSeries=null,maSeries=[null,null,null];
-var maOn=[true,true,true],maColors=['#f59e0b','#60a5fa','#c084fc'];
-var klineData=[],extraMAs={};
+var tvWidget=null;
 var TV_TF={'1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'4h','1d':'1d'};
 
 var PAIRS=['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','ADAUSDT','DOGEUSDT','AVAXUSDT','MATICUSDT','DOTUSDT','LINKUSDT','UNIUSDT','LTCUSDT','BCHUSDT','ATOMUSDT','ETCUSDT','XLMUSDT','ALGOUSDT','VETUSDT','FTMUSDT','SANDUSDT','MANAUSDT','AXSUSDT','AAVEUSDT','COMPUSDT','MKRUSDT','SNXUSDT','CRVUSDT','SUSHIUSDT','YFIUSDT','NEARUSDT','ICPUSDT','FILUSDT','THETAUSDT','EOSUSDT','XTZUSDT','DASHUSDT','ZECUSDT','RUNEUSDT','OCEANUSDT','ANKRUSDT','BATUSDT','ENJUSDT','CHZUSDT','ZILUSDT','QTUMUSDT','FETUSDT','GALAUSDT','APEUSDT','GMTUSDT','STXUSDT','HBARUSDT','EGLDUSDT','KSMUSDT','RAYUSDT','CAKEUSDT','TRXUSDT','IOTXUSDT','AUDIOUSDT','DYDXUSDT','CELRUSDT','WLDUSDT','INJUSDT','SUIUSDT','ARBUSDT','OPUSDT','APTUSDT','LDOUSDT','RNDRUSDT','AGIXUSDT','MASKUSDT','MINAUSDT','CFXUSDT','MAGICUSDT','HOOKUSDT','SKLUSDT','STORJUSDT','KNCUSDT','OMGUSDT','ZRXUSDT'];
@@ -654,134 +613,62 @@ function boot(){
 }
 
 // ── CHART ──
-function initChart(){
-  var el=document.getElementById('chart-el');
-  var wrap=document.getElementById('chart-wrap');
-  if(!el||!wrap) return;
-  if(chart){try{chart.remove();}catch(e){} chart=null;}
-  el.innerHTML='';
-  var w=wrap.clientWidth||800;
-  var h=wrap.clientHeight||400;
-  chart=LightweightCharts.createChart(el,{
-    width:w,height:h,
-    layout:{background:{color:'#04060f'},textColor:'#6b6b8f'},
-    grid:{vertLines:{color:'rgba(255,255,255,0.04)'},horzLines:{color:'rgba(255,255,255,0.04)'}},
-    crosshair:{mode:LightweightCharts.CrosshairMode.Normal},
-    rightPriceScale:{borderColor:'rgba(255,255,255,0.08)'},
-    timeScale:{borderColor:'rgba(255,255,255,0.08)',timeVisible:true,secondsVisible:false},
-  });
-  candleSeries=chart.addCandlestickSeries({upColor:'#00c97a',downColor:'#f03d3d',borderUpColor:'#00c97a',borderDownColor:'#f03d3d',wickUpColor:'#00c97a',wickDownColor:'#f03d3d'});
-  maSeries[0]=chart.addLineSeries({color:'#f59e0b',lineWidth:1,priceLineVisible:false,lastValueVisible:false,crossHairMarkerVisible:false});
-  maSeries[1]=chart.addLineSeries({color:'#60a5fa',lineWidth:1,priceLineVisible:false,lastValueVisible:false,crossHairMarkerVisible:false});
-  maSeries[2]=chart.addLineSeries({color:'#c084fc',lineWidth:1,priceLineVisible:false,lastValueVisible:false,crossHairMarkerVisible:false});
-  if(window._ro) window._ro.disconnect();
-  window._ro=new ResizeObserver(function(){
-    if(chart&&wrap.clientWidth>0&&wrap.clientHeight>0){
-      chart.applyOptions({width:wrap.clientWidth,height:wrap.clientHeight});
-    }
-  });
-  window._ro.observe(wrap);
-  // Wire drawing tool clicks
-  chart.subscribeClick(onChartClick);
-  loadKlines();
-}
+// ── CHART (TradingView Widget) ──
+var tvWidget = null;
+var TV_TF = {'1m':'1','5m':'5','15m':'15','1h':'60','4h':'240','1d':'1D'};
 
-function calcMA(data,period){
-  var r=[];
-  for(var i=period-1;i<data.length;i++){
-    var s=0;for(var j=i-period+1;j<=i;j++)s+=data[j].close;
-    r.push({time:data[i].time,value:+(s/period).toFixed(8)});
-  }
-  return r;
-}
-
-function setAllMAs(){
-  for(var i=0;i<3;i++){
-    if(!maSeries[i])continue;
-    var period=parseInt(document.getElementById('ma'+(i+1)+'-n').value)||[5,10,30][i];
-    maSeries[i].setData(maOn[i]?calcMA(klineData,period):[]);
-  }
-  Object.keys(extraMAs).forEach(function(id){
-    var em=extraMAs[id];
-    if(em&&em.series){
-      var period=parseInt((document.getElementById('ma'+id+'-n')||{value:20}).value)||20;
-      em.series.setData(em.on?calcMA(klineData,period):[]);
-    }
+function initChart() {
+  var container = document.getElementById('tv-container');
+  if(!container) return;
+  container.innerHTML = '';
+  tvWidget = new TradingView.widget({
+    container_id: 'tv-container',
+    autosize: true,
+    symbol: 'BINANCE:' + pair,
+    interval: TV_TF[tf] || '60',
+    timezone: 'Etc/UTC',
+    theme: 'dark',
+    style: '1',
+    locale: 'en',
+    toolbar_bg: '#070b18',
+    enable_publishing: false,
+    allow_symbol_change: false,
+    hide_top_toolbar: false,
+    hide_legend: false,
+    hide_side_toolbar: false,
+    withdateranges: false,
+    details: false,
+    hotlist: false,
+    calendar: false,
+    save_image: false,
+    backgroundColor: 'rgba(4,6,15,1)',
+    gridColor: 'rgba(255,255,255,0.03)',
+    loading_screen: { backgroundColor: '#04060f', foregroundColor: '#6c3de8' },
+    overrides: {
+      'paneProperties.background': '#04060f',
+      'paneProperties.backgroundType': 'solid',
+      'paneProperties.vertGridProperties.color': 'rgba(255,255,255,0.03)',
+      'paneProperties.horzGridProperties.color': 'rgba(255,255,255,0.03)',
+      'scalesProperties.textColor': '#6b6b8f',
+      'scalesProperties.backgroundColor': '#04060f',
+      'mainSeriesProperties.candleStyle.upColor': '#00c97a',
+      'mainSeriesProperties.candleStyle.downColor': '#f03d3d',
+      'mainSeriesProperties.candleStyle.borderUpColor': '#00c97a',
+      'mainSeriesProperties.candleStyle.borderDownColor': '#f03d3d',
+      'mainSeriesProperties.candleStyle.wickUpColor': '#00c97a',
+      'mainSeriesProperties.candleStyle.wickDownColor': '#f03d3d',
+    },
+    studies_overrides: {
+      'volume.volume.color.0': 'rgba(240,61,61,0.4)',
+      'volume.volume.color.1': 'rgba(0,201,122,0.4)',
+    },
   });
 }
 
-function loadKlines(){
-  fetch('https://api.binance.com/api/v3/klines?symbol='+pair+'&interval='+(TV_TF[tf]||'1h')+'&limit=1500')
-    .then(function(r){return r.json();})
-    .then(function(d){
-      if(!Array.isArray(d))return;
-      klineData=d.map(function(x){return{time:x[0]/1000,open:+x[1],high:+x[2],low:+x[3],close:+x[4]};});
-      if(candleSeries)candleSeries.setData(klineData);
-      setAllMAs();
-      if(window._wsK){try{window._wsK.close();}catch(e){}}
-      window._wsK=new WebSocket('wss://stream.binance.com:9443/ws/'+pair.toLowerCase()+'@kline_'+(TV_TF[tf]||'1h'));
-      window._wsK.onmessage=function(e){
-        var msg=JSON.parse(e.data);if(!msg.k)return;
-        var k=msg.k,c={time:k.t/1000,open:+k.o,high:+k.h,low:+k.l,close:+k.c};
-        if(candleSeries)candleSeries.update(c);
-        if(klineData.length&&klineData[klineData.length-1].time===c.time)klineData[klineData.length-1]=c;
-        else{klineData.push(c);if(klineData.length>500)klineData.shift();}
-        // Update MAs incrementally
-        for(var i=0;i<3;i++){
-          if(!maSeries[i]||!maOn[i])continue;
-          var p=parseInt(document.getElementById('ma'+(i+1)+'-n').value)||[5,10,30][i];
-          var tail=klineData.slice(-Math.max(p+5,60));
-          var md=calcMA(tail,p);if(md.length)maSeries[i].update(md[md.length-1]);
-        }
-      };
-    }).catch(function(){});
-}
-
-// ── MA CONTROLS ──
-function toggleMA(idx){
-  maOn[idx-1]=!maOn[idx-1];
-  document.getElementById('ma'+idx+'-pill').className='ma-pill'+(maOn[idx-1]?'':' off');
-  if(maSeries[idx-1]) maSeries[idx-1].setData(maOn[idx-1]?calcMA(klineData,parseInt(document.getElementById('ma'+idx+'-n').value)||[5,10,30][idx-1]):[]);
-}
-function rebuildMA(idx){
-  if(!maOn[idx-1]||!maSeries[idx-1])return;
-  var p=parseInt(document.getElementById('ma'+idx+'-n').value)||[5,10,30][idx-1];
-  maSeries[idx-1].setData(calcMA(klineData,p));
-}
-var maNextId=4;
-var maExtraColors=['#34d399','#fb923c','#f472b6'];
-function addMA(){
-  if(maNextId>6){alert('Maximum 6 MAs.');return;}
-  var id=maNextId++;
-  var color=maExtraColors[id-4]||'#ffffff';
-  var series=chart.addLineSeries({color:color,lineWidth:1,priceLineVisible:false,lastValueVisible:false,crossHairMarkerVisible:false});
-  series.setData(calcMA(klineData,20));
-  extraMAs[id]={series:series,on:true};
-  var tfbar=document.getElementById('tf-bar');
-  var addBtn=tfbar.querySelector('.tf-btn:last-child');
-  var div=document.createElement('div');
-  div.className='ma-pill';div.id='ma'+id+'-pill';
-  div.innerHTML='<span class="ma-dot" style="background:'+color+'"></span><span class="ma-lbl" onclick="toggleExtraMA('+id+')">MA</span><input class="ma-num" id="ma'+id+'-n" type="number" value="20" min="1" max="500" onchange="rebuildExtraMA('+id+')" onclick="event.stopPropagation()"/><span class="ma-x" onclick="removeExtraMA('+id+')">✕</span>';
-  tfbar.insertBefore(div,addBtn);
-}
-function toggleExtraMA(id){
-  var em=extraMAs[id];if(!em)return;
-  em.on=!em.on;
-  document.getElementById('ma'+id+'-pill').className='ma-pill'+(em.on?'':' off');
-  var p=parseInt((document.getElementById('ma'+id+'-n')||{value:20}).value)||20;
-  em.series.setData(em.on?calcMA(klineData,p):[]);
-}
-function rebuildExtraMA(id){
-  var em=extraMAs[id];if(!em||!em.on)return;
-  var p=parseInt((document.getElementById('ma'+id+'-n')||{value:20}).value)||20;
-  em.series.setData(calcMA(klineData,p));
-}
-function removeExtraMA(id){
-  var em=extraMAs[id];
-  if(em&&em.series&&chart){try{chart.removeSeries(em.series);}catch(e){}}
-  extraMAs[id]=null;
-  var el=document.getElementById('ma'+id+'-pill');if(el)el.remove();
-}
+// Stub functions for MA controls (TradingView handles MAs internally)
+function setAllMAs(){}
+function calcMA(){ return []; }
+function loadKlines(){} // TradingView loads its own data
 
 // ── WEBSOCKETS ──
 function connectPriceWS(){
@@ -899,7 +786,7 @@ function changePair(p){
 }
 function setTF(t,btn){
   tf=t;document.querySelectorAll('.tf-btn').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');
-  klineData=[];if(candleSeries)candleSeries.setData([]);loadKlines();
+  initChart(); // Reload TradingView with new timeframe
 }
 
 // ── MODAL ──
