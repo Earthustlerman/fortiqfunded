@@ -194,7 +194,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
       <div class="user-avatar" id="avatar-initials">?</div>
       <div class="user-info">
         <div class="user-name" id="sidebar-name">Loading...</div>
-        <div class="user-id" id="sidebar-uid">USR-000000</div>
+        <div class="user-id" id="sidebar-uid">—</div>
       </div>
     </div>
     <button class="logout-btn" onclick="doLogout()">Sign Out</button>
@@ -268,15 +268,21 @@ sb.auth.getSession().then(function(r){
 
 function loadData(user){
   sb.from('profiles').select('*').eq('id',user.id).single().then(function(pr){
-    if(pr.data){
-      profile=pr.data;
-      var name=profile.full_name||user.email;
-      document.getElementById('sidebar-name').textContent=name;
-      document.getElementById('sidebar-uid').textContent=profile.user_id||'USR-000000';
-      document.getElementById('avatar-initials').textContent=name.charAt(0).toUpperCase();
-      document.getElementById('welcome-msg').textContent='Welcome back, '+name.split(' ')[0]+'!';
+    if(pr.error||!pr.data){
+      document.getElementById('sidebar-name').textContent=user.email;
+      document.getElementById('sidebar-uid').textContent='—';
+      document.getElementById('avatar-initials').textContent='?';
+      renderAll(user);
+      return;
     }
-    sb.from('accounts').select('*').eq('user_id',user.id).order('created_at',{ascending:false}).limit(1).then(function(ar){
+    profile=pr.data;
+    var name=profile.full_name||user.email;
+    document.getElementById('sidebar-name').textContent=name;
+    document.getElementById('sidebar-uid').textContent=profile.user_id||'—';
+    document.getElementById('avatar-initials').textContent=name.charAt(0).toUpperCase();
+    document.getElementById('welcome-msg').textContent='Welcome back, '+name.split(' ')[0]+'!';
+
+    sb.from('accounts').select('*').eq('user_id',profile.user_id).order('created_at',{ascending:false}).limit(1).then(function(ar){
       if(ar.data&&ar.data.length>0){
         account=ar.data[0];
         document.getElementById('overview-status').textContent=sl(account.status);
@@ -394,7 +400,7 @@ function submitWallet(){
 function renderAffiliate(user){
   var el=document.getElementById('affiliate-section');
   if(!profile){el.innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';return;}
-  var uid=profile.user_id||'USR-000000';
+  var uid=profile.user_id||'—';
   var refCode=profile.referral_code||uid;
   var refLink='https://fortiqfunded.com/signup.html?ref='+refCode;
   sb.from('affiliates').select('*').eq('referrer_id',uid).then(function(r){
@@ -404,8 +410,6 @@ function renderAffiliate(user){
     var earned=approved.length*50;
     var pendingPayout=approved.filter(function(x){return !x.paid;});
 
-
-    // Use same wallet as trading payout - no separate input needed
     var walletSection='';
     if(pendingPayout.length>0){
       var affWallet=account?account.payout_wallet:'';
@@ -420,11 +424,10 @@ function renderAffiliate(user){
       } else {
         walletSection=
           '<div class="rules-notice" style="margin-bottom:1.5rem;">'+
-            '💰 You have <strong>$'+(pendingPayout.length*50)+' USDT</strong> in approved commissions! To receive payment, submit your TRC20 wallet in the <a href="#" onclick="showPage('payouts',document.querySelectorAll('.nav-item')[3]);return false;" style="color:var(--warning);">Payouts</a> section — we use the same wallet for affiliate commissions.'+
+            '💰 You have <strong>$'+(pendingPayout.length*50)+' USDT</strong> in approved commissions! To receive payment, submit your TRC20 wallet in the Payouts section — we use the same wallet for affiliate commissions.'+
           '</div>';
       }
     }
-
 
     el.innerHTML=
       '<div class="aff-stat-grid">'+
@@ -458,8 +461,6 @@ function renderAffiliate(user){
       '</div>';
   });
 }
-
-
 </script>
 </body>
 </html>
