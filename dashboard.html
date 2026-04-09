@@ -170,10 +170,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       Overview
     </a>
-    <a class="nav-item" href="#" onclick="showPage('challenge',this);return false;">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      My Challenge
-    </a>
     <a class="nav-item" href="#" onclick="showPage('billing',this);return false;">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
       Billing
@@ -218,11 +214,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
       <div class="metric-card"><div class="metric-label">Account Status</div><div class="metric-value purple" id="overview-status">—</div><div class="metric-sub" id="overview-acc-id">Waiting for challenge</div></div>
     </div>
     <div id="overview-account-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
-  </div>
-
-  <div class="page" id="page-challenge">
-    <div class="page-header"><h1>My Challenge</h1><p>Track your evaluation progress in real time</p></div>
-    <div id="challenge-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
   </div>
 
   <div class="page" id="page-billing">
@@ -309,7 +300,7 @@ function loadData(user){
   });
 }
 
-function renderAll(user){renderOverview();renderChallenge();renderBilling();renderPayouts();renderAffiliate(user);renderActiveChallenges();}
+function renderAll(user){renderOverview();renderBilling();renderPayouts();renderAffiliate(user);renderActiveChallenges();}
 
 function buildAccountCard(){
   if(!account)return '<div class="empty-state"><div class="empty-icon">🏆</div><h3>No Active Challenge</h3><p>You haven\'t purchased a challenge yet. Start your $150 one-phase evaluation.</p><a href="checkout.html" class="btn-primary">Start Challenge — $150</a></div>';
@@ -333,12 +324,11 @@ function buildAccountCard(){
       '<div class="rule-check-item"><div class="rci-icon '+(account.max_drawdown<8?'rci-ok':'rci-warn')+'">'+(account.max_drawdown<8?'✓':'!')+'</div><div class="rci-text"><strong>Max Drawdown</strong>'+ddp+'% of 8% used</div></div>'+
       '<div class="rule-check-item"><div class="rci-icon '+(account.active_days>=5?'rci-ok':'rci-warn')+'">'+(account.active_days>=5?'✓':'!')+'</div><div class="rci-text"><strong>Trading Days</strong>'+account.active_days+' of 5 required</div></div>'+
     '</div>'+
-    (account.status==='funded'?'<div style="margin-top:1.5rem;text-align:center;"><a href="#" onclick="showPage(\'payouts\',document.querySelectorAll(\'.nav-item\')[3]);return false;" class="btn-gold">💰 Claim Your Payout →</a></div>':'')+
+    (account.status==='funded'?'<div style="margin-top:1.5rem;text-align:center;"><a href="#" onclick="showPage(\'payouts\',document.querySelectorAll(\'.nav-item\')[2]);return false;" class="btn-gold">💰 Claim Your Payout →</a></div>':'')+
   '</div>';
 }
 
 function renderOverview(){document.getElementById('overview-account-section').innerHTML=buildAccountCard();}
-function renderChallenge(){document.getElementById('challenge-section').innerHTML=buildAccountCard();}
 
 function renderActiveChallenges(){
   var el=document.getElementById('active-challenges-section');
@@ -355,10 +345,9 @@ function renderActiveChallenges(){
     return;
   }
   if(account.status==='funded'){
-    el.innerHTML='<div class="challenge-terminal-card"><div class="challenge-terminal-row"><div class="challenge-terminal-info"><h3>Challenge Account</h3><div style="font-size:12px;color:var(--purple3);font-family:Cinzel,serif;margin-bottom:6px;">'+account.account_id+'</div><p>You passed this challenge! Claim your payout below, then purchase a new challenge to continue trading.</p></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.8rem;"><div class="status-badge funded"><div class="status-dot"></div>Funded 🎉</div><a href="#" onclick="showPage(\'payouts\',document.querySelectorAll(\'.nav-item\')[3]);return false;" class="btn-gold">💰 Claim Payout</a></div></div></div>';
+    el.innerHTML='<div class="challenge-terminal-card"><div class="challenge-terminal-row"><div class="challenge-terminal-info"><h3>Challenge Account</h3><div style="font-size:12px;color:var(--purple3);font-family:Cinzel,serif;margin-bottom:6px;">'+account.account_id+'</div><p>You passed this challenge! Claim your payout below, then purchase a new challenge to continue trading.</p></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.8rem;"><div class="status-badge funded"><div class="status-dot"></div>Funded 🎉</div><a href="#" onclick="showPage(\'payouts\',document.querySelectorAll(\'.nav-item\')[2]);return false;" class="btn-gold">💰 Claim Payout</a></div></div></div>';
     return;
   }
-  // Active account — show with Open Terminal button
   el.innerHTML='<div class="challenge-terminal-card">'+
     '<div class="challenge-terminal-row">'+
       '<div class="challenge-terminal-info">'+
