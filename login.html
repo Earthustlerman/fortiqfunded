@@ -162,6 +162,8 @@ var resendCount=0;
 var timerInterval=null;
 
 function showMsg(id,txt,type){var el=document.getElementById(id);el.textContent=txt;el.className='msg '+type;}
+function clearMsg(id){var el=document.getElementById(id);el.textContent='';el.className='msg';}
+
 function goTo(n){
   [1,2,3].forEach(function(i){
     document.getElementById('s'+i).className='screen'+(i===n?' active':'');
@@ -170,6 +172,7 @@ function goTo(n){
   });
 }
 
+// STEP 1
 function step1(){
   var email=document.getElementById('lemail').value.trim();
   var pwd=document.getElementById('lpwd').value;
@@ -185,18 +188,34 @@ function step1(){
       sb.auth.signOut();
       curEmail=email;
       document.getElementById('otpemail').textContent=email;
-      sendOTP(email);
-      goTo(2);
-      initSlider();
-      btn.disabled=false;btn.textContent='Continue';
+      sendOTP(email,function(err){
+        if(err){
+          showMsg('m1','Could not send verification code. Please try again shortly.','error');
+          btn.disabled=false;btn.textContent='Continue';
+        } else {
+          goTo(2);
+          initSlider();
+          btn.disabled=false;btn.textContent='Continue';
+        }
+      });
     }
   });
 }
 
-function sendOTP(email){
-  sb.auth.signInWithOtp({email:email,options:{shouldCreateUser:false}});
+// SEND OTP — now with callback to check for errors
+function sendOTP(email,callback){
+  sb.auth.signInWithOtp({email:email,options:{shouldCreateUser:false}}).then(function(r){
+    if(callback){
+      if(r.error){
+        callback(r.error);
+      } else {
+        callback(null);
+      }
+    }
+  });
 }
 
+// SLIDER
 function initSlider(){
   var track=document.getElementById('track');
   var handle=document.getElementById('handle');
@@ -232,6 +251,7 @@ function initSlider(){
   });
 }
 
+// OTP INPUTS
 for(var i=0;i<6;i++){
   (function(idx){
     document.getElementById('o'+idx).addEventListener('input',function(){
@@ -247,6 +267,7 @@ for(var i=0;i<6;i++){
 
 function getOTP(){return [0,1,2,3,4,5].map(function(i){return document.getElementById('o'+i).value;}).join('');}
 
+// STEP 3 - VERIFY OTP
 function step3(){
   var token=getOTP();
   if(token.length!==6){showMsg('m3','Please enter the full 6-digit code.','error');return;}
@@ -262,24 +283,37 @@ function step3(){
   });
 }
 
+// RESEND — now checks response before showing success
 function resend(){
   if(resendCount>=3){showMsg('m3','Maximum resend limit reached.','error');return;}
-  resendCount++;
-  document.getElementById('resendbtn').disabled=true;
-  sendOTP(curEmail);
-  showMsg('m3','New code sent to your email.','success');
-  var secs=60;
+  var resendbtn=document.getElementById('resendbtn');
   var td=document.getElementById('timerdiv');
-  td.textContent='Resend available in '+secs+'s';
-  timerInterval=setInterval(function(){
-    secs--;
-    td.textContent='Resend available in '+secs+'s';
-    if(secs<=0){
-      clearInterval(timerInterval);
-      td.textContent='';
-      if(resendCount<3)document.getElementById('resendbtn').disabled=false;
+  resendbtn.disabled=true;
+  resendbtn.textContent='Sending...';
+  clearMsg('m3');
+
+  sb.auth.signInWithOtp({email:curEmail,options:{shouldCreateUser:false}}).then(function(r){
+    if(r.error){
+      showMsg('m3','Could not send code: '+r.error.message+'. Please wait a moment and try again.','error');
+      resendbtn.disabled=false;
+      resendbtn.textContent='Resend code';
+    } else {
+      resendCount++;
+      resendbtn.textContent='Resend code';
+      showMsg('m3','New code sent to your email.','success');
+      var secs=60;
+      td.textContent='Resend available in '+secs+'s';
+      timerInterval=setInterval(function(){
+        secs--;
+        td.textContent='Resend available in '+secs+'s';
+        if(secs<=0){
+          clearInterval(timerInterval);
+          td.textContent='';
+          if(resendCount<3)resendbtn.disabled=false;
+        }
+      },1000);
     }
-  },1000);
+  });
 }
 </script>
 </body>
