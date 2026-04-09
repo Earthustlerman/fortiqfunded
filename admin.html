@@ -83,6 +83,10 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 .action-btn.pay:hover{background:rgba(201,168,76,0.2)}
 .action-btn.view{background:rgba(108,61,232,0.1);color:var(--purple3);border:1px solid rgba(108,61,232,0.3)}
 .action-btn.view:hover{background:rgba(108,61,232,0.2)}
+.action-btn.fail{background:rgba(240,61,61,0.1);color:var(--red);border:1px solid rgba(240,61,61,0.3)}
+.action-btn.fail:hover{background:rgba(240,61,61,0.2)}
+.action-btn.fund{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.3)}
+.action-btn.fund:hover{background:rgba(201,168,76,0.2)}
 .loading{text-align:center;padding:3rem;color:var(--muted);font-size:13px;}
 .spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--b2);border-top-color:var(--purple);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:0.5rem;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -100,11 +104,17 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 .modal-row:last-child{border-bottom:none}
 .modal-row .mk{color:var(--muted);}
 .modal-row .mv{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);}
-.modal-actions{display:flex;gap:0.8rem;margin-top:1.2rem;}
+.modal-actions{display:flex;gap:0.8rem;margin-top:1.2rem;flex-wrap:wrap;}
 .modal-close{background:none;border:1px solid var(--b2);color:var(--muted);padding:8px 16px;border-radius:7px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;transition:all 0.15s;}
 .modal-close:hover{color:var(--text)}
 .modal-pay-btn{background:linear-gradient(135deg,var(--gold),#e8c96a);color:#000;border:none;padding:8px 20px;border-radius:7px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;transition:opacity 0.2s;}
 .modal-pay-btn:hover{opacity:0.88}
+.modal-fail-btn{background:rgba(240,61,61,0.15);border:1px solid rgba(240,61,61,0.4);color:var(--red);padding:8px 20px;border-radius:7px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;transition:opacity 0.2s;}
+.modal-fail-btn:hover{opacity:0.88}
+.modal-fund-btn{background:linear-gradient(135deg,#00c97a,#00a86b);color:#000;border:none;padding:8px 20px;border-radius:7px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;transition:opacity 0.2s;}
+.modal-fund-btn:hover{opacity:0.88}
+.reason-input{width:100%;background:var(--surface2);border:1px solid var(--b2);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;outline:none;margin-top:1rem;transition:border-color 0.2s;}
+.reason-input:focus{border-color:var(--purple)}
 </style>
 </head>
 <body>
@@ -204,7 +214,7 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 
       <!-- ACCOUNTS -->
       <div class="admin-page" id="page-accounts">
-        <div class="page-hd"><h1>Challenge Accounts</h1><p>All challenge accounts and their status</p></div>
+        <div class="page-hd"><h1>Challenge Accounts</h1><p>All challenge accounts and their status — click an account to change its status</p></div>
         <div class="table-wrap">
           <div class="table-head"><h3>Accounts</h3><input class="table-search" placeholder="Search by account ID..." oninput="filterTable('accounts-tbl',this.value)"/></div>
           <div id="accounts-body"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
@@ -263,6 +273,16 @@ tr:hover td{background:rgba(108,61,232,0.03)}
   </div>
 </div>
 
+<!-- STATUS CHANGE MODAL -->
+<div class="modal-bg" id="status-modal">
+  <div class="modal-box">
+    <h3 id="status-modal-title">Change Account Status</h3>
+    <div id="status-modal-content"></div>
+    <input class="reason-input" id="status-reason" placeholder="Reason (optional — included in trader email)"/>
+    <div class="modal-actions" id="status-modal-actions"></div>
+  </div>
+</div>
+
 <div class="notif" id="notif"></div>
 
 <script>
@@ -272,8 +292,9 @@ var sb=window.supabase.createClient(
 );
 
 var currentPayoutId=null;
+var currentStatusAccount=null;
 
-// ── LOGIN — password verified on backend, never in HTML ──
+// ── LOGIN ──
 function doLogin(){
   var pwd=document.getElementById('admin-pwd').value;
   var btn=document.getElementById('login-btn');
@@ -281,7 +302,6 @@ function doLogin(){
   if(!pwd)return;
   btn.disabled=true;btn.textContent='Verifying...';
   err.style.display='none';
-
   fetch('https://fortiqfunded-backend.onrender.com/admin-login',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
@@ -344,25 +364,20 @@ function loadOverview(){
   });
   sb.from('accounts').select('status').then(function(r){
     var data=r.data||[];
-    var active=data.filter(function(a){return a.status==='active';}).length;
-    var funded=data.filter(function(a){return a.status==='funded';}).length;
-    var failed=data.filter(function(a){return a.status==='failed';}).length;
-    document.getElementById('ov-active').textContent=active;
-    document.getElementById('ov-funded').textContent=funded;
-    document.getElementById('ov-failed').textContent=failed;
+    document.getElementById('ov-active').textContent=data.filter(function(a){return a.status==='active';}).length;
+    document.getElementById('ov-funded').textContent=data.filter(function(a){return a.status==='funded';}).length;
+    document.getElementById('ov-failed').textContent=data.filter(function(a){return a.status==='failed';}).length;
   });
   sb.from('payments').select('amount').eq('status','confirmed').then(function(r){
     var total=(r.data||[]).reduce(function(s,p){return s+parseFloat(p.amount||0);},0);
     document.getElementById('ov-revenue').textContent='$'+total.toFixed(2);
   });
-  // Only count funded accounts where wallet has been submitted and not yet paid
   sb.from('accounts').select('*',{count:'exact',head:true}).eq('status','funded').eq('paid_out',false).not('payout_wallet','is',null).then(function(r){
     document.getElementById('ov-payouts').textContent=r.count||0;
   });
   sb.from('payments').select('*').order('created_at',{ascending:false}).limit(5).then(function(r){
     renderRecentPayments(r.data||[]);
   });
-  // Only show funded accounts where wallet has been submitted and not yet paid
   sb.from('accounts').select('*').eq('status','funded').eq('paid_out',false).not('payout_wallet','is',null).then(function(r){
     renderPendingPayouts(r.data||[]);
   });
@@ -428,7 +443,7 @@ function loadAccounts(){
     var data=r.data||[];
     var el=document.getElementById('accounts-body');
     if(!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">📊</div>No accounts yet</div>';return;}
-    var h='<table id="accounts-tbl"><thead><tr><th>Account ID</th><th>User ID</th><th>Status</th><th>Balance</th><th>Profit</th><th>Daily Loss</th><th>Max DD</th><th>Active Days</th><th>Paid Out</th></tr></thead><tbody>';
+    var h='<table id="accounts-tbl"><thead><tr><th>Account ID</th><th>User ID</th><th>Status</th><th>Balance</th><th>Profit</th><th>Daily Loss</th><th>Max DD</th><th>Active Days</th><th>Paid Out</th><th>Actions</th></tr></thead><tbody>';
     data.forEach(function(a){
       var statusBadge={to_be_active:'muted',active:'green',failed:'red',funded:'gold'}[a.status]||'muted';
       h+='<tr>';
@@ -441,9 +456,85 @@ function loadAccounts(){
       h+='<td class="td-mono">'+parseFloat(a.max_drawdown||0).toFixed(2)+'%</td>';
       h+='<td class="td-mono">'+(a.active_days||0)+' / 5</td>';
       h+='<td><span class="badge '+(a.paid_out?'green':'muted')+'">'+(a.paid_out?'Yes':'No')+'</span></td>';
+      h+='<td style="display:flex;gap:4px;flex-wrap:wrap;">';
+      if(a.status==='active'||a.status==='to_be_active'){
+        h+='<button class="action-btn fund" onclick="openStatusModal(\''+a.account_id+'\',\'funded\','+parseFloat(a.profit||0)+')">✓ Fund</button>';
+        h+='<button class="action-btn fail" onclick="openStatusModal(\''+a.account_id+'\',\'failed\','+parseFloat(a.profit||0)+')">✕ Fail</button>';
+      } else if(a.status==='funded'&&!a.paid_out){
+        h+='<button class="action-btn fail" onclick="openStatusModal(\''+a.account_id+'\',\'failed\','+parseFloat(a.profit||0)+')">✕ Fail</button>';
+      } else {
+        h+='<span style="color:var(--muted2);font-size:11px;">—</span>';
+      }
+      h+='</td>';
       h+='</tr>';
     });
     el.innerHTML=h+'</tbody></table>';
+  });
+}
+
+// ── STATUS MODAL ──
+function openStatusModal(accountId, newStatus, profit){
+  currentStatusAccount={id:accountId,status:newStatus,profit:profit};
+  var title=document.getElementById('status-modal-title');
+  var content=document.getElementById('status-modal-content');
+  var actions=document.getElementById('status-modal-actions');
+  document.getElementById('status-reason').value='';
+
+  if(newStatus==='failed'){
+    title.textContent='✕ Mark Account as Failed';
+    content.innerHTML=
+      '<div class="modal-row"><span class="mk">Account ID</span><span class="mv">'+accountId+'</span></div>'+
+      '<div class="modal-row"><span class="mk">New Status</span><span class="mv" style="color:var(--red)">Failed</span></div>'+
+      '<div style="background:rgba(240,61,61,0.06);border:1px solid rgba(240,61,61,0.2);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:var(--red);">⚠ This will mark the account as failed and send a notification email to the trader.</div>';
+    actions.innerHTML='<button class="modal-close" onclick="closeStatusModal()">Cancel</button><button class="modal-fail-btn" onclick="confirmStatusChange()">Confirm — Mark Failed</button>';
+  } else if(newStatus==='funded'){
+    var payout=(profit*0.8).toFixed(2);
+    title.textContent='✓ Mark Account as Funded';
+    content.innerHTML=
+      '<div class="modal-row"><span class="mk">Account ID</span><span class="mv">'+accountId+'</span></div>'+
+      '<div class="modal-row"><span class="mk">New Status</span><span class="mv" style="color:var(--gold)">Funded 🏆</span></div>'+
+      '<div class="modal-row"><span class="mk">Profit</span><span class="mv" style="color:var(--green)">$'+parseFloat(profit).toFixed(2)+' USDT</span></div>'+
+      '<div class="modal-row"><span class="mk">Trader Payout (80%)</span><span class="mv" style="color:var(--gold)">$'+payout+' USDT</span></div>'+
+      '<div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:var(--gold);">🏆 This will mark the account as funded and send a congratulations email to the trader with payout instructions.</div>';
+    actions.innerHTML='<button class="modal-close" onclick="closeStatusModal()">Cancel</button><button class="modal-fund-btn" onclick="confirmStatusChange()">Confirm — Mark Funded</button>';
+  }
+
+  document.getElementById('status-modal').classList.add('open');
+}
+
+function closeStatusModal(){
+  document.getElementById('status-modal').classList.remove('open');
+  currentStatusAccount=null;
+}
+
+function confirmStatusChange(){
+  if(!currentStatusAccount)return;
+  var reason=document.getElementById('status-reason').value.trim();
+  var accountId=currentStatusAccount.id;
+  var newStatus=currentStatusAccount.status;
+
+  // Update in Supabase
+  sb.from('accounts').update({status:newStatus}).eq('account_id',accountId).then(function(r){
+    if(r.error){showNotif('Error: '+r.error.message,'err');return;}
+
+    // Notify backend to send trader email
+    fetch('https://fortiqfunded-backend.onrender.com/notify-status',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({account_id:accountId,status:newStatus,reason:reason||''})
+    }).then(function(res){return res.json();}).then(function(data){
+      if(data.success){
+        showNotif('✓ Account marked as '+newStatus+' and trader notified!','ok');
+      } else {
+        showNotif('✓ Status updated but email failed.','err');
+      }
+    }).catch(function(){
+      showNotif('✓ Status updated but could not reach email server.','err');
+    });
+
+    closeStatusModal();
+    loadAccounts();
+    loadOverview();
   });
 }
 
@@ -470,7 +561,7 @@ function loadPayments(){
   });
 }
 
-// ── PAYOUTS — only show funded accounts with wallet submitted ──
+// ── PAYOUTS ──
 function loadPayouts(){
   sb.from('accounts').select('*').eq('status','funded').order('created_at',{ascending:false}).then(function(r){
     var data=r.data||[];
