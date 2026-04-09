@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard — Fortiq Funded</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#04060f;--bg2:#070b18;--surface:#0f1829;--surface2:#162038;
+  --purple:#6c3de8;--purple2:#8b5cf6;--purple3:#a78bfa;
+  --blue:#1e5fff;--blue2:#3d7fff;--cyan:#00d4ff;
+  --text:#f0eeff;--muted:#7a7a9a;--muted2:#555575;
+  --border:rgba(108,61,232,0.25);--border2:rgba(255,255,255,0.06);
+  --success:#00d68f;--gold:#c9a84c;--gold2:#e8c96a;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s)}
+@keyframes twinkle{0%,100%{opacity:var(--min,0.1)}50%{opacity:var(--max,0.7)}}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem;background:rgba(4,6,15,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border2);}
+.logo-mark{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.logo-wordmark{font-family:'Cinzel',serif;font-weight:700;font-size:18px;letter-spacing:1px;background:linear-gradient(135deg,#a78bfa,#6c3de8,#3d7fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-wordmark span{background:linear-gradient(135deg,#c9a84c,#e8c96a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-back{color:var(--muted);font-size:14px;text-decoration:none;transition:color 0.2s;}
+.nav-back:hover{color:var(--text)}
+.container{max-width:900px;margin:0 auto;padding:4rem 2rem;position:relative;z-index:1;}
+.page-header{text-align:center;margin-bottom:3rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:2.2rem;font-weight:900;margin-bottom:0.5rem;background:linear-gradient(135deg,#c9a84c,#e8c96a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.page-header p{color:var(--muted);font-size:15px;font-weight:300;line-height:1.7;}
+.coming-soon{text-align:center;padding:5rem 2rem;}
+.coming-soon-icon{font-size:4rem;margin-bottom:1.5rem;}
+.coming-soon h2{font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;margin-bottom:1rem;color:var(--purple3);}
+.coming-soon p{color:var(--muted);font-size:15px;font-weight:300;line-height:1.7;max-width:480px;margin:0 auto 2rem;}
+.btn-primary{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border:none;padding:13px 28px;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;box-shadow:0 0 20px rgba(108,61,232,0.3);}
+.btn-primary:hover{opacity:0.9;transform:translateY(-1px)}
+.top3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;margin-bottom:3rem;align-items:end;}
+.podium-card{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:1.8rem 1.2rem;text-align:center;position:relative;overflow:hidden;transition:transform 0.2s;}
+.podium-card:hover{transform:translateY(-4px)}
+.podium-card.first{border-color:var(--gold);background:linear-gradient(135deg,var(--surface),rgba(201,168,76,0.05));}
+.podium-card.second{border-color:rgba(192,192,192,0.3);background:linear-gradient(135deg,var(--surface),rgba(192,192,192,0.03));}
+.podium-card.third{border-color:rgba(205,127,50,0.3);background:linear-gradient(135deg,var(--surface),rgba(205,127,50,0.03));}
+.podium-rank{font-family:'Cinzel',serif;font-size:2rem;font-weight:900;margin-bottom:0.5rem;}
+.podium-rank.gold{background:linear-gradient(135deg,#c9a84c,#e8c96a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.podium-rank.silver{background:linear-gradient(135deg,#c0c0c0,#e8e8e8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.podium-rank.bronze{background:linear-gradient(135deg,#cd7f32,#e8a070);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.podium-name{font-size:16px;font-weight:600;margin-bottom:0.4rem;color:var(--text);}
+.podium-acc{font-size:11px;color:var(--purple3);font-family:'JetBrains Mono',monospace;margin-bottom:1rem;}
+.podium-profit{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;color:var(--success);margin-bottom:0.3rem;}
+.podium-pct{font-size:12px;color:var(--muted);margin-bottom:0.8rem;}
+.podium-days{display:inline-block;background:rgba(108,61,232,0.1);border:1px solid var(--border);color:var(--purple3);font-size:11px;padding:3px 10px;border-radius:100px;}
+.podium-badge{position:absolute;top:12px;right:12px;font-size:1.4rem;}
+.leaderboard-table{background:var(--surface);border:1px solid var(--border2);border-radius:16px;overflow:hidden;margin-bottom:2rem;}
+.lb-header{display:grid;grid-template-columns:60px 1fr 120px 100px 80px;padding:12px 1.5rem;background:var(--surface2);border-bottom:1px solid var(--border2);font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
+.lb-row{display:grid;grid-template-columns:60px 1fr 120px 100px 80px;padding:14px 1.5rem;border-bottom:1px solid var(--border2);align-items:center;transition:background 0.15s;}
+.lb-row:last-child{border-bottom:none}
+.lb-row:hover{background:rgba(108,61,232,0.04)}
+.lb-rank{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--muted);}
+.lb-rank.top{color:var(--gold);}
+.lb-trader{display:flex;flex-direction:column;gap:3px;}
+.lb-name{font-size:14px;font-weight:500;color:var(--text);}
+.lb-acc{font-size:10px;color:var(--purple3);font-family:'JetBrains Mono',monospace;}
+.lb-profit{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--success);}
+.lb-pct{font-size:12px;color:var(--muted);}
+.lb-days{font-size:12px;color:var(--muted);text-align:center;}
+.lb-status .badge{padding:3px 8px;border-radius:100px;font-size:10px;font-weight:600;}
+.badge-funded{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);}
+.badge-active{background:rgba(0,214,143,0.1);border:1px solid rgba(0,214,143,0.3);color:var(--success);}
+.stats-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:3rem;}
+.strip-stat{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:1.2rem;text-align:center;}
+.strip-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem;}
+.strip-value{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;color:var(--purple3);}
+.spinner-wrap{text-align:center;padding:4rem;color:var(--muted);}
+.spinner{display:inline-block;width:32px;height:32px;border:3px solid var(--border2);border-top-color:var(--purple);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:700px){
+  nav{padding:1rem 1.5rem}
+  .top3{grid-template-columns:1fr}
+  .lb-header,.lb-row{grid-template-columns:50px 1fr 100px 70px}
+  .lb-header>:last-child,.lb-row>:last-child{display:none}
+}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<nav>
+  <a href="index.html" class="logo-mark">
+    <svg width="28" height="28" viewBox="0 0 38 38" fill="none">
+      <defs>
+        <linearGradient id="lg1" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#a78bfa"/><stop offset="55%" stop-color="#6c3de8"/><stop offset="100%" stop-color="#3d7fff"/></linearGradient>
+        <linearGradient id="lg2" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#e8c96a"/></linearGradient>
+      </defs>
+      <rect x="4" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"/><rect x="15.5" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"/><rect x="27" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"/>
+      <rect x="4" y="14" width="30" height="7" fill="url(#lg1)" opacity="0.85"/>
+      <polygon points="19,22 27,28 19,38 11,28" fill="url(#lg2)" opacity="0.95"/>
+    </svg>
+    <span class="logo-wordmark">Fortiq <span>Funded</span></span>
+  </a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <h1>🏆 Leaderboard</h1>
+    <p>Our top performing funded traders — ranked by profit earned.</p>
+  </div>
+
+  <div id="lb-content">
+    <div class="spinner-wrap"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var c=document.getElementById('stars');
+  for(var i=0;i<80;i++){
+    var s=document.createElement('div');s.className='star';
+    var sz=Math.random()*2+0.5;
+    s.style.cssText='width:'+sz+'px;height:'+sz+'px;top:'+Math.random()*100+'%;left:'+Math.random()*100+'%;--d:'+(2+Math.random()*4)+'s;--delay:-'+(Math.random()*5)+'s;--min:'+(0.05+Math.random()*0.1)+';--max:'+(0.4+Math.random()*0.6);
+    c.appendChild(s);
+  }
+})();
+
+function medal(rank){
+  if(rank===1)return'🥇';
+  if(rank===2)return'🥈';
+  if(rank===3)return'🥉';
+  return rank;
+}
+
+function rankClass(rank){
+  if(rank===1)return'gold';
+  if(rank===2)return'silver';
+  if(rank===3)return'bronze';
+  return'';
+}
+
+function podiumClass(rank){
+  if(rank===1)return'first';
+  if(rank===2)return'second';
+  if(rank===3)return'third';
+  return'';
+}
+
+fetch('https://fortiqfunded-backend.onrender.com/leaderboard')
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var lb=data.leaderboard||[];
+    var el=document.getElementById('lb-content');
+
+    if(!lb.length){
+      el.innerHTML=
+        '<div class="coming-soon">'+
+          '<div class="coming-soon-icon">🏆</div>'+
+          '<h2>Coming Soon</h2>'+
+          '<p>The leaderboard will go live once our first trader passes the challenge and receives their payout. Could it be you?</p>'+
+          '<a href="signup.html" class="btn-primary">Start the Challenge — $150</a>'+
+        '</div>';
+      return;
+    }
+
+    // Stats strip
+    var totalProfit=lb.reduce(function(s,t){return s+parseFloat(t.profit);},0);
+    var avgProfit=(totalProfit/lb.length).toFixed(2);
+    var topProfit=parseFloat(lb[0].profit).toFixed(2);
+    var statsHtml=
+      '<div class="stats-strip">'+
+        '<div class="strip-stat"><div class="strip-label">Traders on Board</div><div class="strip-value">'+lb.length+'</div></div>'+
+        '<div class="strip-stat"><div class="strip-label">Top Profit</div><div class="strip-value">$'+topProfit+'</div></div>'+
+        '<div class="strip-stat"><div class="strip-label">Avg Profit</div><div class="strip-value">$'+avgProfit+'</div></div>'+
+        '<div class="strip-stat"><div class="strip-label">Total Earned</div><div class="strip-value">$'+totalProfit.toFixed(2)+'</div></div>'+
+      '</div>';
+
+    // Top 3 podium
+    var top3=lb.slice(0,3);
+    // Reorder for display: 2nd, 1st, 3rd
+    var podiumOrder=[top3[1],top3[0],top3[2]].filter(Boolean);
+    var podiumHtml='<div class="top3">';
+    podiumOrder.forEach(function(t){
+      var rc=rankClass(t.rank);
+      var pc=podiumClass(t.rank);
+      podiumHtml+=
+        '<div class="podium-card '+pc+'">'+
+          '<div class="podium-badge">'+medal(t.rank)+'</div>'+
+          '<div class="podium-rank '+rc+'">#'+t.rank+'</div>'+
+          '<div class="podium-name">'+t.name+'</div>'+
+          '<div class="podium-acc">'+t.account_id+'</div>'+
+          '<div class="podium-profit">$'+parseFloat(t.profit).toFixed(2)+'</div>'+
+          '<div class="podium-pct">'+t.profit_pct+'% profit</div>'+
+          '<div class="podium-days">'+t.active_days+' active days</div>'+
+        '</div>';
+    });
+    podiumHtml+='</div>';
+
+    // Full table (rank 4+)
+    var rest=lb.slice(3);
+    var tableHtml='';
+    if(rest.length){
+      tableHtml=
+        '<div class="leaderboard-table">'+
+          '<div class="lb-header"><div>Rank</div><div>Trader</div><div>Profit</div><div>% Gain</div><div>Days</div></div>';
+      rest.forEach(function(t){
+        tableHtml+=
+          '<div class="lb-row">'+
+            '<div class="lb-rank '+(t.rank<=10?'top':'')+'">'+medal(t.rank)+'</div>'+
+            '<div class="lb-trader"><div class="lb-name">'+t.name+'</div><div class="lb-acc">'+t.account_id+'</div></div>'+
+            '<div class="lb-profit">$'+parseFloat(t.profit).toFixed(2)+'</div>'+
+            '<div class="lb-pct">'+t.profit_pct+'%</div>'+
+            '<div class="lb-days">'+t.active_days+'d</div>'+
+          '</div>';
+      });
+      tableHtml+='</div>';
+    }
+
+    var ctaHtml=
+      '<div style="text-align:center;margin-top:2rem;">'+
+        '<p style="color:var(--muted);font-size:14px;font-weight:300;margin-bottom:1.2rem;">Think you can make the leaderboard? Start your challenge today.</p>'+
+        '<a href="signup.html" class="btn-primary">Start the Challenge — $150</a>'+
+      '</div>';
+
+    el.innerHTML=statsHtml+podiumHtml+tableHtml+ctaHtml;
+  })
+  .catch(function(){
+    document.getElementById('lb-content').innerHTML=
+      '<div class="coming-soon">'+
+        '<div class="coming-soon-icon">🏆</div>'+
+        '<h2>Coming Soon</h2>'+
+        '<p>The leaderboard will go live once our first trader passes the challenge and receives their payout. Could it be you?</p>'+
+        '<a href="signup.html" class="btn-primary">Start the Challenge — $150</a>'+
+      '</div>';
+  });
+</script>
+</body>
+</html>
