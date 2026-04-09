@@ -83,15 +83,15 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="ref-badge" id="ref-badge">🔗 Referred by a friend — referral code applied!</div>
     <div class="field">
       <label>Full Name</label>
-      <input type="text" id="fullname" placeholder="Your full name"/>
+      <input type="text" id="fullname" placeholder="Your full name" onkeydown="if(event.key==='Enter')doSignup()"/>
     </div>
     <div class="field">
       <label>Email Address</label>
-      <input type="email" id="email" placeholder="you@example.com"/>
+      <input type="email" id="email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doSignup()"/>
     </div>
     <div class="field">
       <label>Password</label>
-      <input type="password" id="password" placeholder="Create a strong password" oninput="checkPwd(this.value)"/>
+      <input type="password" id="password" placeholder="Create a strong password" oninput="checkPwd(this.value)" onkeydown="if(event.key==='Enter')doSignup()"/>
       <div class="strength-bar">
         <div class="strength-seg" id="s1"></div>
         <div class="strength-seg" id="s2"></div>
@@ -108,12 +108,12 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
     <div class="field">
       <label>Confirm Password</label>
-      <input type="password" id="confirm" placeholder="Repeat your password"/>
+      <input type="password" id="confirm" placeholder="Repeat your password" onkeydown="if(event.key==='Enter')doSignup()"/>
     </div>
     <span class="referral-toggle" onclick="document.getElementById('reffield').style.display=document.getElementById('reffield').style.display==='none'?'block':'none'">Have a referral code?</span>
     <div class="field" id="reffield" style="display:none">
       <label>Referral Code (optional)</label>
-      <input type="text" id="referral" placeholder="Enter referral code"/>
+      <input type="text" id="referral" placeholder="Enter referral code" onkeydown="if(event.key==='Enter')doSignup()"/>
     </div>
     <div class="terms-wrap">
       <input type="checkbox" id="terms"/>
@@ -143,7 +143,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
   }
 })();
 
-// Auto-fill referral code from URL ?ref= parameter
 (function(){
   var params=new URLSearchParams(window.location.search);
   var refCode=params.get('ref');
@@ -214,7 +213,6 @@ function doSignup(){
       btn.disabled=false;btn.textContent='Create Account';
     } else {
       var newUserId=res.data.user?res.data.user.id:null;
-      // Track referral if a referral code was provided
       if(ref&&newUserId){
         setTimeout(function(){
           sb.from('profiles').select('user_id').eq('id',newUserId).single().then(function(pr){
