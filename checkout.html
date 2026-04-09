@@ -14,46 +14,32 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 #stars{position:fixed;inset:0;z-index:0;pointer-events:none}
 .star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s)}
 @keyframes twinkle{0%,100%{opacity:var(--min,0.1)}50%{opacity:var(--max,0.7)}}
-
 nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem;background:rgba(4,6,15,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border2);}
 .logo-mark{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
 .logo-wordmark{font-family:'Cinzel',serif;font-weight:700;font-size:18px;letter-spacing:1px;background:linear-gradient(135deg,#a78bfa,#6c3de8,#3d7fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .logo-wordmark span{background:linear-gradient(135deg,#c9a84c,#e8c96a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-
 .container{max-width:900px;margin:0 auto;padding:3rem 2rem;position:relative;z-index:1;}
 .page-title{font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;margin-bottom:0.5rem;}
 .page-sub{color:var(--muted);font-size:15px;font-weight:300;margin-bottom:3rem;}
-
 .checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
-
-/* LEFT - PAYMENT CARD */
 .payment-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;overflow:hidden;}
 .payment-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(108,61,232,0.08),transparent 60%);pointer-events:none;}
 .payment-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:1.5rem;}
 .price-display{font-family:'Cinzel',serif;font-size:2.8rem;font-weight:900;background:linear-gradient(135deg,#a78bfa,#3d7fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.3rem;}
 .price-sub{color:var(--muted);font-size:13px;font-weight:300;margin-bottom:2rem;}
-
-/* QR CODE */
 .qr-wrap{display:flex;justify-content:center;margin-bottom:1.5rem;}
 .qr-box{background:#fff;padding:12px;border-radius:12px;display:inline-block;}
-
-/* WALLET ADDRESS */
 .wallet-label{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;}
 .wallet-box{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:1.5rem;}
 .wallet-addr{font-family:'Courier New',monospace;font-size:11px;color:var(--purple3);flex:1;word-break:break-all;}
 .copy-btn{background:rgba(108,61,232,0.15);border:1px solid var(--border);color:var(--purple3);padding:6px 14px;border-radius:7px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0;}
 .copy-btn:hover{background:rgba(108,61,232,0.3)}
-
 .network-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,214,143,0.08);border:1px solid rgba(0,214,143,0.2);color:var(--success);font-size:12px;font-weight:600;padding:5px 12px;border-radius:100px;margin-bottom:1.5rem;}
 .net-dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.4)}}
-
-/* WARNING */
 .warning-box{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:1rem;margin-bottom:1.5rem;}
 .warning-box p{font-size:12px;color:var(--warning);font-weight:300;line-height:1.7;}
 .warning-box strong{font-weight:600;}
-
-/* RIGHT - STEPS + TX FORM */
 .steps-card{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:2rem;}
 .steps-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;margin-bottom:1.5rem;}
 .step-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border2);}
@@ -61,8 +47,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .step-num{width:28px;height:28px;border-radius:50%;background:rgba(108,61,232,0.15);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:12px;font-weight:700;color:var(--purple3);flex-shrink:0;}
 .step-text{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6;}
 .step-text strong{color:var(--text);font-weight:500;display:block;margin-bottom:2px;}
-
-/* TX SUBMIT */
 .tx-section{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border2);}
 .tx-label{font-size:13px;font-weight:500;color:var(--muted);margin-bottom:6px;}
 .tx-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'Courier New',monospace;font-size:12px;outline:none;transition:border-color 0.2s;margin-bottom:10px;}
@@ -75,21 +59,19 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .msg.error{background:rgba(255,77,77,0.1);border:1px solid rgba(255,77,77,0.3);color:#ff6b6b;display:block}
 .msg.success{background:rgba(0,214,143,0.1);border:1px solid rgba(0,214,143,0.3);color:#00d68f;display:block}
 .msg.info{background:rgba(108,61,232,0.1);border:1px solid rgba(108,61,232,0.3);color:var(--purple3);display:block}
-
-/* SUMMARY */
 .summary-box{background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:1rem 1.2rem;margin-top:1.5rem;}
 .summary-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;}
 .summary-row:not(:last-child){border-bottom:1px solid var(--border2);}
 .summary-label{color:var(--muted);font-weight:300;}
 .summary-val{color:var(--text);font-weight:600;font-family:'Cinzel',serif;font-size:12px;}
 .summary-val.green{color:var(--success)}
-
-/* SUCCESS STATE */
 .success-state{display:none;text-align:center;padding:2rem 0;}
 .success-icon{width:80px;height:80px;border-radius:50%;background:rgba(0,214,143,0.1);border:2px solid rgba(0,214,143,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:36px;}
 .success-state h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;margin-bottom:0.8rem;}
 .success-state p{color:var(--muted);font-size:14px;font-weight:300;line-height:1.7;margin-bottom:1.5rem;}
-
+.blocked-state{display:none;text-align:center;padding:4rem 2rem;background:var(--surface);border:1px solid var(--border2);border-radius:20px;max-width:500px;margin:0 auto;}
+.blocked-state h2{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;margin-bottom:0.8rem;}
+.blocked-state p{color:var(--muted);font-size:14px;font-weight:300;line-height:1.7;margin-bottom:1.5rem;}
 @media(max-width:700px){.checkout-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -116,34 +98,36 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
   <h1 class="page-title">Start Your Challenge</h1>
   <p class="page-sub">Send $150 USDT on TRC20 to activate your one-phase evaluation account.</p>
 
-  <div id="main-content">
-    <div class="checkout-grid">
+  <!-- BLOCKED STATE — already has active challenge -->
+  <div class="blocked-state" id="blocked-state">
+    <div style="font-size:3rem;margin-bottom:1rem;">⚠️</div>
+    <h2>You Already Have an Active Challenge</h2>
+    <p>You currently have a challenge account that is active or pending activation. You can only have one challenge at a time. Complete or fail your current challenge before purchasing a new one.</p>
+    <a href="dashboard.html" style="display:inline-block;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;text-decoration:none;padding:14px 32px;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;">Go to Dashboard</a>
+  </div>
 
+  <div id="main-content" style="display:none;">
+    <div class="checkout-grid">
       <!-- LEFT: PAYMENT -->
       <div class="payment-card">
         <div class="payment-badge">One-Phase Challenge</div>
         <div class="price-display">$150</div>
         <div class="price-sub">USDT · TRC20 Network Only · Non-refundable</div>
-
         <div class="qr-wrap">
           <div class="qr-box" id="qrcode"></div>
         </div>
-
         <div class="wallet-label">Send USDT (TRC20) to this address</div>
         <div class="wallet-box">
           <span class="wallet-addr" id="wallet-display">TUGcqK3s5EsXme3nMUVXH9LbmuyLf4c99d</span>
           <button class="copy-btn" onclick="copyWallet()">Copy</button>
         </div>
-
         <div class="network-badge">
           <div class="net-dot"></div>
           TRC20 Network Only
         </div>
-
         <div class="warning-box">
           <p><strong>⚠ Important:</strong> Send on <strong>TRC20 only</strong>. Do not send on ERC20, BEP20, or any other network — funds sent on the wrong network will be permanently lost. Transactions are irreversible. Minimum $148 USDT required to activate.</p>
         </div>
-
         <div class="summary-box">
           <div class="summary-row"><span class="summary-label">Challenge Type</span><span class="summary-val">One-Phase Evaluation</span></div>
           <div class="summary-row"><span class="summary-label">Funded Account Size</span><span class="summary-val">$5,000 USDT</span></div>
@@ -156,7 +140,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
       <!-- RIGHT: STEPS + TX -->
       <div class="steps-card">
         <div class="steps-title">How to Complete Payment</div>
-
         <div class="step-item">
           <div class="step-num">1</div>
           <div class="step-text"><strong>Copy the wallet address</strong>Copy the TRC20 wallet address shown on the left.</div>
@@ -173,19 +156,16 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
           <div class="step-num">4</div>
           <div class="step-text"><strong>Submit below</strong>Paste your transaction hash below. We'll verify it on the blockchain and activate your challenge automatically after 19 confirmations.</div>
         </div>
-
         <div class="tx-section">
           <div class="tx-label">Transaction Hash (TX ID)</div>
-          <input class="tx-input" type="text" id="txhash" placeholder="Paste your TRC20 transaction hash here..."/>
+          <input class="tx-input" type="text" id="txhash" placeholder="Paste your TRC20 transaction hash here..." onkeydown="if(event.key==='Enter')submitTx()"/>
           <div class="msg" id="txmsg"></div>
           <button class="btn-submit" id="submit-btn" onclick="submitTx()">Submit Payment</button>
-
           <div style="margin-top:1rem;text-align:center">
             <p style="color:var(--muted2);font-size:12px;font-weight:300;">Your challenge activates automatically after 19 blockchain confirmations. This usually takes 5–10 minutes.</p>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -199,7 +179,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 </div>
 
 <script>
-// Stars
 (function(){
   var c=document.getElementById('stars');
   for(var i=0;i<80;i++){
@@ -210,7 +189,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
   }
 })();
 
-// Supabase
 var sb=window.supabase.createClient(
   'https://qhfsvazxpnjwfxhamkea.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo'
@@ -218,21 +196,50 @@ var sb=window.supabase.createClient(
 
 var WALLET='TUGcqK3s5EsXme3nMUVXH9LbmuyLf4c99d';
 var userId=null;
+var userProfileId=null;
 
-// Auth check
+// Auth check + existing challenge check
 sb.auth.getSession().then(function(r){
   if(!r.data.session){window.location.href='login.html';return;}
   userId=r.data.session.user.id;
+
+  // Get profile to get user_id
+  sb.from('profiles').select('user_id').eq('id',userId).single().then(function(pr){
+    if(pr.error||!pr.data){showMain();return;}
+    userProfileId=pr.data.user_id;
+
+    // Check for existing active/pending challenge
+    sb.from('accounts').select('status').eq('user_id',userProfileId).order('created_at',{ascending:false}).limit(1).then(function(ar){
+      if(ar.data&&ar.data.length>0){
+        var status=ar.data[0].status;
+        if(status==='to_be_active'||status==='active'){
+          // Block access — already has active challenge
+          document.getElementById('blocked-state').style.display='block';
+          document.getElementById('main-content').style.display='none';
+          document.querySelector('.page-title').style.display='none';
+          document.querySelector('.page-sub').style.display='none';
+        } else {
+          // Failed or funded — allow new challenge
+          showMain();
+        }
+      } else {
+        // No account yet — allow purchase
+        showMain();
+      }
+    });
+  });
 });
 
-// QR Code
-new QRCode(document.getElementById('qrcode'),{
-  text:WALLET,width:160,height:160,
-  colorDark:'#000000',colorLight:'#ffffff',
-  correctLevel:QRCode.CorrectLevel.M
-});
+function showMain(){
+  document.getElementById('main-content').style.display='block';
+  // Generate QR code
+  new QRCode(document.getElementById('qrcode'),{
+    text:WALLET,width:160,height:160,
+    colorDark:'#000000',colorLight:'#ffffff',
+    correctLevel:QRCode.CorrectLevel.M
+  });
+}
 
-// Copy wallet
 function copyWallet(){
   navigator.clipboard.writeText(WALLET).then(function(){
     var btn=document.querySelector('.copy-btn');
@@ -247,13 +254,11 @@ function copyWallet(){
   });
 }
 
-// Show message
 function showMsg(txt,type){
   var el=document.getElementById('txmsg');
   el.textContent=txt;el.className='msg '+type;
 }
 
-// Submit TX
 function submitTx(){
   var tx=document.getElementById('txhash').value.trim();
   if(!tx){showMsg('Please paste your transaction hash.','error');return;}
@@ -264,25 +269,41 @@ function submitTx(){
   btn.disabled=true;btn.textContent='Verifying...';
   showMsg('Checking your transaction on the blockchain...','info');
 
-  // Save payment record to Supabase
-  sb.from('payments').insert({
-    user_id:userId,
-    tx_hash:tx,
-    amount:150,
-    status:'pending',
-    confirmations:0
-  }).then(function(r){
-    if(r.error){
-      showMsg('Error saving payment. Please try again.','error');
+  // Check for duplicate TX hash
+  sb.from('payments').select('id').eq('tx_hash',tx).then(function(dup){
+    if(dup.data&&dup.data.length>0){
+      showMsg('This transaction hash has already been submitted.','error');
       btn.disabled=false;btn.textContent='Submit Payment';
       return;
     }
-    // Verify on TronGrid
-    verifyOnChain(tx,userId);
+
+    // Check for existing pending payment
+    sb.from('payments').select('id').eq('user_id',userId).eq('status','pending').then(function(pending){
+      if(pending.data&&pending.data.length>0){
+        showMsg('You already have a pending payment being processed. Please wait for it to confirm.','error');
+        btn.disabled=false;btn.textContent='Submit Payment';
+        return;
+      }
+
+      // Save payment record to Supabase
+      sb.from('payments').insert({
+        user_id:userId,
+        tx_hash:tx,
+        amount:150,
+        status:'pending',
+        confirmations:0
+      }).then(function(r){
+        if(r.error){
+          showMsg('Error saving payment. Please try again.','error');
+          btn.disabled=false;btn.textContent='Submit Payment';
+          return;
+        }
+        verifyOnChain(tx,userId);
+      });
+    });
   });
 }
 
-// Verify on TronGrid blockchain
 function verifyOnChain(txHash,uid){
   fetch('https://api.trongrid.io/v1/transactions/'+txHash)
   .then(function(r){return r.json();})
@@ -297,7 +318,6 @@ function verifyOnChain(txHash,uid){
     var confirmations=tx.confirmations||0;
     var amount=0;
 
-    // Get USDT amount from TRC20 transfer
     if(tx.trc20_transfers&&tx.trc20_transfers.length>0){
       var transfer=tx.trc20_transfers[0];
       amount=parseInt(transfer.amount_str||'0')/1000000;
@@ -310,7 +330,6 @@ function verifyOnChain(txHash,uid){
       return;
     }
 
-    // Update payment record
     sb.from('payments').update({
       amount:amount,
       confirmations:confirmations,
@@ -318,7 +337,6 @@ function verifyOnChain(txHash,uid){
     }).eq('tx_hash',txHash).then(function(){});
 
     if(confirmations>=19){
-      // Activate challenge
       activateChallenge(uid,amount);
     } else {
       showMsg('Transaction found! '+confirmations+'/19 confirmations. Your challenge will activate automatically once confirmed. Check your dashboard shortly.','info');
@@ -333,16 +351,14 @@ function verifyOnChain(txHash,uid){
   });
 }
 
-// Activate the challenge account
 function activateChallenge(uid,amount){
-  // Get user profile to generate account ID
   sb.from('profiles').select('user_id').eq('id',uid).single().then(function(r){
     if(r.error||!r.data)return;
     var userNum=r.data.user_id.replace('USR-','');
     var accId='ACC-'+userNum;
 
     sb.from('accounts').insert({
-      user_id:uid,
+      user_id:r.data.user_id,
       account_id:accId,
       account_type:'challenge',
       status:'to_be_active',
@@ -352,13 +368,10 @@ function activateChallenge(uid,amount){
       max_drawdown:0,
       active_days:0
     }).then(function(ar){
-      if(ar.error&&ar.error.code!=='23505'){
-        // 23505 = duplicate, already exists
+      if(ar.error){
         console.log('Account error:',ar.error);
       }
-      // Update payment status
       sb.from('payments').update({status:'confirmed',account_id:accId}).eq('user_id',uid).then(function(){});
-      // Show success
       document.getElementById('success-state').style.display='block';
       document.getElementById('main-content').style.display='none';
     });
