@@ -252,6 +252,7 @@ function showPage(name,el){
   if(name==='payouts')renderPayouts();
   if(name==='affiliate')renderAffiliate(currentUser);
   if(name==='active-challenge')renderActiveChallenge();
+  if(name==='billing')renderBilling();
   return false;
 }
 
@@ -373,8 +374,22 @@ function renderActiveChallenge(){
 
 function renderBilling(){
   var el=document.getElementById('billing-section');
-  if(!account){el.innerHTML='<div class="empty-state"><div class="empty-icon">💳</div><h3>No Payments Yet</h3><p>Your payment history will appear here after you purchase a challenge.</p><a href="checkout.html" class="btn-primary">Buy Challenge — $150</a></div>';return;}
-  el.innerHTML='<div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody><tr><td>'+new Date(account.created_at).toLocaleDateString()+'</td><td class="highlight">One-Phase Challenge — '+account.account_id+'</td><td class="highlight">$150.00 USDT</td><td><span class="pill pill-green">Confirmed</span></td></tr></tbody></table></div>';
+  if(!account){
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">💳</div><h3>No Payments Yet</h3><p>Your payment history will appear here after you purchase a challenge.</p><a href="checkout.html" class="btn-primary">Buy Challenge — $150</a></div>';
+    return;
+  }
+  el.innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';
+  sb.from('payments').select('*').eq('account_id',account.account_id).order('created_at',{ascending:false}).then(function(r){
+    var payments=r.data||[];
+    if(!payments.length){
+      el.innerHTML='<div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody><tr><td>'+new Date(account.created_at).toLocaleDateString()+'</td><td class="highlight">One-Phase Challenge — '+account.account_id+'</td><td class="highlight">$150.00 USDT</td><td><span class="pill pill-green">Confirmed</span></td></tr></tbody></table></div>';
+      return;
+    }
+    var rows=payments.map(function(p){
+      return '<tr><td>'+new Date(p.created_at).toLocaleDateString()+'</td><td class="highlight">One-Phase Challenge — '+account.account_id+'</td><td class="highlight">$'+parseFloat(p.amount).toFixed(2)+' USDT</td><td><span class="pill pill-green">Confirmed</span></td></tr>';
+    }).join('');
+    el.innerHTML='<div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  });
 }
 
 function renderPayouts(){
