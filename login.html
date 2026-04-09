@@ -100,7 +100,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="msg" id="m1"></div>
     <div class="field"><label>Email Address</label><input type="email" id="lemail" placeholder="you@example.com"/></div>
     <div class="field"><label>Password</label><input type="password" id="lpwd" placeholder="Your password"/></div>
-    <div style="text-align:right;margin-bottom:1.2rem"><a href="#" style="font-size:12px;color:var(--purple3);text-decoration:none">Forgot password?</a></div>
+    <div style="text-align:right;margin-bottom:1.2rem"><a href="forgot-password.html" style="font-size:12px;color:var(--purple3);text-decoration:none">Forgot password?</a></div>
     <button class="btn" id="btn1" onclick="step1()">Continue</button>
     <div class="divider"><span>don't have an account?</span></div>
     <div class="signup-link"><a href="signup.html">Create a free account →</a></div>
@@ -146,7 +146,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 </div>
 
 <script>
-// Stars
 (function(){
   var c=document.getElementById('stars');
   for(var i=0;i<80;i++){
@@ -173,7 +172,6 @@ function goTo(n){
   });
 }
 
-// STEP 1
 function step1(){
   var email=document.getElementById('lemail').value.trim();
   var pwd=document.getElementById('lpwd').value;
@@ -197,12 +195,10 @@ function step1(){
   });
 }
 
-// SEND OTP
 function sendOTP(email){
   sb.auth.signInWithOtp({email:email,options:{shouldCreateUser:false}});
 }
 
-// SLIDER
 function initSlider(){
   var track=document.getElementById('track');
   var handle=document.getElementById('handle');
@@ -238,7 +234,6 @@ function initSlider(){
   });
 }
 
-// OTP INPUTS
 for(var i=0;i<6;i++){
   (function(idx){
     document.getElementById('o'+idx).addEventListener('input',function(){
@@ -254,7 +249,6 @@ for(var i=0;i<6;i++){
 
 function getOTP(){return [0,1,2,3,4,5].map(function(i){return document.getElementById('o'+i).value;}).join('');}
 
-// STEP 3 - VERIFY OTP
 function step3(){
   var token=getOTP();
   if(token.length!==6){showMsg('m3','Please enter the full 6-digit code.','error');return;}
@@ -270,7 +264,6 @@ function step3(){
   });
 }
 
-// RESEND
 function resend(){
   if(resendCount>=3){showMsg('m3','Maximum resend limit reached.','error');return;}
   resendCount++;
