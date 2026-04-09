@@ -183,9 +183,9 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
       Affiliates
     </a>
-    <a class="nav-item" href="#" onclick="showPage('active-challenges',this);return false;">
+    <a class="nav-item" href="#" onclick="showPage('active-challenge',this);return false;">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Active Challenges
+      Active Challenge
     </a>
     <a class="nav-item" href="checkout.html">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
@@ -231,9 +231,9 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     <div id="affiliate-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
   </div>
 
-  <div class="page" id="page-active-challenges">
-    <div class="page-header"><h1>Active Challenges</h1><p>Your current challenge accounts</p></div>
-    <div id="active-challenges-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
+  <div class="page" id="page-active-challenge">
+    <div class="page-header"><h1>Active Challenge</h1><p>Your current challenge account</p></div>
+    <div id="active-challenge-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
   </div>
 </main>
 
@@ -251,7 +251,7 @@ function showPage(name,el){
   if(el)el.classList.add('active');
   if(name==='payouts')renderPayouts();
   if(name==='affiliate')renderAffiliate(currentUser);
-  if(name==='active-challenges')renderActiveChallenges();
+  if(name==='active-challenge')renderActiveChallenge();
   return false;
 }
 
@@ -300,7 +300,7 @@ function loadData(user){
   });
 }
 
-function renderAll(user){renderOverview();renderBilling();renderPayouts();renderAffiliate(user);renderActiveChallenges();}
+function renderAll(user){renderOverview();renderBilling();renderPayouts();renderAffiliate(user);renderActiveChallenge();}
 
 function buildAccountCard(){
   if(!account)return '<div class="empty-state"><div class="empty-icon">🏆</div><h3>No Active Challenge</h3><p>You haven\'t purchased a challenge yet. Start your $150 one-phase evaluation.</p><a href="checkout.html" class="btn-primary">Start Challenge — $150</a></div>';
@@ -330,10 +330,10 @@ function buildAccountCard(){
 
 function renderOverview(){document.getElementById('overview-account-section').innerHTML=buildAccountCard();}
 
-function renderActiveChallenges(){
-  var el=document.getElementById('active-challenges-section');
+function renderActiveChallenge(){
+  var el=document.getElementById('active-challenge-section');
   if(!account){
-    el.innerHTML='<div class="empty-state"><div class="empty-icon">📊</div><h3>No Active Challenges</h3><p>You don\'t have an active challenge yet. Purchase one to start trading.</p><a href="checkout.html" class="btn-primary">Start Challenge — $150</a></div>';
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">📊</div><h3>No Active Challenge</h3><p>You don\'t have an active challenge yet. Purchase one to start trading.</p><a href="checkout.html" class="btn-primary">Start Challenge — $150</a></div>';
     return;
   }
   if(account.status==='to_be_active'){
