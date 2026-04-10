@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login — Fortiq Funded</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -20,11 +21,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .logo-wordmark span{background:linear-gradient(135deg,#c9a84c,#e8c96a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .card-title{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:0.4rem}
 .card-sub{color:var(--muted);font-size:14px;text-align:center;font-weight:300;margin-bottom:2rem}
-.steps-indicator{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:2rem}
-.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;border:1px solid var(--border2);color:var(--muted);background:var(--surface2);transition:all 0.3s;}
-.step-dot.active{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border-color:transparent;box-shadow:0 0 12px rgba(108,61,232,0.4)}
-.step-dot.done{background:rgba(0,214,143,0.15);color:var(--success);border-color:rgba(0,214,143,0.3)}
-.step-line{width:32px;height:1px;background:var(--border2)}
 .field{margin-bottom:1.2rem}
 .field label{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:6px;}
 .field input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;color:var(--text);font-family:'Outfit',sans-serif;font-size:14px;transition:border-color 0.2s;outline:none;}
@@ -36,26 +32,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .btn{width:100%;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border:none;padding:14px;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:opacity 0.2s;box-shadow:0 0 30px rgba(108,61,232,0.3);}
 .btn:hover{opacity:0.9}
 .btn:disabled{opacity:0.5;cursor:not-allowed}
-.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--muted);box-shadow:none;margin-top:0.8rem;}
-.btn-ghost:hover{border-color:var(--border);color:var(--text)}
-.screen{display:none}
-.screen.active{display:block}
-.slider-wrap{margin-bottom:1.5rem}
-.slider-label{font-size:13px;color:var(--muted);margin-bottom:10px;font-weight:500}
-.slider-track{position:relative;height:48px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;overflow:hidden;user-select:none;}
-.slider-fill{position:absolute;left:0;top:0;height:100%;background:linear-gradient(135deg,rgba(108,61,232,0.3),rgba(30,95,255,0.2));border-radius:10px 0 0 10px;}
-.slider-handle{position:absolute;top:4px;left:4px;width:40px;height:40px;background:linear-gradient(135deg,var(--purple),var(--blue));border-radius:8px;cursor:grab;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;box-shadow:0 0 12px rgba(108,61,232,0.4);}
-.slider-handle.done{background:linear-gradient(135deg,#00d68f,#00a86b)}
-.slider-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;color:var(--muted);pointer-events:none;white-space:nowrap;}
-.otp-wrap{display:flex;gap:8px;justify-content:center;margin-bottom:1.5rem}
-.otp-input{width:48px;height:56px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:'Cinzel',serif;font-size:20px;font-weight:700;text-align:center;outline:none;transition:border-color 0.2s;}
-.otp-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(108,61,232,0.15)}
-.otp-info{text-align:center;font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
-.otp-info strong{color:var(--purple3)}
-.resend-wrap{text-align:center;margin-top:0.8rem}
-.resend-btn{background:none;border:none;color:var(--purple3);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;text-decoration:underline;}
-.resend-btn:disabled{color:var(--muted2);cursor:not-allowed;text-decoration:none}
-.timer{color:var(--muted2);font-size:12px;margin-top:4px}
 .divider{display:flex;align-items:center;gap:1rem;margin:1.5rem 0}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border2)}
 .divider span{color:var(--muted2);font-size:12px}
@@ -83,64 +59,27 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     <span class="logo-wordmark">Fortiq <span>Funded</span></span>
   </a>
 
-  <div class="steps-indicator">
-    <div class="step-dot active" id="dot1">1</div>
-    <div class="step-line"></div>
-    <div class="step-dot" id="dot2">2</div>
-    <div class="step-line"></div>
-    <div class="step-dot" id="dot3">3</div>
+  <h2 class="card-title">Welcome Back</h2>
+  <p class="card-sub">Sign in to your Fortiq Funded account</p>
+
+  <div class="msg" id="msg"></div>
+
+  <div class="field">
+    <label>Email Address</label>
+    <input type="email" id="lemail" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"/>
+  </div>
+  <div class="field">
+    <label>Password</label>
+    <input type="password" id="lpwd" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"/>
+  </div>
+  <div style="text-align:right;margin-bottom:1.2rem">
+    <a href="forgot-password.html" style="font-size:12px;color:var(--purple3);text-decoration:none">Forgot password?</a>
   </div>
 
-  <!-- SCREEN 1 -->
-  <div class="screen active" id="s1">
-    <h2 class="card-title">Welcome Back</h2>
-    <p class="card-sub">Sign in to your Fortiq Funded account</p>
-    <div class="msg" id="m1"></div>
-    <div class="field"><label>Email Address</label><input type="email" id="lemail" placeholder="you@example.com" onkeydown="if(event.key==='Enter')step1()"/></div>
-    <div class="field"><label>Password</label><input type="password" id="lpwd" placeholder="Your password" onkeydown="if(event.key==='Enter')step1()"/></div>
-    <div style="text-align:right;margin-bottom:1.2rem"><a href="forgot-password.html" style="font-size:12px;color:var(--purple3);text-decoration:none">Forgot password?</a></div>
-    <button class="btn" id="btn1" onclick="step1()">Continue</button>
-    <div class="divider"><span>don't have an account?</span></div>
-    <div class="signup-link"><a href="signup.html">Create a free account →</a></div>
-  </div>
+  <button class="btn" id="loginbtn" onclick="doLogin()">Sign In</button>
 
-  <!-- SCREEN 2: SLIDER -->
-  <div class="screen" id="s2">
-    <h2 class="card-title">Security Check</h2>
-    <p class="card-sub">Slide to confirm you're human</p>
-    <div class="msg" id="m2"></div>
-    <div class="slider-wrap">
-      <div class="slider-label">Drag the slider all the way to the right</div>
-      <div class="slider-track" id="track">
-        <div class="slider-fill" id="fill" style="width:0"></div>
-        <div class="slider-handle" id="handle">›</div>
-        <div class="slider-text" id="stext">slide to verify →</div>
-      </div>
-    </div>
-    <button class="btn btn-ghost" onclick="goTo(1)">← Go back</button>
-  </div>
-
-  <!-- SCREEN 3: OTP -->
-  <div class="screen" id="s3">
-    <h2 class="card-title">Enter Your Code</h2>
-    <p class="card-sub">One-time verification</p>
-    <div class="msg" id="m3"></div>
-    <div class="otp-info">We sent a 6-digit code to<br><strong id="otpemail"></strong><br><span style="font-size:12px;color:var(--muted2)">Expires in 10 minutes</span></div>
-    <div class="otp-wrap">
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="o0"/>
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="o1"/>
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="o2"/>
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="o3"/>
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="o4"/>
-      <input class="otp-input" maxlength="1" type="text" inputmode="numeric" id="o5"/>
-    </div>
-    <button class="btn" id="btn3" onclick="step3()">Verify & Sign In</button>
-    <div class="resend-wrap">
-      <button class="resend-btn" id="resendbtn" onclick="resend()">Resend code</button>
-      <div class="timer" id="timerdiv"></div>
-    </div>
-    <button class="btn btn-ghost" style="margin-top:1rem" onclick="goTo(2)">← Go back</button>
-  </div>
+  <div class="divider"><span>don't have an account?</span></div>
+  <div class="signup-link"><a href="signup.html">Create a free account →</a></div>
 </div>
 
 <script>
@@ -154,164 +93,30 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
   }
 })();
 
-var SB_URL='https://qhfsvazxpnjwfxhamkea.supabase.co';
-var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo';
-var sb=window.supabase.createClient(SB_URL,SB_KEY);
-var curEmail='';
-var resendCount=0;
-var timerInterval=null;
+var sb=window.supabase.createClient(
+  'https://qhfsvazxpnjwfxhamkea.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo'
+);
 
-function showMsg(id,txt,type){var el=document.getElementById(id);el.textContent=txt;el.className='msg '+type;}
-function clearMsg(id){var el=document.getElementById(id);el.textContent='';el.className='msg';}
-
-function goTo(n){
-  [1,2,3].forEach(function(i){
-    document.getElementById('s'+i).className='screen'+(i===n?' active':'');
-    var d=document.getElementById('dot'+i);
-    d.className='step-dot'+(i<n?' done':i===n?' active':'');
-  });
+function showMsg(txt,type){
+  var el=document.getElementById('msg');
+  el.textContent=txt;
+  el.className='msg '+type;
 }
 
-// STEP 1
-function step1(){
+function doLogin(){
   var email=document.getElementById('lemail').value.trim();
   var pwd=document.getElementById('lpwd').value;
-  if(!email){showMsg('m1','Please enter your email.','error');return}
-  if(!pwd){showMsg('m1','Please enter your password.','error');return}
-  var btn=document.getElementById('btn1');
-  btn.disabled=true;btn.textContent='Checking...';
+  var btn=document.getElementById('loginbtn');
+  if(!email){showMsg('Please enter your email.','error');return;}
+  if(!pwd){showMsg('Please enter your password.','error');return;}
+  btn.disabled=true;btn.textContent='Signing in...';
   sb.auth.signInWithPassword({email:email,password:pwd}).then(function(r){
     if(r.error){
-      showMsg('m1','Incorrect email or password.','error');
-      btn.disabled=false;btn.textContent='Continue';
-    } else {
-      sb.auth.signOut();
-      curEmail=email;
-      document.getElementById('otpemail').textContent=email;
-      sendOTP(email,function(err){
-        if(err){
-          showMsg('m1','Could not send verification code. Please try again shortly.','error');
-          btn.disabled=false;btn.textContent='Continue';
-        } else {
-          goTo(2);
-          initSlider();
-          btn.disabled=false;btn.textContent='Continue';
-        }
-      });
-    }
-  });
-}
-
-// SEND OTP — now with callback to check for errors
-function sendOTP(email,callback){
-  sb.auth.signInWithOtp({email:email,options:{shouldCreateUser:false}}).then(function(r){
-    if(callback){
-      if(r.error){
-        callback(r.error);
-      } else {
-        callback(null);
-      }
-    }
-  });
-}
-
-// SLIDER
-function initSlider(){
-  var track=document.getElementById('track');
-  var handle=document.getElementById('handle');
-  var fill=document.getElementById('fill');
-  var stext=document.getElementById('stext');
-  var dragging=false;var startX=0;var verified=false;
-  var maxX=track.offsetWidth-handle.offsetWidth-8;
-
-  function move(x){
-    var pos=Math.max(0,Math.min(x,maxX));
-    handle.style.left=(pos+4)+'px';
-    fill.style.width=(pos+44)+'px';
-    stext.style.opacity=1-(pos/maxX)*2;
-    if(pos>=maxX-5&&!verified){
-      verified=true;
-      handle.classList.add('done');
-      handle.innerHTML='✓';
-      setTimeout(function(){goTo(3);},600);
-    }
-  }
-
-  handle.addEventListener('mousedown',function(e){dragging=true;startX=e.clientX-handle.offsetLeft;e.preventDefault();});
-  document.addEventListener('mousemove',function(e){if(dragging)move(e.clientX-startX-4);});
-  document.addEventListener('mouseup',function(){
-    if(dragging&&!verified){handle.style.left='4px';fill.style.width='0';}
-    dragging=false;
-  });
-  handle.addEventListener('touchstart',function(e){dragging=true;startX=e.touches[0].clientX-handle.offsetLeft;e.preventDefault();},{passive:false});
-  document.addEventListener('touchmove',function(e){if(dragging)move(e.touches[0].clientX-startX-4);},{passive:true});
-  document.addEventListener('touchend',function(){
-    if(dragging&&!verified){handle.style.left='4px';fill.style.width='0';}
-    dragging=false;
-  });
-}
-
-// OTP INPUTS
-for(var i=0;i<6;i++){
-  (function(idx){
-    document.getElementById('o'+idx).addEventListener('input',function(){
-      this.value=this.value.replace(/[^0-9]/g,'');
-      if(this.value&&idx<5)document.getElementById('o'+(idx+1)).focus();
-      if(idx===5&&this.value)step3();
-    });
-    document.getElementById('o'+idx).addEventListener('keydown',function(e){
-      if(e.key==='Backspace'&&!this.value&&idx>0)document.getElementById('o'+(idx-1)).focus();
-    });
-  })(i);
-}
-
-function getOTP(){return [0,1,2,3,4,5].map(function(i){return document.getElementById('o'+i).value;}).join('');}
-
-// STEP 3 - VERIFY OTP
-function step3(){
-  var token=getOTP();
-  if(token.length!==6){showMsg('m3','Please enter the full 6-digit code.','error');return;}
-  var btn=document.getElementById('btn3');
-  btn.disabled=true;btn.textContent='Verifying...';
-  sb.auth.verifyOtp({email:curEmail,token:token,type:'email'}).then(function(r){
-    if(r.error){
-      showMsg('m3','Invalid or expired code. Please try again.','error');
-      btn.disabled=false;btn.textContent='Verify & Sign In';
+      showMsg('Incorrect email or password. Please try again.','error');
+      btn.disabled=false;btn.textContent='Sign In';
     } else {
       window.location.href='dashboard.html';
-    }
-  });
-}
-
-// RESEND — now checks response before showing success
-function resend(){
-  if(resendCount>=3){showMsg('m3','Maximum resend limit reached.','error');return;}
-  var resendbtn=document.getElementById('resendbtn');
-  var td=document.getElementById('timerdiv');
-  resendbtn.disabled=true;
-  resendbtn.textContent='Sending...';
-  clearMsg('m3');
-
-  sb.auth.signInWithOtp({email:curEmail,options:{shouldCreateUser:false}}).then(function(r){
-    if(r.error){
-      showMsg('m3','Could not send code: '+r.error.message+'. Please wait a moment and try again.','error');
-      resendbtn.disabled=false;
-      resendbtn.textContent='Resend code';
-    } else {
-      resendCount++;
-      resendbtn.textContent='Resend code';
-      showMsg('m3','New code sent to your email.','success');
-      var secs=60;
-      td.textContent='Resend available in '+secs+'s';
-      timerInterval=setInterval(function(){
-        secs--;
-        td.textContent='Resend available in '+secs+'s';
-        if(secs<=0){
-          clearInterval(timerInterval);
-          td.textContent='';
-          if(resendCount<3)resendbtn.disabled=false;
-        }
-      },1000);
     }
   });
 }
