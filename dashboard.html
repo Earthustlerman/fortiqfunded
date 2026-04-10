@@ -121,6 +121,9 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .wallet-submit-btn{background:linear-gradient(135deg,#c9a84c,#e8c96a);color:#000;border:none;padding:11px 22px;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:opacity 0.2s;white-space:nowrap;}
 .wallet-submit-btn:hover{opacity:0.88}
 .wallet-submit-btn:disabled{opacity:0.4;cursor:not-allowed}
+.aff-wallet-submit-btn{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border:none;padding:11px 22px;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:opacity 0.2s;white-space:nowrap;}
+.aff-wallet-submit-btn:hover{opacity:0.88}
+.aff-wallet-submit-btn:disabled{opacity:0.4;cursor:not-allowed}
 .form-msg{font-size:12px;margin-top:0.7rem;padding:8px 12px;border-radius:7px;display:none;}
 .form-msg.ok{background:rgba(0,214,143,0.1);border:1px solid rgba(0,214,143,0.3);color:var(--success);display:block;}
 .form-msg.err{background:rgba(255,77,77,0.1);border:1px solid rgba(255,77,77,0.3);color:var(--error);display:block;}
@@ -456,12 +459,31 @@ function submitWallet(){
   });
 }
 
+// ── AFFILIATE WALLET SUBMIT ──
+function submitAffiliateWallet(){
+  var addr=document.getElementById('aff-wallet-addr').value.trim();
+  var msg=document.getElementById('aff-wallet-msg');
+  var btn=document.getElementById('aff-wallet-btn');
+  if(!addr){msg.textContent='Please enter your wallet address.';msg.className='form-msg err';return;}
+  if(!addr.startsWith('T')||addr.length<30||addr.length>45){msg.textContent='Invalid TRC20 address. Must start with T and be 34 characters.';msg.className='form-msg err';return;}
+  btn.disabled=true;btn.textContent='Submitting...';msg.className='form-msg';
+  sb.from('profiles').update({affiliate_wallet:addr}).eq('id',currentUser.id).then(function(r){
+    if(r.error){msg.textContent='Error: '+r.error.message;msg.className='form-msg err';btn.disabled=false;btn.textContent='Save Wallet';return;}
+    profile.affiliate_wallet=addr;
+    msg.textContent='Affiliate wallet saved! Commissions will be sent here every Saturday.';msg.className='form-msg ok';
+    btn.disabled=false;btn.textContent='Save Wallet';
+    setTimeout(function(){renderAffiliate(currentUser);},1500);
+  });
+}
+
 function renderAffiliate(user){
   var el=document.getElementById('affiliate-section');
   if(!profile){el.innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';return;}
   var uid=profile.user_id||'—';
   var refCode=profile.referral_code||uid;
   var refLink='https://fortiqfunded.com/signup.html?ref='+refCode;
+  var affWallet=profile.affiliate_wallet||'';
+
   sb.from('affiliates').select('*').eq('referrer_id',uid).then(function(r){
     var refs=r.data||[];
     var approved=refs.filter(function(x){return x.status==='approved';});
@@ -469,23 +491,29 @@ function renderAffiliate(user){
     var earned=approved.length*50;
     var pendingPayout=approved.filter(function(x){return !x.paid;});
 
+    // ── Affiliate wallet section ──
     var walletSection='';
-    if(pendingPayout.length>0){
-      var affWallet=account?account.payout_wallet:'';
-      if(affWallet){
-        walletSection=
-          '<div class="payout-submitted" style="margin-bottom:1.5rem;">'+
-            '<h4>💳 Commission Payout Ready</h4>'+
-            '<p>Your commission of <strong style="color:var(--gold)">$'+(pendingPayout.length*50)+' USDT</strong> will be sent to your registered wallet:</p>'+
-            '<p style="margin-top:0.5rem;font-family:Courier New,monospace;color:var(--purple3);font-size:12px;">'+affWallet+'</p>'+
-            '<p style="margin-top:0.8rem;font-size:12px;color:var(--muted2);">Processed every Saturday. Same wallet as your trading payout.</p>'+
-          '</div>';
-      } else {
-        walletSection=
-          '<div class="rules-notice" style="margin-bottom:1.5rem;">'+
-            '💰 You have <strong>$'+(pendingPayout.length*50)+' USDT</strong> in approved commissions! To receive payment, submit your TRC20 wallet in the Payouts section — we use the same wallet for affiliate commissions.'+
-          '</div>';
-      }
+    if(affWallet){
+      walletSection=
+        '<div class="payout-submitted" style="margin-bottom:1.5rem;">'+
+          '<h4>💳 Affiliate Payout Wallet</h4>'+
+          '<p style="font-size:13px;color:var(--muted);margin-bottom:0.5rem;">Your affiliate commissions will be sent to:</p>'+
+          '<p style="font-family:Courier New,monospace;color:var(--purple3);font-size:12px;word-break:break-all;">'+affWallet+'</p>'+
+          '<p style="margin-top:0.8rem;font-size:12px;color:var(--muted2);">Paid every Saturday in USDT on TRC20. <span style="cursor:pointer;color:var(--purple3);text-decoration:underline;" onclick="profile.affiliate_wallet=\'\';renderAffiliate(currentUser);">Change wallet</span></p>'+
+          (pendingPayout.length>0?'<p style="margin-top:0.8rem;font-size:13px;color:var(--gold);font-weight:600;">🎉 You have $'+(pendingPayout.length*50)+' USDT in approved commissions awaiting payment!</p>':'')+
+        '</div>';
+    } else {
+      walletSection=
+        '<div class="wallet-form" style="margin-bottom:1.5rem;border-color:rgba(108,61,232,0.3);">'+
+          '<h4>💳 Submit Your Affiliate Payout Wallet</h4>'+
+          '<p>Enter your USDT TRC20 wallet address to receive affiliate commission payments. This is separate from your trading payout wallet.</p>'+
+          (pendingPayout.length>0?'<div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:10px 12px;margin-bottom:1rem;font-size:12px;color:var(--gold);">💰 You have <strong>$'+(pendingPayout.length*50)+' USDT</strong> in approved commissions waiting! Submit your wallet to get paid.</div>':'')+
+          '<div class="wallet-input-wrap">'+
+            '<input type="text" class="wallet-input" id="aff-wallet-addr" placeholder="T... (USDT TRC20 wallet address)" maxlength="50" style="border-color:rgba(108,61,232,0.3);"/>'+
+            '<button class="aff-wallet-submit-btn" id="aff-wallet-btn" onclick="submitAffiliateWallet()">Save Wallet</button>'+
+          '</div>'+
+          '<div class="form-msg" id="aff-wallet-msg"></div>'+
+        '</div>';
     }
 
     el.innerHTML=
