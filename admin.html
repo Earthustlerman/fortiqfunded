@@ -241,7 +241,7 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 
       <!-- AFFILIATES -->
       <div class="admin-page" id="page-affiliates">
-        <div class="page-hd"><h1>Affiliates</h1><p>Referral tracking and commission management</p></div>
+        <div class="page-hd"><h1>Affiliates</h1><p>Referral tracking and commission management — wallet address shown for each approved affiliate</p></div>
         <div class="table-wrap">
           <div class="table-head"><h3>Affiliate Records</h3></div>
           <div id="affiliates-body"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
@@ -473,13 +473,12 @@ function loadAccounts(){
 }
 
 // ── STATUS MODAL ──
-function openStatusModal(accountId, newStatus, profit){
+function openStatusModal(accountId,newStatus,profit){
   currentStatusAccount={id:accountId,status:newStatus,profit:profit};
   var title=document.getElementById('status-modal-title');
   var content=document.getElementById('status-modal-content');
   var actions=document.getElementById('status-modal-actions');
   document.getElementById('status-reason').value='';
-
   if(newStatus==='failed'){
     title.textContent='✕ Mark Account as Failed';
     content.innerHTML=
@@ -498,7 +497,6 @@ function openStatusModal(accountId, newStatus, profit){
       '<div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:var(--gold);">🏆 This will mark the account as funded and send a congratulations email to the trader with payout instructions.</div>';
     actions.innerHTML='<button class="modal-close" onclick="closeStatusModal()">Cancel</button><button class="modal-fund-btn" onclick="confirmStatusChange()">Confirm — Mark Funded</button>';
   }
-
   document.getElementById('status-modal').classList.add('open');
 }
 
@@ -512,12 +510,8 @@ function confirmStatusChange(){
   var reason=document.getElementById('status-reason').value.trim();
   var accountId=currentStatusAccount.id;
   var newStatus=currentStatusAccount.status;
-
-  // Update in Supabase
   sb.from('accounts').update({status:newStatus}).eq('account_id',accountId).then(function(r){
     if(r.error){showNotif('Error: '+r.error.message,'err');return;}
-
-    // Notify backend to send trader email
     fetch('https://fortiqfunded-backend.onrender.com/notify-status',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -531,7 +525,6 @@ function confirmStatusChange(){
     }).catch(function(){
       showNotif('✓ Status updated but could not reach email server.','err');
     });
-
     closeStatusModal();
     loadAccounts();
     loadOverview();
@@ -567,7 +560,7 @@ function loadPayouts(){
     var data=r.data||[];
     var el=document.getElementById('payouts-body');
     if(!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">🏆</div>No funded accounts yet</div>';return;}
-    var h='<table><thead><tr><th>Account ID</th><th>User ID</th><th>Profit</th><th>80% Payout</th><th>Wallet Address</th><th>Status</th><th>Action</th></tr></thead><tbody>';
+    var h='<table><thead><tr><th>Account ID</th><th>User ID</th><th>Profit</th><th>80% Payout</th><th>Wallet Address</th><th>Network</th><th>Status</th><th>Action</th></tr></thead><tbody>';
     data.forEach(function(a){
       var profit=parseFloat(a.profit||0);
       var payout=(profit*0.8).toFixed(2);
@@ -577,6 +570,7 @@ function loadPayouts(){
       h+='<td class="td-mono" style="color:var(--green)">$'+profit.toFixed(2)+'</td>';
       h+='<td class="td-mono" style="color:var(--gold)">$'+payout+' USDT</td>';
       h+='<td class="td-mono" style="font-size:10px;">'+(a.payout_wallet||'<span style="color:var(--muted)">Awaiting wallet submission</span>')+'</td>';
+      h+='<td><span class="badge purple">TRC20</span></td>';
       h+='<td><span class="badge '+(a.paid_out?'green':a.payout_wallet?'gold':'muted')+'">'+(a.paid_out?'Paid':a.payout_wallet?'Ready to Pay':'Awaiting Wallet')+'</span></td>';
       h+='<td>';
       if(!a.paid_out&&a.payout_wallet){
@@ -592,30 +586,47 @@ function loadPayouts(){
   });
 }
 
-// ── AFFILIATES ──
+// ── AFFILIATES — now shows referrer wallet address and network ──
 function loadAffiliates(){
   sb.from('affiliates').select('*').order('created_at',{ascending:false}).then(function(r){
     var data=r.data||[];
     var el=document.getElementById('affiliates-body');
     if(!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">🤝</div>No affiliate records yet</div>';return;}
-    var h='<table><thead><tr><th>Referrer ID</th><th>Referred ID</th><th>Commission</th><th>Status</th><th>Action</th></tr></thead><tbody>';
-    data.forEach(function(a){
-      var badge=a.status==='approved'?'green':a.status==='rejected'?'red':'gold';
-      h+='<tr>';
-      h+='<td class="td-mono">'+a.referrer_id+'</td>';
-      h+='<td class="td-mono">'+a.referred_id+'</td>';
-      h+='<td class="td-mono">$'+(a.commission||50)+' USDT</td>';
-      h+='<td><span class="badge '+badge+'">'+(a.status||'pending')+'</span></td>';
-      h+='<td style="display:flex;gap:5px;">';
-      if(a.status==='pending'){
-        h+='<button class="action-btn approve" onclick="updateAffiliate(\''+a.id+'\',\'approved\')">Approve</button>';
-        h+='<button class="action-btn reject" onclick="updateAffiliate(\''+a.id+'\',\'rejected\')">Reject</button>';
-      } else {
-        h+='<span style="color:var(--muted);font-size:11px;">'+a.status+'</span>';
-      }
-      h+='</td></tr>';
+
+    // Collect all unique referrer IDs to look up their wallets
+    var referrerIds=data.map(function(a){return a.referrer_id;}).filter(function(v,i,s){return s.indexOf(v)===i;});
+
+    // Look up wallet addresses from accounts table for all referrers
+    sb.from('accounts').select('user_id,payout_wallet').in('user_id',referrerIds).then(function(wr){
+      var walletMap={};
+      (wr.data||[]).forEach(function(acc){
+        if(acc.payout_wallet)walletMap[acc.user_id]=acc.payout_wallet;
+      });
+
+      var h='<table><thead><tr><th>Referrer ID</th><th>Referred ID</th><th>Commission</th><th>Payout Wallet</th><th>Network</th><th>Status</th><th>Action</th></tr></thead><tbody>';
+      data.forEach(function(a){
+        var badge=a.status==='approved'?'green':a.status==='rejected'?'red':'gold';
+        var wallet=walletMap[a.referrer_id]||null;
+        h+='<tr>';
+        h+='<td class="td-mono">'+a.referrer_id+'</td>';
+        h+='<td class="td-mono">'+a.referred_id+'</td>';
+        h+='<td class="td-mono" style="color:var(--gold)">$'+(a.commission||50)+' USDT</td>';
+        h+='<td class="td-mono" style="font-size:10px;">'+(wallet?wallet:'<span style="color:var(--red)">No wallet submitted yet</span>')+'</td>';
+        h+='<td><span class="badge purple">TRC20</span></td>';
+        h+='<td><span class="badge '+badge+'">'+(a.status||'pending')+'</span></td>';
+        h+='<td style="display:flex;gap:5px;">';
+        if(a.status==='pending'){
+          h+='<button class="action-btn approve" onclick="updateAffiliate(\''+a.id+'\',\'approved\')">Approve</button>';
+          h+='<button class="action-btn reject" onclick="updateAffiliate(\''+a.id+'\',\'rejected\')">Reject</button>';
+        } else if(a.status==='approved'){
+          h+='<span style="color:var(--green);font-size:11px;">✓ Approved — pay $'+(a.commission||50)+' USDT via TRC20</span>';
+        } else {
+          h+='<span style="color:var(--muted);font-size:11px;">'+a.status+'</span>';
+        }
+        h+='</td></tr>';
+      });
+      el.innerHTML=h+'</tbody></table>';
     });
-    el.innerHTML=h+'</tbody></table>';
   });
 }
 
@@ -653,6 +664,7 @@ function openPayoutModal(accountId,userId,profit,wallet){
   html+='<div class="modal-row"><span class="mk">Total Profit</span><span class="mv" style="color:var(--green)">$'+profit.toFixed(2)+' USDT</span></div>';
   html+='<div class="modal-row"><span class="mk">Trader receives (80%)</span><span class="mv" style="color:var(--gold);font-size:14px;font-weight:700;">$'+payout+' USDT</span></div>';
   html+='<div class="modal-row"><span class="mk">Firm keeps (20%)</span><span class="mv">$'+(profit*0.2).toFixed(2)+' USDT</span></div>';
+  html+='<div class="modal-row"><span class="mk">Network</span><span class="mv" style="color:var(--purple3)">USDT TRC20</span></div>';
   html+='<div class="modal-row"><span class="mk">TRC20 Wallet</span><span class="mv" style="font-size:10px;word-break:break-all;">'+wallet+'</span></div>';
   html+='<div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:#f59e0b;">⚠ Send exactly <strong>$'+payout+' USDT TRC20</strong> to the wallet above, then click "Mark as Paid".</div>';
   document.getElementById('payout-modal-content').innerHTML=html;
