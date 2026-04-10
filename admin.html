@@ -241,7 +241,7 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 
       <!-- AFFILIATES -->
       <div class="admin-page" id="page-affiliates">
-        <div class="page-hd"><h1>Affiliates</h1><p>Referral tracking and commission management — wallet address shown for each approved affiliate</p></div>
+        <div class="page-hd"><h1>Affiliates</h1><p>Referral tracking — affiliate_wallet from profiles table shown for each referrer</p></div>
         <div class="table-wrap">
           <div class="table-head"><h3>Affiliate Records</h3></div>
           <div id="affiliates-body"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
@@ -586,24 +586,23 @@ function loadPayouts(){
   });
 }
 
-// ── AFFILIATES — now shows referrer wallet address and network ──
+// ── AFFILIATES — reads affiliate_wallet from profiles table ──
 function loadAffiliates(){
   sb.from('affiliates').select('*').order('created_at',{ascending:false}).then(function(r){
     var data=r.data||[];
     var el=document.getElementById('affiliates-body');
     if(!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">🤝</div>No affiliate records yet</div>';return;}
 
-    // Collect all unique referrer IDs to look up their wallets
     var referrerIds=data.map(function(a){return a.referrer_id;}).filter(function(v,i,s){return s.indexOf(v)===i;});
 
-    // Look up wallet addresses from accounts table for all referrers
-    sb.from('accounts').select('user_id,payout_wallet').in('user_id',referrerIds).then(function(wr){
+    // ── Look up affiliate_wallet from profiles table (not accounts) ──
+    sb.from('profiles').select('user_id,affiliate_wallet').in('user_id',referrerIds).then(function(pr){
       var walletMap={};
-      (wr.data||[]).forEach(function(acc){
-        if(acc.payout_wallet)walletMap[acc.user_id]=acc.payout_wallet;
+      (pr.data||[]).forEach(function(p){
+        if(p.affiliate_wallet)walletMap[p.user_id]=p.affiliate_wallet;
       });
 
-      var h='<table><thead><tr><th>Referrer ID</th><th>Referred ID</th><th>Commission</th><th>Payout Wallet</th><th>Network</th><th>Status</th><th>Action</th></tr></thead><tbody>';
+      var h='<table><thead><tr><th>Referrer ID</th><th>Referred ID</th><th>Commission</th><th>Affiliate Wallet</th><th>Network</th><th>Status</th><th>Action</th></tr></thead><tbody>';
       data.forEach(function(a){
         var badge=a.status==='approved'?'green':a.status==='rejected'?'red':'gold';
         var wallet=walletMap[a.referrer_id]||null;
@@ -611,7 +610,7 @@ function loadAffiliates(){
         h+='<td class="td-mono">'+a.referrer_id+'</td>';
         h+='<td class="td-mono">'+a.referred_id+'</td>';
         h+='<td class="td-mono" style="color:var(--gold)">$'+(a.commission||50)+' USDT</td>';
-        h+='<td class="td-mono" style="font-size:10px;">'+(wallet?wallet:'<span style="color:var(--red)">No wallet submitted yet</span>')+'</td>';
+        h+='<td class="td-mono" style="font-size:10px;">'+(wallet?wallet:'<span style="color:var(--red)">No affiliate wallet submitted yet</span>')+'</td>';
         h+='<td><span class="badge purple">TRC20</span></td>';
         h+='<td><span class="badge '+badge+'">'+(a.status||'pending')+'</span></td>';
         h+='<td style="display:flex;gap:5px;">';
@@ -619,7 +618,7 @@ function loadAffiliates(){
           h+='<button class="action-btn approve" onclick="updateAffiliate(\''+a.id+'\',\'approved\')">Approve</button>';
           h+='<button class="action-btn reject" onclick="updateAffiliate(\''+a.id+'\',\'rejected\')">Reject</button>';
         } else if(a.status==='approved'){
-          h+='<span style="color:var(--green);font-size:11px;">✓ Approved — pay $'+(a.commission||50)+' USDT via TRC20</span>';
+          h+='<span style="color:var(--green);font-size:11px;">✓ Pay $'+(a.commission||50)+' USDT via TRC20</span>';
         } else {
           h+='<span style="color:var(--muted);font-size:11px;">'+a.status+'</span>';
         }
