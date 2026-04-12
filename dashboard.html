@@ -18,7 +18,7 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
-.sidebar{width:var(--sidebar);min-height:100vh;background:var(--bg2);border-right:1px solid var(--border2);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:100;}
+.sidebar{width:var(--sidebar);min-height:100vh;background:var(--bg2);border-right:1px solid var(--border2);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:200;transition:transform 0.3s ease;}
 .sidebar-logo{padding:1.5rem 1.2rem;border-bottom:1px solid var(--border2)}
 .logo-mark{display:flex;align-items:center;gap:8px;text-decoration:none}
 .logo-wordmark{font-family:'Cinzel',serif;font-weight:700;font-size:16px;letter-spacing:0.5px;background:linear-gradient(135deg,#a78bfa,#6c3de8,#3d7fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -144,12 +144,30 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .challenge-terminal-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
 .challenge-terminal-info h3{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px;}
 .challenge-terminal-info p{color:var(--muted);font-size:13px;font-weight:300;}
-@media(max-width:768px){.sidebar{transform:translateX(-100%)}.main{margin-left:0}.rules-check{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+
+/* ── MOBILE TOPBAR & HAMBURGER ── */
+.mobile-topbar{display:none;align-items:center;justify-content:space-between;padding:1rem 1.2rem;background:var(--bg2);border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:150;}
+.hamburger{background:none;border:1px solid var(--border2);border-radius:8px;padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;gap:4px;}
+.hamburger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;transition:all 0.3s;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:190;backdrop-filter:blur(2px);}
+.overlay.open{display:block;}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;padding:1.2rem;}
+  .mobile-topbar{display:flex;}
+  .rules-check{grid-template-columns:1fr}
+  .metrics{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
 
-<aside class="sidebar">
+<!-- OVERLAY (closes sidebar when tapped) -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <a href="index.html" class="logo-mark">
       <svg width="28" height="28" viewBox="0 0 38 38" fill="none">
@@ -207,42 +225,63 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
   </div>
 </aside>
 
-<main class="main">
-  <div class="page active" id="page-overview">
-    <div class="page-header"><h1>Dashboard</h1><p id="welcome-msg">Welcome back!</p></div>
-    <div class="metrics">
-      <div class="metric-card"><div class="metric-label">Account Size</div><div class="metric-value purple">$5,000</div><div class="metric-sub">Funded account value</div></div>
-      <div class="metric-card"><div class="metric-label">Profit Target</div><div class="metric-value gold">8%</div><div class="metric-sub">$400 USDT needed</div></div>
-      <div class="metric-card"><div class="metric-label">Your Split</div><div class="metric-value green">80%</div><div class="metric-sub">Of all profits earned</div></div>
-      <div class="metric-card"><div class="metric-label">Account Status</div><div class="metric-value purple" id="overview-status">—</div><div class="metric-sub" id="overview-acc-id">Waiting for challenge</div></div>
+<div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+  <!-- MOBILE TOPBAR -->
+  <div class="mobile-topbar">
+    <button class="hamburger" onclick="openSidebar()">
+      <span></span><span></span><span></span>
+    </button>
+    <span style="font-family:'Cinzel',serif;font-weight:700;font-size:15px;background:linear-gradient(135deg,#a78bfa,#6c3de8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Fortiq <span style="background:linear-gradient(135deg,#c9a84c,#e8c96a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Funded</span></span>
+    <div style="width:40px"></div>
+  </div>
+
+  <main class="main">
+    <div class="page active" id="page-overview">
+      <div class="page-header"><h1>Dashboard</h1><p id="welcome-msg">Welcome back!</p></div>
+      <div class="metrics">
+        <div class="metric-card"><div class="metric-label">Account Size</div><div class="metric-value purple">$5,000</div><div class="metric-sub">Funded account value</div></div>
+        <div class="metric-card"><div class="metric-label">Profit Target</div><div class="metric-value gold">8%</div><div class="metric-sub">$400 USDT needed</div></div>
+        <div class="metric-card"><div class="metric-label">Your Split</div><div class="metric-value green">80%</div><div class="metric-sub">Of all profits earned</div></div>
+        <div class="metric-card"><div class="metric-label">Account Status</div><div class="metric-value purple" id="overview-status">—</div><div class="metric-sub" id="overview-acc-id">Waiting for challenge</div></div>
+      </div>
+      <div id="overview-account-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
     </div>
-    <div id="overview-account-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
-  </div>
 
-  <div class="page" id="page-billing">
-    <div class="page-header"><h1>Billing</h1><p>Your payment history</p></div>
-    <div id="billing-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
-  </div>
+    <div class="page" id="page-billing">
+      <div class="page-header"><h1>Billing</h1><p>Your payment history</p></div>
+      <div id="billing-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
+    </div>
 
-  <div class="page" id="page-payouts">
-    <div class="page-header"><h1>Payouts</h1><p>Submit your wallet and receive your 80% profit share</p></div>
-    <div id="payouts-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
-  </div>
+    <div class="page" id="page-payouts">
+      <div class="page-header"><h1>Payouts</h1><p>Submit your wallet and receive your 80% profit share</p></div>
+      <div id="payouts-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
+    </div>
 
-  <div class="page" id="page-affiliate">
-    <div class="page-header"><h1>Affiliate Program</h1><p>Earn $50 USDT for every trader you refer</p></div>
-    <div id="affiliate-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
-  </div>
+    <div class="page" id="page-affiliate">
+      <div class="page-header"><h1>Affiliate Program</h1><p>Earn $50 USDT for every trader you refer</p></div>
+      <div id="affiliate-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
+    </div>
 
-  <div class="page" id="page-active-challenge">
-    <div class="page-header"><h1>Active Challenge</h1><p>Your current challenge account</p></div>
-    <div id="active-challenge-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
-  </div>
-</main>
+    <div class="page" id="page-active-challenge">
+      <div class="page-header"><h1>Active Challenge</h1><p>Your current challenge account</p></div>
+      <div id="active-challenge-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
+    </div>
+  </main>
+</div>
 
 <script>
 var sb=window.supabase.createClient('https://qhfsvazxpnjwfxhamkea.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo');
 var profile=null,account=null,currentUser=null;
+
+// ── MOBILE SIDEBAR ──
+function openSidebar(){
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
 
 function sl(s){return{to_be_active:'Awaiting Trade',active:'Active',failed:'Failed',funded:'Funded 🎉'}[s]||'Unknown';}
 function sc(s){return{to_be_active:'to_be_active',active:'active',failed:'failed',funded:'funded'}[s]||'to_be_active';}
@@ -256,6 +295,7 @@ function showPage(name,el){
   if(name==='affiliate')renderAffiliate(currentUser);
   if(name==='active-challenge')renderActiveChallenge();
   if(name==='billing')renderBilling();
+  closeSidebar();
   return false;
 }
 
@@ -459,7 +499,6 @@ function submitWallet(){
   });
 }
 
-// ── AFFILIATE WALLET SUBMIT ──
 function submitAffiliateWallet(){
   var addr=document.getElementById('aff-wallet-addr').value.trim();
   var msg=document.getElementById('aff-wallet-msg');
@@ -491,7 +530,6 @@ function renderAffiliate(user){
     var earned=approved.length*50;
     var pendingPayout=approved.filter(function(x){return !x.paid;});
 
-    // ── Affiliate wallet section ──
     var walletSection='';
     if(affWallet){
       walletSection=
