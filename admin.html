@@ -13,7 +13,7 @@
   --purple:#6c3de8;--purple3:#a78bfa;
   --text:#e8e6ff;--muted:#6b6b8f;--muted2:#2e2e4a;
   --b2:rgba(255,255,255,0.06);--bp:rgba(108,61,232,0.2);
-  --green:#00c97a;--red:#f03d3d;--gold:#c9a84c;
+  --green:#00c97a;--red:#f03d3d;--gold:#c9a84c;--cyan:#22d3ee;
 }
 html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);}
 #login-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:1000;}
@@ -58,6 +58,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .stat-card.gold .stat-card-value{color:var(--gold)}
 .stat-card.red .stat-card-value{color:var(--red)}
 .stat-card.purple .stat-card-value{color:var(--purple3)}
+.stat-card.cyan .stat-card-value{color:var(--cyan)}
 .table-wrap{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;overflow:hidden;margin-bottom:1.5rem;}
 .table-head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.2rem;border-bottom:1px solid var(--b2);}
 .table-head h3{font-family:'Cinzel',serif;font-size:13px;font-weight:700;color:var(--text);}
@@ -74,6 +75,7 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 .badge.gold{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.3)}
 .badge.purple{background:rgba(108,61,232,0.1);color:var(--purple3);border:1px solid rgba(108,61,232,0.3)}
 .badge.muted{background:rgba(255,255,255,0.05);color:var(--muted);border:1px solid var(--b2)}
+.badge.cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3)}
 .action-btn{padding:4px 10px;border-radius:5px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;border:none;transition:all 0.15s;}
 .action-btn.approve{background:rgba(0,201,122,0.1);color:var(--green);border:1px solid rgba(0,201,122,0.3)}
 .action-btn.approve:hover{background:rgba(0,201,122,0.2)}
@@ -81,12 +83,8 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 .action-btn.reject:hover{background:rgba(240,61,61,0.2)}
 .action-btn.pay{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.3)}
 .action-btn.pay:hover{background:rgba(201,168,76,0.2)}
-.action-btn.view{background:rgba(108,61,232,0.1);color:var(--purple3);border:1px solid rgba(108,61,232,0.3)}
-.action-btn.view:hover{background:rgba(108,61,232,0.2)}
 .action-btn.fail{background:rgba(240,61,61,0.1);color:var(--red);border:1px solid rgba(240,61,61,0.3)}
 .action-btn.fail:hover{background:rgba(240,61,61,0.2)}
-.action-btn.fund{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.3)}
-.action-btn.fund:hover{background:rgba(201,168,76,0.2)}
 .loading{text-align:center;padding:3rem;color:var(--muted);font-size:13px;}
 .spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--b2);border-top-color:var(--purple);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:0.5rem;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -98,7 +96,7 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 .notif.err{background:rgba(240,61,61,0.15);border:1px solid rgba(240,61,61,0.4);color:var(--red);}
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:500;display:none;align-items:center;justify-content:center;}
 .modal-bg.open{display:flex;}
-.modal-box{background:var(--bg2);border:1px solid var(--b2);border-radius:14px;padding:2rem;width:460px;max-height:80vh;overflow-y:auto;}
+.modal-box{background:var(--bg2);border:1px solid var(--b2);border-radius:14px;padding:2rem;width:480px;max-height:80vh;overflow-y:auto;}
 .modal-box h3{font-family:'Cinzel',serif;font-size:15px;margin-bottom:1.2rem;color:var(--text);}
 .modal-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--b2);font-size:13px;}
 .modal-row:last-child{border-bottom:none}
@@ -109,17 +107,15 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 .modal-close:hover{color:var(--text)}
 .modal-pay-btn{background:linear-gradient(135deg,var(--gold),#e8c96a);color:#000;border:none;padding:8px 20px;border-radius:7px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;transition:opacity 0.2s;}
 .modal-pay-btn:hover{opacity:0.88}
-.modal-fail-btn{background:rgba(240,61,61,0.15);border:1px solid rgba(240,61,61,0.4);color:var(--red);padding:8px 20px;border-radius:7px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;transition:opacity 0.2s;}
+.modal-fail-btn{background:rgba(240,61,61,0.15);border:1px solid rgba(240,61,61,0.4);color:var(--red);padding:8px 20px;border-radius:7px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;}
 .modal-fail-btn:hover{opacity:0.88}
-.modal-fund-btn{background:linear-gradient(135deg,#00c97a,#00a86b);color:#000;border:none;padding:8px 20px;border-radius:7px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;transition:opacity 0.2s;}
-.modal-fund-btn:hover{opacity:0.88}
 .reason-input{width:100%;background:var(--surface2);border:1px solid var(--b2);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;outline:none;margin-top:1rem;transition:border-color 0.2s;}
 .reason-input:focus{border-color:var(--purple)}
+.saturday-box{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:#f59e0b;line-height:1.7;}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">Fortiq <span>Funded</span></div>
@@ -131,7 +127,6 @@ tr:hover td{background:rgba(108,61,232,0.03)}
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div id="admin">
   <div class="admin-top">
     <div style="display:flex;align-items:center;gap:12px;">
@@ -187,19 +182,19 @@ tr:hover td{background:rgba(108,61,232,0.03)}
         <div class="page-hd"><h1>Dashboard</h1><p>Real-time overview of Fortiq Funded</p></div>
         <div class="stat-grid">
           <div class="stat-card"><div class="stat-card-label">Total Traders</div><div class="stat-card-value" id="ov-traders">—</div><div class="stat-card-sub">Registered accounts</div></div>
-          <div class="stat-card green"><div class="stat-card-label">Active Challenges</div><div class="stat-card-value" id="ov-active">—</div><div class="stat-card-sub">Currently trading</div></div>
+          <div class="stat-card green"><div class="stat-card-label">Active Stage 1</div><div class="stat-card-value" id="ov-active">—</div><div class="stat-card-sub">Currently in challenge</div></div>
+          <div class="stat-card cyan"><div class="stat-card-label">Active Stage 2</div><div class="stat-card-value" id="ov-funded-active">—</div><div class="stat-card-sub">Currently funded</div></div>
           <div class="stat-card gold"><div class="stat-card-label">Revenue (USDT)</div><div class="stat-card-value" id="ov-revenue">—</div><div class="stat-card-sub">From challenge fees</div></div>
-          <div class="stat-card purple"><div class="stat-card-label">Funded Accounts</div><div class="stat-card-value" id="ov-funded">—</div><div class="stat-card-sub">Passed challenge</div></div>
           <div class="stat-card red"><div class="stat-card-label">Failed Accounts</div><div class="stat-card-value" id="ov-failed">—</div><div class="stat-card-sub">Breached rules</div></div>
-          <div class="stat-card gold"><div class="stat-card-label">Pending Payouts</div><div class="stat-card-value" id="ov-payouts">—</div><div class="stat-card-sub">Wallet submitted, awaiting payment</div></div>
+          <div class="stat-card gold"><div class="stat-card-label">Ready to Pay</div><div class="stat-card-value" id="ov-payouts">—</div><div class="stat-card-sub">In profit, no open positions</div></div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-head"><h3>⚡ Saturday Payout List — Ready to Pay Now</h3></div>
+          <div id="pending-payouts-body"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
         </div>
         <div class="table-wrap">
           <div class="table-head"><h3>Recent Payments</h3></div>
           <div id="recent-payments-body"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
-        </div>
-        <div class="table-wrap">
-          <div class="table-head"><h3>Pending Payout Requests</h3></div>
-          <div id="pending-payouts-body"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
         </div>
       </div>
 
@@ -214,7 +209,7 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 
       <!-- ACCOUNTS -->
       <div class="admin-page" id="page-accounts">
-        <div class="page-hd"><h1>Challenge Accounts</h1><p>All challenge accounts and their status — click an account to change its status</p></div>
+        <div class="page-hd"><h1>All Accounts</h1><p>Stage 1 challenge accounts and Stage 2 funded accounts</p></div>
         <div class="table-wrap">
           <div class="table-head"><h3>Accounts</h3><input class="table-search" placeholder="Search by account ID..." oninput="filterTable('accounts-tbl',this.value)"/></div>
           <div id="accounts-body"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
@@ -232,9 +227,9 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 
       <!-- PAYOUTS -->
       <div class="admin-page" id="page-payouts">
-        <div class="page-hd"><h1>Payouts</h1><p>Trader payout requests — verify and mark as paid</p></div>
+        <div class="page-hd"><h1>Payouts</h1><p>Stage 2 trader payout requests — only traders in profit with no open positions are shown as ready to pay</p></div>
         <div class="table-wrap">
-          <div class="table-head"><h3>Payout Requests</h3></div>
+          <div class="table-head"><h3>🏆 Stage 2 Payout Requests</h3></div>
           <div id="payouts-body"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
         </div>
       </div>
@@ -250,7 +245,7 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 
       <!-- POSITIONS -->
       <div class="admin-page" id="page-positions">
-        <div class="page-hd"><h1>Open Positions</h1><p>All currently open simulated positions</p></div>
+        <div class="page-hd"><h1>Open Positions</h1><p>All currently open simulated positions across all accounts</p></div>
         <div class="table-wrap">
           <div class="table-head"><h3>Live Positions</h3></div>
           <div id="positions-body"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
@@ -264,22 +259,25 @@ tr:hover td{background:rgba(108,61,232,0.03)}
 <!-- PAYOUT MODAL -->
 <div class="modal-bg" id="payout-modal">
   <div class="modal-box">
-    <h3>💰 Process Payout</h3>
+    <h3>💰 Process Stage 2 Payout</h3>
     <div id="payout-modal-content"></div>
     <div class="modal-actions">
       <button class="modal-close" onclick="closePayoutModal()">Cancel</button>
-      <button class="modal-pay-btn" id="payout-confirm-btn">Mark as Paid ✓</button>
+      <button class="modal-pay-btn" id="payout-confirm-btn">✓ Mark as Paid & Close Account</button>
     </div>
   </div>
 </div>
 
-<!-- STATUS CHANGE MODAL -->
-<div class="modal-bg" id="status-modal">
+<!-- FAIL MODAL -->
+<div class="modal-bg" id="fail-modal">
   <div class="modal-box">
-    <h3 id="status-modal-title">Change Account Status</h3>
-    <div id="status-modal-content"></div>
-    <input class="reason-input" id="status-reason" placeholder="Reason (optional — included in trader email)"/>
-    <div class="modal-actions" id="status-modal-actions"></div>
+    <h3 id="fail-modal-title">✕ Fail Account</h3>
+    <div id="fail-modal-content"></div>
+    <input class="reason-input" id="fail-reason" placeholder="Reason (optional — included in trader email)"/>
+    <div class="modal-actions">
+      <button class="modal-close" onclick="closeFailModal()">Cancel</button>
+      <button class="modal-fail-btn" onclick="confirmFail()">Confirm — Mark Failed</button>
+    </div>
   </div>
 </div>
 
@@ -291,8 +289,7 @@ var sb=window.supabase.createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo'
 );
 
-var currentPayoutId=null;
-var currentStatusAccount=null;
+var currentFailAccount=null;
 
 // ── LOGIN ──
 function doLogin(){
@@ -303,8 +300,7 @@ function doLogin(){
   btn.disabled=true;btn.textContent='Verifying...';
   err.style.display='none';
   fetch('https://fortiqfunded-backend.onrender.com/admin-login',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
+    method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({password:pwd})
   }).then(function(r){return r.json();}).then(function(data){
     btn.disabled=false;btn.textContent='Access Admin Panel';
@@ -329,14 +325,12 @@ function doLogout(){
   document.getElementById('admin-pwd').value='';
 }
 
-// ── CLOCK ──
 function startClock(){
   setInterval(function(){
     document.getElementById('admin-time').textContent=new Date().toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg',hour12:false});
   },1000);
 }
 
-// ── PAGE NAV ──
 function showPage(page,el){
   document.querySelectorAll('.admin-page').forEach(function(p){p.classList.remove('on');});
   document.querySelectorAll('.sidebar-item').forEach(function(i){i.classList.remove('on');});
@@ -362,24 +356,40 @@ function loadOverview(){
   sb.from('profiles').select('*',{count:'exact',head:true}).then(function(r){
     document.getElementById('ov-traders').textContent=r.count||0;
   });
-  sb.from('accounts').select('status').then(function(r){
+  sb.from('accounts').select('status,stage').then(function(r){
     var data=r.data||[];
-    document.getElementById('ov-active').textContent=data.filter(function(a){return a.status==='active';}).length;
-    document.getElementById('ov-funded').textContent=data.filter(function(a){return a.status==='funded';}).length;
+    document.getElementById('ov-active').textContent=data.filter(function(a){return a.status==='active'&&(a.stage===1||!a.stage);}).length;
+    document.getElementById('ov-funded-active').textContent=data.filter(function(a){return a.status==='active'&&a.stage===2;}).length;
     document.getElementById('ov-failed').textContent=data.filter(function(a){return a.status==='failed';}).length;
   });
   sb.from('payments').select('amount').eq('status','confirmed').then(function(r){
     var total=(r.data||[]).reduce(function(s,p){return s+parseFloat(p.amount||0);},0);
     document.getElementById('ov-revenue').textContent='$'+total.toFixed(2);
   });
-  sb.from('accounts').select('*',{count:'exact',head:true}).eq('status','funded').eq('paid_out',false).not('payout_wallet','is',null).then(function(r){
-    document.getElementById('ov-payouts').textContent=r.count||0;
+
+  // ── PENDING PAYOUTS: Stage 2, active, wallet submitted, not paid, profit > 0, NO open positions ──
+  sb.from('accounts').select('*').eq('stage',2).eq('status','active').eq('paid_out',false).not('payout_wallet','is',null).then(function(r){
+    var accounts=r.data||[];
+    // Filter profit > 0
+    accounts=accounts.filter(function(a){return parseFloat(a.profit||0)>0;});
+    if(!accounts.length){
+      document.getElementById('ov-payouts').textContent=0;
+      renderPendingPayouts([]);
+      return;
+    }
+    var accountIds=accounts.map(function(a){return a.account_id;});
+    // Check for open positions
+    sb.from('positions').select('account_id').eq('status','open').in('account_id',accountIds).then(function(pr){
+      var openAccountIds=(pr.data||[]).map(function(p){return p.account_id;});
+      // Only include accounts with NO open positions
+      var ready=accounts.filter(function(a){return openAccountIds.indexOf(a.account_id)===-1;});
+      document.getElementById('ov-payouts').textContent=ready.length;
+      renderPendingPayouts(ready);
+    });
   });
+
   sb.from('payments').select('*').order('created_at',{ascending:false}).limit(5).then(function(r){
     renderRecentPayments(r.data||[]);
-  });
-  sb.from('accounts').select('*').eq('status','funded').eq('paid_out',false).not('payout_wallet','is',null).then(function(r){
-    renderPendingPayouts(r.data||[]);
   });
 }
 
@@ -390,28 +400,33 @@ function renderRecentPayments(data){
   data.forEach(function(p){
     var dt=p.created_at?new Date(p.created_at).toLocaleDateString():'—';
     var badge=p.status==='confirmed'?'green':p.status==='pending'?'gold':'muted';
-    h+='<tr><td class="td-mono">'+shortenHash(p.tx_hash)+'</td>';
+    h+='<tr>';
+    h+='<td class="td-mono">'+shortenHash(p.tx_hash)+'</td>';
     h+='<td class="td-mono">$'+parseFloat(p.amount||0).toFixed(2)+' USDT</td>';
     h+='<td class="td-mono">'+(p.account_id||'—')+'</td>';
     h+='<td><span class="badge '+badge+'">'+p.status+'</span></td>';
-    h+='<td class="td-mono">'+dt+'</td></tr>';
+    h+='<td class="td-mono">'+dt+'</td>';
+    h+='</tr>';
   });
   el.innerHTML=h+'</tbody></table>';
 }
 
 function renderPendingPayouts(data){
   var el=document.getElementById('pending-payouts-body');
-  if(!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">✅</div>No pending payouts</div>';return;}
-  var h='<table><thead><tr><th>Account ID</th><th>User ID</th><th>Profit</th><th>Wallet</th><th>Action</th></tr></thead><tbody>';
+  if(!data.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">✅</div>No traders ready to pay this week — either no wallet submitted, still have open positions, or no profit yet</div>';
+    return;
+  }
+  var h='<table><thead><tr><th>Account ID</th><th>Profit</th><th>Pay This (80%)</th><th>TRC20 Wallet</th><th>Action</th></tr></thead><tbody>';
   data.forEach(function(a){
     var profit=parseFloat(a.profit||0);
     var payout=(profit*0.8).toFixed(2);
     h+='<tr>';
-    h+='<td class="td-mono">'+a.account_id+'</td>';
-    h+='<td class="td-mono" style="font-size:10px;">'+a.user_id+'</td>';
-    h+='<td class="td-mono" style="color:var(--green)">$'+profit.toFixed(2)+' → Pay $'+payout+' USDT</td>';
+    h+='<td class="td-mono" style="color:var(--gold);">'+a.account_id+'</td>';
+    h+='<td class="td-mono" style="color:var(--green);">$'+profit.toFixed(2)+'</td>';
+    h+='<td class="td-mono" style="color:var(--gold);font-weight:700;font-size:13px;">$'+payout+' USDT</td>';
     h+='<td class="td-mono" style="font-size:10px;">'+a.payout_wallet+'</td>';
-    h+='<td><button class="action-btn pay" onclick="openPayoutModal(\''+a.account_id+'\',\''+a.user_id+'\','+profit+',\''+a.payout_wallet+'\')">Process Payout</button></td>';
+    h+='<td><button class="action-btn pay" onclick="openPayoutModal(\''+a.account_id+'\',\''+a.user_id+'\','+profit+',\''+a.payout_wallet+'\')">💰 Process Payout</button></td>';
     h+='</tr>';
   });
   el.innerHTML=h+'</tbody></table>';
@@ -426,12 +441,14 @@ function loadTraders(){
     var h='<table id="traders-tbl"><thead><tr><th>User ID</th><th>Name</th><th>Email</th><th>Referral Code</th><th>Referred By</th><th>Joined</th></tr></thead><tbody>';
     data.forEach(function(p){
       var dt=p.created_at?new Date(p.created_at).toLocaleDateString():'—';
-      h+='<tr><td class="td-mono">'+p.user_id+'</td>';
+      h+='<tr>';
+      h+='<td class="td-mono">'+p.user_id+'</td>';
       h+='<td>'+(p.full_name||'—')+'</td>';
       h+='<td>'+(p.email||'—')+'</td>';
       h+='<td class="td-mono">'+(p.referral_code||'—')+'</td>';
       h+='<td class="td-mono">'+(p.referred_by||'—')+'</td>';
-      h+='<td class="td-mono">'+dt+'</td></tr>';
+      h+='<td class="td-mono">'+dt+'</td>';
+      h+='</tr>';
     });
     el.innerHTML=h+'</tbody></table>';
   });
@@ -443,25 +460,25 @@ function loadAccounts(){
     var data=r.data||[];
     var el=document.getElementById('accounts-body');
     if(!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">📊</div>No accounts yet</div>';return;}
-    var h='<table id="accounts-tbl"><thead><tr><th>Account ID</th><th>User ID</th><th>Status</th><th>Balance</th><th>Profit</th><th>Daily Loss</th><th>Max DD</th><th>Active Days</th><th>Paid Out</th><th>Actions</th></tr></thead><tbody>';
+    var h='<table id="accounts-tbl"><thead><tr><th>Account ID</th><th>Stage</th><th>Status</th><th>Balance</th><th>Profit</th><th>Daily Loss</th><th>Max DD</th><th>Active Days</th><th>Paid Out</th><th>Actions</th></tr></thead><tbody>';
     data.forEach(function(a){
-      var statusBadge={to_be_active:'muted',active:'green',failed:'red',funded:'gold'}[a.status]||'muted';
+      var stage=a.stage||1;
+      var statusBadge={to_be_active:'muted',active:'green',failed:'red',funded:'gold',closed:'muted'}[a.status]||'muted';
       h+='<tr>';
-      h+='<td class="td-mono">'+a.account_id+'</td>';
-      h+='<td class="td-mono" style="font-size:10px;">'+a.user_id+'</td>';
+      h+='<td class="td-mono" style="color:'+(stage===2?'var(--gold)':'var(--purple3)')+';">'+a.account_id+'</td>';
+      h+='<td><span class="badge '+(stage===2?'cyan':'purple')+'">Stage '+stage+(stage===2?' Funded':' Challenge')+'</span></td>';
       h+='<td><span class="badge '+statusBadge+'">'+a.status+'</span></td>';
       h+='<td class="td-mono">$'+parseFloat(a.balance||0).toFixed(2)+'</td>';
-      h+='<td class="td-mono" style="color:'+(parseFloat(a.profit||0)>=0?'var(--green)':'var(--red)')+'">$'+parseFloat(a.profit||0).toFixed(2)+'</td>';
+      h+='<td class="td-mono" style="color:'+(parseFloat(a.profit||0)>=0?'var(--green)':'var(--red)')+';">$'+parseFloat(a.profit||0).toFixed(2)+'</td>';
       h+='<td class="td-mono">'+parseFloat(a.daily_loss||0).toFixed(2)+'%</td>';
       h+='<td class="td-mono">'+parseFloat(a.max_drawdown||0).toFixed(2)+'%</td>';
-      h+='<td class="td-mono">'+(a.active_days||0)+' / 5</td>';
+      h+='<td class="td-mono">'+(a.active_days||0)+(stage===1?' / 5':'')+'</td>';
       h+='<td><span class="badge '+(a.paid_out?'green':'muted')+'">'+(a.paid_out?'Yes':'No')+'</span></td>';
-      h+='<td style="display:flex;gap:4px;flex-wrap:wrap;">';
+      h+='<td>';
       if(a.status==='active'||a.status==='to_be_active'){
-        h+='<button class="action-btn fund" onclick="openStatusModal(\''+a.account_id+'\',\'funded\','+parseFloat(a.profit||0)+')">✓ Fund</button>';
-        h+='<button class="action-btn fail" onclick="openStatusModal(\''+a.account_id+'\',\'failed\','+parseFloat(a.profit||0)+')">✕ Fail</button>';
-      } else if(a.status==='funded'&&!a.paid_out){
-        h+='<button class="action-btn fail" onclick="openStatusModal(\''+a.account_id+'\',\'failed\','+parseFloat(a.profit||0)+')">✕ Fail</button>';
+        h+='<button class="action-btn fail" onclick="openFailModal(\''+a.account_id+'\')">✕ Fail</button>';
+      } else if(a.status==='active'&&stage===2&&!a.paid_out&&a.payout_wallet&&parseFloat(a.profit||0)>0){
+        h+='<button class="action-btn pay" onclick="openPayoutModal(\''+a.account_id+'\',\''+a.user_id+'\','+parseFloat(a.profit||0)+',\''+a.payout_wallet+'\')">💰 Pay</button>';
       } else {
         h+='<span style="color:var(--muted2);font-size:11px;">—</span>';
       }
@@ -472,62 +489,34 @@ function loadAccounts(){
   });
 }
 
-// ── STATUS MODAL ──
-function openStatusModal(accountId,newStatus,profit){
-  currentStatusAccount={id:accountId,status:newStatus,profit:profit};
-  var title=document.getElementById('status-modal-title');
-  var content=document.getElementById('status-modal-content');
-  var actions=document.getElementById('status-modal-actions');
-  document.getElementById('status-reason').value='';
-  if(newStatus==='failed'){
-    title.textContent='✕ Mark Account as Failed';
-    content.innerHTML=
-      '<div class="modal-row"><span class="mk">Account ID</span><span class="mv">'+accountId+'</span></div>'+
-      '<div class="modal-row"><span class="mk">New Status</span><span class="mv" style="color:var(--red)">Failed</span></div>'+
-      '<div style="background:rgba(240,61,61,0.06);border:1px solid rgba(240,61,61,0.2);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:var(--red);">⚠ This will mark the account as failed and send a notification email to the trader.</div>';
-    actions.innerHTML='<button class="modal-close" onclick="closeStatusModal()">Cancel</button><button class="modal-fail-btn" onclick="confirmStatusChange()">Confirm — Mark Failed</button>';
-  } else if(newStatus==='funded'){
-    var payout=(profit*0.8).toFixed(2);
-    title.textContent='✓ Mark Account as Funded';
-    content.innerHTML=
-      '<div class="modal-row"><span class="mk">Account ID</span><span class="mv">'+accountId+'</span></div>'+
-      '<div class="modal-row"><span class="mk">New Status</span><span class="mv" style="color:var(--gold)">Funded 🏆</span></div>'+
-      '<div class="modal-row"><span class="mk">Profit</span><span class="mv" style="color:var(--green)">$'+parseFloat(profit).toFixed(2)+' USDT</span></div>'+
-      '<div class="modal-row"><span class="mk">Trader Payout (80%)</span><span class="mv" style="color:var(--gold)">$'+payout+' USDT</span></div>'+
-      '<div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:var(--gold);">🏆 This will mark the account as funded and send a congratulations email to the trader with payout instructions.</div>';
-    actions.innerHTML='<button class="modal-close" onclick="closeStatusModal()">Cancel</button><button class="modal-fund-btn" onclick="confirmStatusChange()">Confirm — Mark Funded</button>';
-  }
-  document.getElementById('status-modal').classList.add('open');
+// ── FAIL MODAL ──
+function openFailModal(accountId){
+  currentFailAccount=accountId;
+  document.getElementById('fail-modal-title').textContent='✕ Fail Account — '+accountId;
+  document.getElementById('fail-modal-content').innerHTML=
+    '<div class="modal-row"><span class="mk">Account ID</span><span class="mv">'+accountId+'</span></div>'+
+    '<div style="background:rgba(240,61,61,0.06);border:1px solid rgba(240,61,61,0.2);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:var(--red);">⚠ This will mark the account as failed and send a notification email to the trader. They will need to purchase a new $150 challenge.</div>';
+  document.getElementById('fail-reason').value='';
+  document.getElementById('fail-modal').classList.add('open');
 }
 
-function closeStatusModal(){
-  document.getElementById('status-modal').classList.remove('open');
-  currentStatusAccount=null;
+function closeFailModal(){
+  document.getElementById('fail-modal').classList.remove('open');
+  currentFailAccount=null;
 }
 
-function confirmStatusChange(){
-  if(!currentStatusAccount)return;
-  var reason=document.getElementById('status-reason').value.trim();
-  var accountId=currentStatusAccount.id;
-  var newStatus=currentStatusAccount.status;
-  sb.from('accounts').update({status:newStatus}).eq('account_id',accountId).then(function(r){
+function confirmFail(){
+  if(!currentFailAccount)return;
+  var reason=document.getElementById('fail-reason').value.trim();
+  sb.from('accounts').update({status:'failed'}).eq('account_id',currentFailAccount).then(function(r){
     if(r.error){showNotif('Error: '+r.error.message,'err');return;}
     fetch('https://fortiqfunded-backend.onrender.com/notify-status',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({account_id:accountId,status:newStatus,reason:reason||''})
-    }).then(function(res){return res.json();}).then(function(data){
-      if(data.success){
-        showNotif('✓ Account marked as '+newStatus+' and trader notified!','ok');
-      } else {
-        showNotif('✓ Status updated but email failed.','err');
-      }
-    }).catch(function(){
-      showNotif('✓ Status updated but could not reach email server.','err');
-    });
-    closeStatusModal();
-    loadAccounts();
-    loadOverview();
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({account_id:currentFailAccount,status:'failed',reason:reason||''})
+    }).catch(function(){});
+    showNotif('✓ Account marked as failed and trader notified!','ok');
+    closeFailModal();
+    loadAccounts();loadOverview();
   });
 }
 
@@ -554,61 +543,112 @@ function loadPayments(){
   });
 }
 
-// ── PAYOUTS ──
+// ── PAYOUTS — Stage 2 only, profit > 0, no open positions ──
 function loadPayouts(){
-  sb.from('accounts').select('*').eq('status','funded').order('created_at',{ascending:false}).then(function(r){
-    var data=r.data||[];
+  sb.from('accounts').select('*').eq('stage',2).order('created_at',{ascending:false}).then(function(r){
+    var accounts=r.data||[];
     var el=document.getElementById('payouts-body');
-    if(!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">🏆</div>No funded accounts yet</div>';return;}
-    var h='<table><thead><tr><th>Account ID</th><th>User ID</th><th>Profit</th><th>80% Payout</th><th>Wallet Address</th><th>Network</th><th>Status</th><th>Action</th></tr></thead><tbody>';
-    data.forEach(function(a){
-      var profit=parseFloat(a.profit||0);
-      var payout=(profit*0.8).toFixed(2);
-      h+='<tr>';
-      h+='<td class="td-mono">'+a.account_id+'</td>';
-      h+='<td class="td-mono" style="font-size:10px;">'+a.user_id+'</td>';
-      h+='<td class="td-mono" style="color:var(--green)">$'+profit.toFixed(2)+'</td>';
-      h+='<td class="td-mono" style="color:var(--gold)">$'+payout+' USDT</td>';
-      h+='<td class="td-mono" style="font-size:10px;">'+(a.payout_wallet||'<span style="color:var(--muted)">Awaiting wallet submission</span>')+'</td>';
-      h+='<td><span class="badge purple">TRC20</span></td>';
-      h+='<td><span class="badge '+(a.paid_out?'green':a.payout_wallet?'gold':'muted')+'">'+(a.paid_out?'Paid':a.payout_wallet?'Ready to Pay':'Awaiting Wallet')+'</span></td>';
-      h+='<td>';
-      if(!a.paid_out&&a.payout_wallet){
-        h+='<button class="action-btn pay" onclick="openPayoutModal(\''+a.account_id+'\',\''+a.user_id+'\','+profit+',\''+a.payout_wallet+'\')">Process</button>';
-      } else if(a.paid_out){
-        h+='<span style="color:var(--green);font-size:11px;">✓ Paid</span>';
-      } else {
-        h+='<span style="color:var(--muted);font-size:11px;">Awaiting wallet</span>';
-      }
-      h+='</td></tr>';
+    if(!accounts.length){
+      el.innerHTML='<div class="empty"><div class="empty-icon">🏆</div>No Stage 2 funded accounts yet</div>';
+      return;
+    }
+    var accountIds=accounts.map(function(a){return a.account_id;});
+    // Check for open positions across all stage 2 accounts
+    sb.from('positions').select('account_id').eq('status','open').in('account_id',accountIds).then(function(pr){
+      var openAccountIds=(pr.data||[]).map(function(p){return p.account_id;});
+      var h='<table><thead><tr><th>Account ID</th><th>Profit</th><th>Pay (80%)</th><th>Open Positions</th><th>Wallet Address</th><th>Status</th><th>Action</th></tr></thead><tbody>';
+      accounts.forEach(function(a){
+        var profit=parseFloat(a.profit||0);
+        var payout=(profit*0.8).toFixed(2);
+        var hasOpenPos=openAccountIds.indexOf(a.account_id)!==-1;
+        var inProfit=profit>0;
+        var canPay=!a.paid_out&&a.payout_wallet&&!hasOpenPos&&inProfit&&a.status==='active';
+        var statusLabel='';
+        var statusBadge='';
+        if(a.paid_out){statusLabel='Paid Out';statusBadge='green';}
+        else if(a.status==='closed'){statusLabel='Closed';statusBadge='muted';}
+        else if(a.status==='failed'){statusLabel='Failed';statusBadge='red';}
+        else if(hasOpenPos){statusLabel='Has Open Positions';statusBadge='red';}
+        else if(!inProfit){statusLabel='No Profit Yet';statusBadge='muted';}
+        else if(!a.payout_wallet){statusLabel='Awaiting Wallet';statusBadge='muted';}
+        else{statusLabel='Ready to Pay';statusBadge='gold';}
+        h+='<tr>';
+        h+='<td class="td-mono" style="color:var(--gold);">'+a.account_id+'</td>';
+        h+='<td class="td-mono" style="color:'+(inProfit?'var(--green)':'var(--muted)')+';">$'+profit.toFixed(2)+'</td>';
+        h+='<td class="td-mono" style="color:var(--gold);font-weight:700;">$'+payout+' USDT</td>';
+        h+='<td><span class="badge '+(hasOpenPos?'red':'green')+'">'+(hasOpenPos?'Yes — Block':'None ✓')+'</span></td>';
+        h+='<td class="td-mono" style="font-size:10px;">'+(a.payout_wallet||'<span style="color:var(--muted)">Not submitted</span>')+'</td>';
+        h+='<td><span class="badge '+statusBadge+'">'+statusLabel+'</span></td>';
+        h+='<td>';
+        if(canPay){
+          h+='<button class="action-btn pay" onclick="openPayoutModal(\''+a.account_id+'\',\''+a.user_id+'\','+profit+',\''+a.payout_wallet+'\')">💰 Process</button>';
+        } else if(a.paid_out){
+          h+='<span style="color:var(--green);font-size:11px;">✓ Paid</span>';
+        } else if(hasOpenPos){
+          h+='<span style="color:var(--red);font-size:11px;">Open positions</span>';
+        } else if(!inProfit){
+          h+='<span style="color:var(--muted);font-size:11px;">No profit</span>';
+        } else {
+          h+='<span style="color:var(--muted);font-size:11px;">'+statusLabel+'</span>';
+        }
+        h+='</td></tr>';
+      });
+      el.innerHTML=h+'</tbody></table>';
     });
-    el.innerHTML=h+'</tbody></table>';
   });
 }
 
-// ── AFFILIATES — only shows referrers who have submitted their affiliate wallet ──
+// ── PAYOUT MODAL ──
+function openPayoutModal(accountId,userId,profit,wallet){
+  var payout=(parseFloat(profit)*0.8).toFixed(2);
+  var html='';
+  html+='<div class="modal-row"><span class="mk">Account ID</span><span class="mv" style="color:var(--gold);">'+accountId+'</span></div>';
+  html+='<div class="modal-row"><span class="mk">Stage</span><span class="mv"><span class="badge cyan">Stage 2 Funded</span></span></div>';
+  html+='<div class="modal-row"><span class="mk">Total Profit</span><span class="mv" style="color:var(--green);">$'+parseFloat(profit).toFixed(2)+' USDT</span></div>';
+  html+='<div class="modal-row"><span class="mk">Trader receives (80%)</span><span class="mv" style="color:var(--gold);font-size:15px;font-weight:700;">$'+payout+' USDT</span></div>';
+  html+='<div class="modal-row"><span class="mk">Firm keeps (20%)</span><span class="mv">$'+(parseFloat(profit)*0.2).toFixed(2)+' USDT</span></div>';
+  html+='<div class="modal-row"><span class="mk">Network</span><span class="mv" style="color:var(--purple3);">USDT TRC20</span></div>';
+  html+='<div class="modal-row"><span class="mk">TRC20 Wallet</span><span class="mv" style="font-size:10px;word-break:break-all;">'+wallet+'</span></div>';
+  html+='<div class="saturday-box">⚠ <strong>Step 1:</strong> Send exactly <strong>$'+payout+' USDT TRC20</strong> to the wallet address above.<br><strong>Step 2:</strong> Once the transaction is confirmed, click "Mark as Paid" below. This will close the trader\'s funded account and send them a confirmation email.</div>';
+  document.getElementById('payout-modal-content').innerHTML=html;
+  document.getElementById('payout-confirm-btn').onclick=function(){confirmPayout(accountId,parseFloat(payout),wallet);};
+  document.getElementById('payout-modal').classList.add('open');
+}
+
+function closePayoutModal(){document.getElementById('payout-modal').classList.remove('open');}
+
+function confirmPayout(accountId,amount,wallet){
+  // Mark paid_out=true, set status=closed so trader cannot trade anymore
+  sb.from('accounts').update({paid_out:true,payout_amount:amount,status:'closed'}).eq('account_id',accountId).then(function(r){
+    if(r.error){showNotif('Error: '+r.error.message,'err');return;}
+    fetch('https://fortiqfunded-backend.onrender.com/notify-payout',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({account_id:accountId,payout_amount:amount,wallet_address:wallet})
+    }).then(function(res){return res.json();}).then(function(data){
+      if(data.success){showNotif('✓ Payout processed, account closed & trader notified by email!','ok');}
+      else{showNotif('✓ Paid & closed but email failed.','err');}
+    }).catch(function(){showNotif('✓ Paid & closed but could not reach email server.','err');});
+    closePayoutModal();
+    loadOverview();
+    loadPayouts();
+  });
+}
+
+// ── AFFILIATES ──
 function loadAffiliates(){
   sb.from('affiliates').select('*').order('created_at',{ascending:false}).then(function(r){
     var data=r.data||[];
     var el=document.getElementById('affiliates-body');
     if(!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">🤝</div>No affiliate records yet</div>';return;}
-
     var referrerIds=data.map(function(a){return a.referrer_id;}).filter(function(v,i,s){return s.indexOf(v)===i;});
-
     sb.from('profiles').select('user_id,affiliate_wallet').in('user_id',referrerIds).then(function(pr){
       var walletMap={};
-      (pr.data||[]).forEach(function(p){
-        if(p.affiliate_wallet)walletMap[p.user_id]=p.affiliate_wallet;
-      });
-
-      // Only show affiliates where the referrer has submitted their affiliate wallet
+      (pr.data||[]).forEach(function(p){if(p.affiliate_wallet)walletMap[p.user_id]=p.affiliate_wallet;});
       var filtered=data.filter(function(a){return walletMap[a.referrer_id];});
-
       if(!filtered.length){
         el.innerHTML='<div class="empty"><div class="empty-icon">🤝</div>No affiliates with wallet submitted yet</div>';
         return;
       }
-
       var h='<table><thead><tr><th>Referrer ID</th><th>Referred ID</th><th>Commission</th><th>Affiliate Wallet</th><th>Network</th><th>Status</th><th>Action</th></tr></thead><tbody>';
       filtered.forEach(function(a){
         var badge=a.status==='approved'?'green':a.status==='rejected'?'red':'gold';
@@ -616,7 +656,7 @@ function loadAffiliates(){
         h+='<tr>';
         h+='<td class="td-mono">'+a.referrer_id+'</td>';
         h+='<td class="td-mono">'+a.referred_id+'</td>';
-        h+='<td class="td-mono" style="color:var(--gold)">$'+(a.commission||50)+' USDT</td>';
+        h+='<td class="td-mono" style="color:var(--gold);">$'+(a.commission||50)+' USDT</td>';
         h+='<td class="td-mono" style="font-size:10px;">'+wallet+'</td>';
         h+='<td><span class="badge purple">TRC20</span></td>';
         h+='<td><span class="badge '+badge+'">'+(a.status||'pending')+'</span></td>';
@@ -660,47 +700,6 @@ function loadPositions(){
   });
 }
 
-// ── PAYOUT MODAL ──
-function openPayoutModal(accountId,userId,profit,wallet){
-  currentPayoutId=accountId;
-  var payout=(profit*0.8).toFixed(2);
-  var html='';
-  html+='<div class="modal-row"><span class="mk">Account ID</span><span class="mv">'+accountId+'</span></div>';
-  html+='<div class="modal-row"><span class="mk">User ID</span><span class="mv" style="font-size:10px;">'+userId+'</span></div>';
-  html+='<div class="modal-row"><span class="mk">Total Profit</span><span class="mv" style="color:var(--green)">$'+profit.toFixed(2)+' USDT</span></div>';
-  html+='<div class="modal-row"><span class="mk">Trader receives (80%)</span><span class="mv" style="color:var(--gold);font-size:14px;font-weight:700;">$'+payout+' USDT</span></div>';
-  html+='<div class="modal-row"><span class="mk">Firm keeps (20%)</span><span class="mv">$'+(profit*0.2).toFixed(2)+' USDT</span></div>';
-  html+='<div class="modal-row"><span class="mk">Network</span><span class="mv" style="color:var(--purple3)">USDT TRC20</span></div>';
-  html+='<div class="modal-row"><span class="mk">TRC20 Wallet</span><span class="mv" style="font-size:10px;word-break:break-all;">'+wallet+'</span></div>';
-  html+='<div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:#f59e0b;">⚠ Send exactly <strong>$'+payout+' USDT TRC20</strong> to the wallet above, then click "Mark as Paid".</div>';
-  document.getElementById('payout-modal-content').innerHTML=html;
-  document.getElementById('payout-confirm-btn').onclick=function(){confirmPayout(accountId,parseFloat(payout),wallet);};
-  document.getElementById('payout-modal').classList.add('open');
-}
-
-function closePayoutModal(){document.getElementById('payout-modal').classList.remove('open');}
-
-function confirmPayout(accountId,amount,wallet){
-  sb.from('accounts').update({paid_out:true,payout_amount:amount}).eq('account_id',accountId).then(function(r){
-    if(r.error){showNotif('Error: '+r.error.message,'err');return;}
-    fetch('https://fortiqfunded-backend.onrender.com/notify-payout',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({account_id:accountId,payout_amount:amount,wallet_address:wallet})
-    }).then(function(res){return res.json();}).then(function(data){
-      if(data.success){
-        showNotif('✓ Payout marked as paid & trader notified by email!','ok');
-      } else {
-        showNotif('✓ Paid but email failed: '+(data.error||'unknown'),'err');
-      }
-    }).catch(function(){
-      showNotif('✓ Paid but could not reach email server.','err');
-    });
-    closePayoutModal();
-    loadOverview();loadPayouts();
-  });
-}
-
 // ── AFFILIATES ACTION ──
 function updateAffiliate(id,status){
   sb.from('affiliates').update({status:status}).eq('id',id).then(function(r){
@@ -710,7 +709,7 @@ function updateAffiliate(id,status){
   });
 }
 
-// ── TABLE FILTER ──
+// ── UTILS ──
 function filterTable(tableId,q){
   var tbl=document.getElementById(tableId);if(!tbl)return;
   var rows=tbl.querySelectorAll('tbody tr');
@@ -718,8 +717,6 @@ function filterTable(tableId,q){
     row.style.display=row.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';
   });
 }
-
-// ── UTILS ──
 function shortenHash(h){if(!h)return'—';return h.substring(0,12)+'...'+h.substring(h.length-6);}
 function showNotif(msg,type){
   var el=document.getElementById('notif');
