@@ -17,13 +17,11 @@
 }
 html,body{height:100%;margin:0;padding:0;}
 body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);font-size:12px;}
-
 #access-denied{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:9999;text-align:center;padding:2rem;}
 #access-denied.show{display:flex;}
 #access-denied h2{font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;color:#f03d3d;margin-bottom:1rem;}
 #access-denied p{color:#7a7a9a;font-size:15px;font-weight:300;line-height:1.7;max-width:420px;margin-bottom:2rem;}
 #access-denied a{background:linear-gradient(135deg,#6c3de8,#1e5fff);color:#fff;padding:13px 28px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;}
-
 #topbar{position:fixed;top:0;left:0;right:0;height:44px;display:flex;align-items:center;background:var(--bg2);border-bottom:1px solid var(--b2);z-index:100;}
 .tb-logo{display:flex;align-items:center;gap:6px;padding:0 12px;border-right:1px solid var(--b2);height:100%;text-decoration:none;flex-shrink:0;}
 .tb-wm{font-family:'Cinzel',serif;font-weight:700;font-size:12px;background:linear-gradient(135deg,#a78bfa,#6c3de8,#3d7fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -42,21 +40,21 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
 .tb-right{display:flex;align-items:center;gap:8px;padding:0 10px;border-left:1px solid var(--b2);height:100%;flex-shrink:0;margin-left:auto;}
 .acc-badge{background:var(--surface);border:1px solid var(--b2);border-radius:5px;padding:3px 8px;font-size:11px;color:var(--muted);}
 .acc-badge strong{color:var(--purple3);font-family:'Cinzel',serif;}
+.stage-badge{padding:3px 10px;border-radius:5px;font-size:11px;font-weight:700;}
+.stage-badge.s1{background:rgba(108,61,232,0.15);border:1px solid rgba(108,61,232,0.4);color:var(--purple3);}
+.stage-badge.s2{background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:var(--gold);}
 .back-btn{color:var(--muted);font-size:11px;text-decoration:none;padding:4px 8px;border:1px solid var(--b2);border-radius:5px;transition:all 0.2s;white-space:nowrap;}
 .back-btn:hover{color:var(--text);border-color:var(--bp)}
-
 #root{position:fixed;top:44px;left:0;right:0;bottom:0;display:flex;flex-direction:row;overflow:hidden;}
-
 #col-center{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;min-height:0;}
 .chart-row{flex:1;display:flex;overflow:hidden;min-height:0;}
 #chart-wrap{flex:1;min-height:0;position:relative;background:var(--bg);}
-
 #pos-area{height:170px;flex-shrink:0;background:var(--surface);border-top:1px solid var(--b2);display:flex;flex-direction:column;}
 #pos-tabs-row{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b2);padding-right:8px;flex-shrink:0;}
 #pos-tabs{display:flex;}
 .pos-tab{padding:6px 11px;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.12s;white-space:nowrap;}
 .pos-tab.on{color:var(--purple3);border-bottom-color:var(--purple)}
-.close-all-btn{background:rgba(240,61,61,0.1);border:1px solid rgba(240,61,61,0.3);color:var(--red);padding:3px 9px;border-radius:4px;font-size:11px;cursor:pointer;transition:all 0.12s;}
+.close-all-btn{background:rgba(240,61,61,0.1);border:1px solid rgba(240,61,61,0.3);color:var(--red);padding:3px 9px;border-radius:4px;font-size:11px;cursor:pointer;}
 .close-all-btn:hover{background:rgba(240,61,61,0.2)}
 #pos-scroll{flex:1;overflow-y:auto;}
 #pos-scroll::-webkit-scrollbar{width:2px}
@@ -70,12 +68,11 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
 .td-l{color:var(--red);font-family:'JetBrains Mono',monospace;font-size:10px}
 .td-n{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text)}
 .td-m{color:var(--muted);font-size:10px}
-.cls-btn{background:rgba(240,61,61,0.1);border:1px solid rgba(240,61,61,0.3);color:var(--red);padding:2px 7px;border-radius:3px;font-size:10px;cursor:pointer;transition:all 0.12s;}
+.cls-btn{background:rgba(240,61,61,0.1);border:1px solid rgba(240,61,61,0.3);color:var(--red);padding:2px 7px;border-radius:3px;font-size:10px;cursor:pointer;}
 .cls-btn:hover{background:rgba(240,61,61,0.22)}
-.can-btn{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:var(--gold);padding:2px 7px;border-radius:3px;font-size:10px;cursor:pointer;transition:all 0.12s;}
+.can-btn{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:var(--gold);padding:2px 7px;border-radius:3px;font-size:10px;cursor:pointer;}
 .can-btn:hover{background:rgba(245,158,11,0.22)}
 .no-pos{text-align:center;padding:2rem;color:var(--muted);}
-
 #col-ob{width:195px;flex-shrink:0;background:var(--bg2);border-left:1px solid var(--b2);display:flex;flex-direction:column;overflow:hidden;}
 #ob-head{padding:6px 9px;border-bottom:1px solid var(--b2);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
 #ob-head span:first-child{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
@@ -83,7 +80,7 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
 .ob-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 #ob-cols{display:flex;justify-content:space-between;padding:3px 9px;font-size:9px;color:var(--muted2);text-transform:uppercase;flex-shrink:0;}
-#ob-asks{flex:1;overflow-y:auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-start;}
+#ob-asks{flex:1;overflow-y:auto;min-height:0;}
 #ob-bids{flex:1;overflow-y:auto;min-height:0;}
 #col-ob *{flex-shrink:0}
 #ob-asks,#ob-bids{flex-shrink:1}
@@ -104,7 +101,6 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
 .ob-ask .ob-bg{background:var(--red)}.ob-bid .ob-bg{background:var(--green)}
 .ob-ask .ob-p{color:var(--red)}.ob-bid .ob-p{color:var(--green)}
 .ob-a,.ob-t{color:var(--muted);}
-
 #col-order{width:260px;flex-shrink:0;background:var(--bg2);border-left:1px solid var(--b2);display:flex;flex-direction:column;overflow-y:auto;}
 #col-order::-webkit-scrollbar{width:2px}
 #col-order::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:2px}
@@ -185,6 +181,7 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
 .alert{padding:6px 8px;border-radius:6px;font-size:10px;margin-bottom:4px;line-height:1.5;}
 .alert.warn{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:#f59e0b;}
 .alert.danger{background:rgba(240,61,61,0.1);border:1px solid rgba(240,61,61,0.25);color:var(--red);}
+.alert.info{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);color:var(--gold);}
 .stats{border-top:1px solid var(--b2);padding:11px;}
 .stat-r{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.03);font-size:11px;}
 .stat-r:last-child{border-bottom:none}
@@ -237,18 +234,13 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
 .adv-clear{font-size:11px;color:#6b6b8f;cursor:pointer;background:none;border:none;padding:0;}
 .adv-clear:hover{color:var(--red)}
 .adv-input-row{display:flex;gap:6px;margin-bottom:8px;}
-.adv-inp{flex:1;background:#1f2937;border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:9px 11px;color:#fff;font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;transition:border-color 0.2s;}
-.adv-inp:focus{border-color:rgba(108,61,232,0.5)}
+.adv-inp{flex:1;background:#1f2937;border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:9px 11px;color:#fff;font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;}
 .adv-inp::placeholder{color:#4b5563;font-family:'Outfit',sans-serif;}
-.adv-type-btn{background:#1f2937;border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:9px 10px;color:#9ca3af;font-size:11px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:3px;}
+.adv-type-btn{background:#1f2937;border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:9px 10px;color:#9ca3af;font-size:11px;cursor:pointer;white-space:nowrap;}
 .adv-pct-sl{width:100%;-webkit-appearance:none;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;outline:none;cursor:pointer;margin-bottom:4px;}
 .adv-pct-sl::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid #111827;}
 .adv-pct-marks{display:flex;justify-content:space-between;font-size:9px;color:#6b6b8f;margin-bottom:8px;}
-.adv-order-row{display:flex;gap:6px;margin-bottom:8px;}
-.adv-order-inp{flex:1;background:#1f2937;border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:8px 11px;color:#6b6b8f;font-size:12px;}
-.adv-mkt-btn{background:#374151;border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:8px 12px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;}
 .adv-est{font-size:11px;color:#6b6b8f;line-height:1.6;margin-top:6px;}
-.adv-est strong{color:var(--green);}
 .adv-footer{display:flex;gap:8px;padding:14px 18px;border-top:1px solid rgba(255,255,255,0.07);}
 .adv-cancel{flex:1;background:#1f2937;border:1px solid rgba(255,255,255,0.1);color:#9ca3af;padding:11px;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;cursor:pointer;}
 .adv-ok{flex:1;background:var(--gold);color:#000;border:none;padding:11px;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;}
@@ -286,7 +278,7 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
     <span class="tb-pair-price" id="tb-price">$0.00</span>
     <span class="tb-pair-chg up" id="tb-chg">+0.00%</span>
   </div>
-  <div onclick="openModal()" style="display:flex;align-items:center;gap:5px;padding:0 10px;border-left:1px solid var(--b2);height:100%;cursor:pointer;color:var(--muted);font-size:11px;transition:color 0.15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
+  <div onclick="openModal()" style="display:flex;align-items:center;gap:5px;padding:0 10px;border-left:1px solid var(--b2);height:100%;cursor:pointer;color:var(--muted);font-size:11px;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
     Pairs
   </div>
@@ -300,7 +292,8 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
     <div class="tb-stat"><span class="tb-stat-l">24h Volume</span><span class="tb-stat-v" id="tb-vol" style="color:var(--muted)">—</span></div>
   </div>
   <div class="tb-right">
-    <div class="acc-badge">Simulated Challenge &nbsp;|&nbsp; <strong id="top-acc">—</strong></div>
+    <span class="stage-badge s1" id="stage-badge">Stage 1 — Challenge</span>
+    <div class="acc-badge">Account &nbsp;|&nbsp; <strong id="top-acc">—</strong></div>
     <a href="dashboard.html" class="back-btn">← Dashboard</a>
   </div>
 </div>
@@ -343,7 +336,7 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
 
   <div id="col-order">
     <div class="op">
-      <div class="op-title">Place Order</div>
+      <div class="op-title" id="order-title">Place Order — Challenge</div>
       <div id="alerts"></div>
       <div class="margin-row">
         <select class="sel" id="margin-sel" onchange="updateSum()"><option value="cross">Cross</option><option value="isolated">Isolated</option></select>
@@ -370,13 +363,13 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
       <div class="fld">
         <div class="amt-lbl-row">
           <span style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.3px;">Amount</span>
-          <button class="amt-cur-btn" onclick="toggleAmtDD(event)" id="amt-cur-btn">
+          <button class="amt-cur-btn" onclick="toggleAmtDD(event)">
             <span id="amt-cur-lbl">USDT</span><span class="amt-cur-arrow">▼</span>
           </button>
           <div class="amt-dd" id="amt-dd">
             <div class="amt-opt sel2" id="aopt-usdt" onclick="selectCur('USDT',event)">
               <div class="amt-opt-radio on" id="arad-usdt"></div>
-              <div><div class="amt-opt-title">USDT</div><div class="amt-opt-desc">Cost-based. Position size stays fixed regardless of leverage.</div></div>
+              <div><div class="amt-opt-title">USDT</div><div class="amt-opt-desc">Cost-based.</div></div>
             </div>
             <div class="amt-opt" id="aopt-coin" onclick="selectCur('COIN',event)">
               <div class="amt-opt-radio" id="arad-coin"></div>
@@ -438,7 +431,7 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
       <div class="order-msg" id="order-msg"></div>
     </div>
     <div class="stats">
-      <div class="op-title" style="margin-bottom:9px">Account Stats</div>
+      <div class="op-title" style="margin-bottom:9px" id="stats-title">Account Stats — Stage 1</div>
       <div class="stat-r"><span class="sk">Balance</span><span class="sv w" id="st-bal">$5,000.00</span></div>
       <div class="stat-r"><span class="sk">Equity</span><span class="sv w" id="st-eq">$5,000.00</span></div>
       <div class="stat-r"><span class="sk">Available Margin</span><span class="sv w" id="st-avail">$5,000.00</span></div>
@@ -448,8 +441,8 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
       <div class="stat-r"><span class="sk">Profit %</span><span class="sv g" id="st-pct">+0.00%</span></div>
       <div class="stat-r"><span class="sk">Daily Loss</span><span class="sv g" id="st-dl">0.00%</span></div>
       <div class="stat-r"><span class="sk">Max Drawdown</span><span class="sv g" id="st-dd">0.00%</span></div>
-      <div class="stat-r"><span class="sk">Active Days</span><span class="sv gold" id="st-days">0 / 5</span></div>
-      <div class="stat-r"><span class="sk">Profit Target</span><span class="sv gold">8% ($400)</span></div>
+      <div class="stat-r" id="stat-days-row"><span class="sk">Active Days</span><span class="sv gold" id="st-days">0 / 5</span></div>
+      <div class="stat-r"><span class="sk">Target / Cap</span><span class="sv gold" id="st-target">8% ($400)</span></div>
       <div class="stat-r"><span class="sk">Status</span><span class="sv gold" id="st-status">Awaiting Trade</span></div>
     </div>
   </div>
@@ -475,27 +468,26 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
     <div class="adv-body">
       <div class="adv-pair-info" id="adv-pair-info">BTCUSDT · Cross <span class="adv-pair-badge">·Long·1X</span></div>
       <div class="adv-price-row"><span class="apk">Current price</span><span class="apv" id="adv-cur-price">—</span></div>
-      <div class="adv-price-row"><span class="apk">Mark Price</span><span class="apv" id="adv-mark-price">—</span></div>
       <div class="adv-price-row"><span class="apk">Entry Price</span><span class="apv" id="adv-entry-price">—</span></div>
       <div class="adv-section">
         <div class="adv-section-head"><span class="adv-section-title">Take Profit</span><button class="adv-clear" onclick="clearAdvTP()">🗑 Clear</button></div>
         <div class="adv-input-row">
           <input class="adv-inp" id="adv-tp-price" type="number" placeholder="Trigger Price..." oninput="updateAdvTPEstAndSlider()"/>
-          <div class="adv-type-btn">USDT | Last Price ▾</div>
+          <div class="adv-type-btn">USDT ▾</div>
         </div>
         <input class="adv-pct-sl" id="adv-tp-pct" type="range" min="0" max="150" value="0" oninput="updateAdvTPEst()"/>
-        <div class="adv-pct-marks"><span>0%</span><span>30%</span><span>60%</span><span>90%</span><span>120%</span><span>150%</span></div>
-        <div class="adv-est" id="adv-tp-est">When the Last Price reaches <strong>-- USDT</strong>, estimated profit: <strong>-- USDT (--%)</strong>.</div>
+        <div class="adv-pct-marks"><span>0%</span><span>50%</span><span>100%</span><span>150%</span></div>
+        <div class="adv-est" id="adv-tp-est">Set a take profit price above.</div>
       </div>
       <div class="adv-section">
         <div class="adv-section-head"><span class="adv-section-title">Stop Loss</span><button class="adv-clear" onclick="clearAdvSL()">🗑 Clear</button></div>
         <div class="adv-input-row">
           <input class="adv-inp" id="adv-sl-price" type="number" placeholder="Trigger Price..." oninput="updateAdvSLEstAndSlider()"/>
-          <div class="adv-type-btn">USDT | Last Price ▾</div>
+          <div class="adv-type-btn">USDT ▾</div>
         </div>
         <input class="adv-pct-sl" id="adv-sl-pct" type="range" min="0" max="150" value="0" oninput="updateAdvSLEst()"/>
-        <div class="adv-pct-marks"><span>0%</span><span>30%</span><span>60%</span><span>90%</span><span>120%</span><span>150%</span></div>
-        <div class="adv-est" id="adv-sl-est">When the Last Price reaches <strong>-- USDT</strong>, estimated loss: <strong>-- USDT (--%)</strong>.</div>
+        <div class="adv-pct-marks"><span>0%</span><span>50%</span><span>100%</span><span>150%</span></div>
+        <div class="adv-est" id="adv-sl-est">Set a stop loss price above.</div>
       </div>
     </div>
     <div class="adv-footer">
@@ -504,26 +496,22 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
     </div>
   </div>
 </div>
-
 <script>
 var sb=window.supabase.createClient('https://qhfsvazxpnjwfxhamkea.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo');
 
 var pair='BTCUSDT',tf='1h',side='buy',lev=1,orderType='limit',tpslOn=false,amtCur='USDT';
-var price=0,userId=null,accountId=null,account=null;
+var price=0,userId=null,accountId=null,account=null,accountStage=1;
 var openPos=[],openOrders=[],activeTab='open';
 var wsPrice=null,wsBook=null,wsTicker=null;
 var prices={};
+var stage2CreationInProgress=false;
 
 var PAIRS=['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','ADAUSDT','DOGEUSDT','AVAXUSDT','MATICUSDT','DOTUSDT','LINKUSDT','UNIUSDT','LTCUSDT','BCHUSDT','ATOMUSDT','ETCUSDT','XLMUSDT','ALGOUSDT','VETUSDT','FTMUSDT','SANDUSDT','MANAUSDT','AXSUSDT','AAVEUSDT','COMPUSDT','MKRUSDT','SNXUSDT','CRVUSDT','SUSHIUSDT','YFIUSDT','NEARUSDT','ICPUSDT','FILUSDT','THETAUSDT','EOSUSDT','XTZUSDT','DASHUSDT','ZECUSDT','RUNEUSDT','OCEANUSDT','ANKRUSDT','BATUSDT','ENJUSDT','CHZUSDT','ZILUSDT','QTUMUSDT','FETUSDT','GALAUSDT','APEUSDT','GMTUSDT','STXUSDT','HBARUSDT','EGLDUSDT','KSMUSDT','RAYUSDT','CAKEUSDT','TRXUSDT','IOTXUSDT','AUDIOUSDT','DYDXUSDT','CELRUSDT','WLDUSDT','INJUSDT','SUIUSDT','ARBUSDT','OPUSDT','APTUSDT','LDOUSDT','RNDRUSDT','AGIXUSDT','MASKUSDT','MINAUSDT','CFXUSDT','MAGICUSDT','HOOKUSDT','SKLUSDT','STORJUSDT','KNCUSDT','OMGUSDT','ZRXUSDT'];
 
 function boot(){
-  initChart();
-  renderModal(PAIRS);
-  connectPriceWS();
-  connectBookWS();
-  connectTickerWS();
-  fetchFunding();
-  fetchIndex();
+  initChart();renderModal(PAIRS);
+  connectPriceWS();connectBookWS();connectTickerWS();
+  fetchFunding();fetchIndex();
   sb.auth.getSession().then(function(r){
     if(!r.data.session){window.location.href='login.html';return;}
     userId=r.data.session.user.id;
@@ -559,9 +547,8 @@ function connectTickerWS(){
     var chg=((+d.c-+d.o)/+d.o*100).toFixed(2);var isUp=chg>=0;
     var base=pair.replace('USDT','');
     var icons={'BTC':'₿','ETH':'Ξ','BNB':'◈','SOL':'◎','XRP':'✕','DOGE':'Ð'};
-    var icon=icons[base]||'◈';
     g('tb-pair',pair.replace('USDT','/USDT Perpetual'));
-    var iconEl=g2('tb-coin-icon');if(iconEl)iconEl.textContent=icon;
+    var iconEl=g2('tb-coin-icon');if(iconEl)iconEl.textContent=icons[base]||'◈';
     g('tb-price','$'+fmt(price));
     var ce=g2('tb-chg');ce.textContent=(isUp?'+':'')+chg+'%';ce.className='tb-pair-chg '+(isUp?'up':'down');
     var ce2=g2('tb-chg2');ce2.textContent=(isUp?'+':'')+chg+'%';ce2.className='tb-stat-v '+(isUp?'up':'down');
@@ -571,8 +558,7 @@ function connectTickerWS(){
     g2('ob-mid-price').textContent='$'+fmt(price);
     g2('ob-mid-price').className=isUp?'up':'down';
     if(orderType==='market'){var lp=g2('inp-price');if(lp)lp.value=price.toFixed(2);}
-    updateSum();updateOpenPnL();
-    checkLimitOrdersClient();
+    updateSum();updateOpenPnL();checkLimitOrdersClient();
   };
 }
 
@@ -586,8 +572,7 @@ function fetchFunding(){
   fetch('https://fapi.binance.com/fapi/v1/premiumIndex?symbol='+pair)
     .then(function(r){return r.json();}).then(function(d){
       if(!d.lastFundingRate)return;
-      var rate=(+d.lastFundingRate*100).toFixed(4)+'%';
-      var next=+d.nextFundingTime;
+      var rate=(+d.lastFundingRate*100).toFixed(4)+'%';var next=+d.nextFundingTime;
       if(window._fundTimer)clearInterval(window._fundTimer);
       window._fundTimer=setInterval(function(){
         var diff=next-Date.now();if(diff<=0){clearInterval(window._fundTimer);fetchFunding();return;}
@@ -616,8 +601,7 @@ function renderBook(bids,asks){
   topB.forEach(function(r){var p=+r[0],a=+r[1],t=p*a;bv+=t;var pct=maxB?a/maxB*100:0;bh+='<div class="ob-row ob-bid"><div class="ob-bg" style="width:'+pct+'%"></div><span class="ob-p">'+fmt(p)+'</span><span class="ob-a">'+a.toFixed(3)+'</span><span class="ob-t">'+Math.round(t)+'</span></div>';});
   aEl.innerHTML=ah;bEl.innerHTML=bh;
   var tot=av+bv,bp=tot?Math.round(bv/tot*100):50;
-  g2('ob-bar').style.width=bp+'%';
-  g('ob-buy-pct','Buy '+bp+'%');g('ob-sell-pct','Sell '+(100-bp)+'%');
+  g2('ob-bar').style.width=bp+'%';g('ob-buy-pct','Buy '+bp+'%');g('ob-sell-pct','Sell '+(100-bp)+'%');
 }
 
 function renderModal(list){
@@ -625,10 +609,9 @@ function renderModal(list){
   el.innerHTML='<div class="modal-cols"><span>Contract</span><span>Last Price / 24h Change</span></div>';
   var ICONS={'BTC':'₿','ETH':'Ξ','BNB':'◈','SOL':'◎','XRP':'✕','DOGE':'Ð','ADA':'₳','AVAX':'△','DOT':'●','LINK':'⬡','TRX':'◈','ARB':'◆','OP':'◉','SUI':'◇','INJ':'◈','LTC':'Ł','NEAR':'Ⓝ','ATOM':'⚛','UNI':'🦄','MATIC':'⬡'};
   list.forEach(function(p){
-    var info=prices[p]||{price:0,chg:0};var isUp=+info.chg>=0;
-    var base=p.replace('USDT','');var icon=ICONS[base]||'◈';
+    var info=prices[p]||{price:0,chg:0};var isUp=+info.chg>=0;var base=p.replace('USDT','');
     var div=document.createElement('div');div.className='mi'+(p===pair?' on':'');
-    div.innerHTML='<div class="mi-left"><span class="mi-icon">'+icon+'</span><div class="mi-info"><span class="mi-name">'+base+'/USDT</span><span class="mi-type">Perpetual</span></div></div><div class="mi-r"><span class="mi-price">'+(info.price?'$'+fmt(info.price):'—')+'</span><span class="mi-chg '+(isUp?'up':'down')+'">'+(isUp?'+':'')+info.chg+'%</span></div>';
+    div.innerHTML='<div class="mi-left"><span class="mi-icon">'+(ICONS[base]||'◈')+'</span><div class="mi-info"><span class="mi-name">'+base+'/USDT</span><span class="mi-type">Perpetual</span></div></div><div class="mi-r"><span class="mi-price">'+(info.price?'$'+fmt(info.price):'—')+'</span><span class="mi-chg '+(isUp?'up':'down')+'">'+(isUp?'+':'')+info.chg+'%</span></div>';
     div.onclick=function(){changePair(p);};el.appendChild(div);
   });
 }
@@ -642,8 +625,7 @@ function changePair(p){
   var iconEl=g2('tb-coin-icon');if(iconEl)iconEl.textContent=ICONS[base]||'◈';
   var pairEl=g2('tb-pair');if(pairEl)pairEl.textContent=base+'/USDT Perpetual';
   g('aopt-coin-title',base);g('aopt-coin-desc',base);g('aopt-cont-desc',base);
-  var lp=g2('inp-price');if(lp)lp.value='';
-  price=0;updateSum();
+  var lp=g2('inp-price');if(lp)lp.value='';price=0;updateSum();
 }
 
 document.addEventListener('click',function(){var dd=g2('amt-dd');if(dd)dd.classList.remove('open');});
@@ -663,17 +645,14 @@ function selectCur(cur,e){
 }
 
 function getAmtUSDT(){
-  var raw=+g2('inp-amt').value||0;
-  if(amtCur==='USDT')return raw;
+  var raw=+g2('inp-amt').value||0;if(amtCur==='USDT')return raw;
   var ep=getEP()||price||1;
-  if(amtCur==='COIN')return raw*ep;
-  return raw*0.001*ep;
+  if(amtCur==='COIN')return raw*ep;return raw*0.001*ep;
 }
 
 function onAmtInput(){
   var u=getAmtUSDT(),bal=+(account?account.balance:5000);
-  g2('pct-sl').value=bal>0?Math.min(100,Math.round(u/bal*100)):0;
-  updateSum();
+  g2('pct-sl').value=bal>0?Math.min(100,Math.round(u/bal*100)):0;updateSum();
 }
 
 function showTooltip(){var tt=g2('pct-tooltip');if(tt)tt.style.display='block';}
@@ -700,17 +679,13 @@ function setOT(t){
     priceLabel.textContent='Price (USDT) — Market';
     g2('inp-price').placeholder='Executes at market price';
     g2('inp-price').value=price?price.toFixed(2):'';
-    g2('inp-price').readOnly=true;
-    g2('inp-price').style.opacity='0.5';
+    g2('inp-price').readOnly=true;g2('inp-price').style.opacity='0.5';
   } else {
     priceLabel.textContent='Limit Price (USDT)';
     g2('inp-price').placeholder='Enter limit price...';
-    g2('inp-price').readOnly=false;
-    g2('inp-price').style.opacity='1';
-    g2('inp-price').value='';
+    g2('inp-price').readOnly=false;g2('inp-price').style.opacity='1';g2('inp-price').value='';
   }
-  g('s-type',t==='limit'?'Limit':'Market');
-  updateSum();
+  g('s-type',t==='limit'?'Limit':'Market');updateSum();
 }
 
 function setSide(s){
@@ -724,7 +699,6 @@ function setLev(l,btn){
   lev=l;document.querySelectorAll('.lev-btn').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');
   g2('lev-sel').value=l;g('s-lev',l+'x');updateSum();
 }
-
 function setLevSel(v){
   lev=+v;document.querySelectorAll('.lev-btn').forEach(function(b){b.classList.toggle('on',b.textContent===v+'x');});
   g('s-lev',v+'x');updateSum();
@@ -741,7 +715,6 @@ function toggleTPSL(){
 }
 
 function getEP(){return orderType==='market'?price:+g2('inp-price').value||0;}
-
 function getMarginMode(){return g2('margin-sel')?g2('margin-sel').value:'cross';}
 
 function calcLiqPrice(ep,lev,dir,marginMode,margin){
@@ -765,9 +738,7 @@ function updateSum(){
   g('s-amt',amt?'$'+amt.toFixed(2):'—');
   g('s-size',sz?'$'+sz.toFixed(2):'—');
   g('s-margin',margin?'$'+margin.toFixed(2):'—');
-  if(ep&&lev&&margin){
-    g('s-liq','$'+fmt(calcLiqPrice(ep,lev,side,marginMode,margin)));
-  } else g('s-liq','—');
+  if(ep&&lev&&margin){g('s-liq','$'+fmt(calcLiqPrice(ep,lev,side,marginMode,margin)));}else g('s-liq','—');
   if(tpslOn){
     var tp=g2('inp-tp').value,sl=g2('inp-sl').value;
     g('s-tp',tp?'$'+fmt(+tp):'—');g('s-sl',sl?'$'+fmt(+sl):'—');
@@ -777,7 +748,6 @@ function updateSum(){
 
 function showMsg(txt,type){var el=g2('order-msg');el.textContent=txt;el.className='order-msg '+type;setTimeout(function(){el.className='order-msg';},4000);}
 
-// ── PLACE ORDER ──
 function placeOrder(dir){
   var amt=getAmtUSDT(),ep=getEP();
   var tp=tpslOn?+g2('inp-tp').value||null:null;
@@ -835,7 +805,6 @@ function resetForm(){
   updateSum();
 }
 
-// ── CLIENT-SIDE LIMIT ORDER CHECK ──
 function checkLimitOrdersClient(){
   if(!openOrders.length)return;
   openOrders.forEach(function(order){
@@ -869,17 +838,45 @@ function executeLimitOrder(order){
   });
 }
 
-// ── ACCOUNT ──
 function loadAccount(){
   sb.from('profiles').select('user_id').eq('id',userId).single().then(function(pr){
     if(pr.error||!pr.data){showAccessDenied();return;}
     var profileUserId=pr.data.user_id;
-    sb.from('accounts').select('*').eq('user_id',profileUserId).eq('status','active').order('created_at',{ascending:false}).limit(1).then(function(r){
-      if(!r.data||!r.data.length){showAccessDenied();return;}
-      account=r.data[0];accountId=account.account_id;
-      g('top-acc',accountId);updateStats();loadPositions();loadOpenOrders();
+    sb.from('accounts').select('*').eq('user_id',profileUserId).eq('status','active').eq('stage',2).order('created_at',{ascending:false}).limit(1).then(function(r2){
+      if(r2.data&&r2.data.length>0){
+        account=r2.data[0];accountId=account.account_id;accountStage=2;
+        g('top-acc',accountId);updateStageBadge(2);updateStageUI(2);
+        updateStats();loadPositions();loadOpenOrders();
+      } else {
+        sb.from('accounts').select('*').eq('user_id',profileUserId).eq('status','active').order('created_at',{ascending:false}).limit(1).then(function(r1){
+          if(!r1.data||!r1.data.length){showAccessDenied();return;}
+          account=r1.data[0];accountId=account.account_id;accountStage=account.stage||1;
+          g('top-acc',accountId);updateStageBadge(accountStage);updateStageUI(accountStage);
+          updateStats();loadPositions();loadOpenOrders();
+        });
+      }
     });
   });
+}
+
+function updateStageBadge(stage){
+  var badge=g2('stage-badge');if(!badge)return;
+  if(stage===2){badge.textContent='Stage 2 — Funded';badge.className='stage-badge s2';}
+  else{badge.textContent='Stage 1 — Challenge';badge.className='stage-badge s1';}
+}
+
+function updateStageUI(stage){
+  if(stage===2){
+    g('order-title','Place Order — Funded');
+    g('stats-title','Account Stats — Stage 2 Funded');
+    var daysRow=g2('stat-days-row');if(daysRow)daysRow.style.display='none';
+    g('st-target','$5,000 profit cap');
+  } else {
+    g('order-title','Place Order — Challenge');
+    g('stats-title','Account Stats — Stage 1');
+    var daysRow=g2('stat-days-row');if(daysRow)daysRow.style.display='flex';
+    g('st-target','8% ($400)');
+  }
 }
 
 function showAccessDenied(){
@@ -915,9 +912,8 @@ function showTab(tab){
 function renderOpen(){
   var el=g2('pos-scroll');
   if(!openPos.length){el.innerHTML='<div class="no-pos">No open positions — place a trade to begin</div>';return;}
-  var marginMode=getMarginMode();
-  var mtl=marginMode==='cross'?'Cross':'Isolated';
-  var h='<table><thead><tr><th>Contract</th><th>Side</th><th>Size(USDT)</th><th>Entry</th><th>Mark</th><th>Liq.Price</th><th>Margin</th><th>Unrealised PnL(ROE%)</th><th>TP/SL</th><th>Opened</th><th>Op.</th></tr></thead><tbody>';
+  var marginMode=getMarginMode();var mtl=marginMode==='cross'?'Cross':'Isolated';
+  var h='<table><thead><tr><th>Contract</th><th>Side</th><th>Size</th><th>Entry</th><th>Mark</th><th>Liq.Price</th><th>Margin</th><th>Unrealised PnL</th><th>TP/SL</th><th>Opened</th><th>Op.</th></tr></thead><tbody>';
   openPos.forEach(function(p){
     var cur=prices[p.symbol]?prices[p.symbol].price:p.entry_price;
     var pnl=p.direction==='long'?(cur-p.entry_price)*p.size/p.entry_price:(p.entry_price-cur)*p.size/p.entry_price;
@@ -927,19 +923,17 @@ function renderOpen(){
     var liq=calcLiqPrice(p.entry_price,p.leverage,p.direction,marginMode,p.amount);
     var dt=p.opened_at?new Date(p.opened_at).toLocaleString('en-GB',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
     var tpsl='<span class="td-p" style="font-size:10px">'+(p.take_profit?'$'+fmt(p.take_profit):'—')+'</span><br><span class="td-l" style="font-size:10px">'+(p.stop_loss?'$'+fmt(p.stop_loss):'—')+'</span>';
-    h+='<tr>';
-    h+='<td class="td-sym">'+base+'/USDT Perp<br><span style="font-size:9px;color:var(--purple3)">'+p.leverage+'x·'+mtl+'</span></td>';
+    h+='<tr><td class="td-sym">'+base+'/USDT<br><span style="font-size:9px;color:var(--purple3)">'+p.leverage+'x·'+mtl+'</span></td>';
     h+='<td class="'+(p.direction==='long'?'td-long':'td-short')+'">'+(p.direction==='long'?'▲ Long':'▼ Short')+'</td>';
     h+='<td class="td-n">$'+(+p.size).toFixed(2)+'</td>';
     h+='<td class="td-n">$'+fmt(p.entry_price)+'</td>';
     h+='<td class="td-n">$'+fmt(cur)+'</td>';
     h+='<td style="color:var(--red);font-family:\'JetBrains Mono\',monospace;font-size:10px;">$'+fmt(liq)+'</td>';
     h+='<td class="td-n">$'+(+p.amount).toFixed(2)+'</td>';
-    h+='<td class="'+pc+'">'+(pnl>=0?'+':'')+pnl.toFixed(2)+'<br><span style="font-size:9px;">(ROE '+(pnl>=0?'+':'')+roe+'%)</span></td>';
+    h+='<td class="'+pc+'">'+(pnl>=0?'+':'')+pnl.toFixed(2)+'<br><span style="font-size:9px;">('+( pnl>=0?'+':'')+roe+'%)</span></td>';
     h+='<td>'+tpsl+'</td>';
     h+='<td class="td-m">'+dt+'</td>';
-    h+='<td><button class="cls-btn" onclick="closePos(\''+p.id+'\')">Close</button></td>';
-    h+='</tr>';
+    h+='<td><button class="cls-btn" onclick="closePos(\''+p.id+'\')">Close</button></td></tr>';
   });
   el.innerHTML=h+'</tbody></table>';
 }
@@ -951,8 +945,7 @@ function renderOpenOrders(){
   openOrders.forEach(function(o){
     var cur=prices[o.symbol]?prices[o.symbol].price:0;
     var dt=o.created_at?new Date(o.created_at).toLocaleString('en-GB',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
-    h+='<tr>';
-    h+='<td class="td-sym">'+o.symbol.replace('USDT','/USDT')+'</td>';
+    h+='<tr><td class="td-sym">'+o.symbol.replace('USDT','/USDT')+'</td>';
     h+='<td class="'+(o.direction==='long'?'td-long':'td-short')+'">'+(o.direction==='long'?'▲ Long':'▼ Short')+'</td>';
     h+='<td style="color:var(--gold);font-size:10px;">Limit</td>';
     h+='<td class="td-n">$'+parseFloat(o.amount).toFixed(2)+'</td>';
@@ -961,8 +954,7 @@ function renderOpenOrders(){
     h+='<td class="td-n">'+o.leverage+'x</td>';
     h+='<td><span class="td-p" style="font-size:10px">'+(o.take_profit?'$'+fmt(o.take_profit):'—')+'</span><br><span class="td-l" style="font-size:10px">'+(o.stop_loss?'$'+fmt(o.stop_loss):'—')+'</span></td>';
     h+='<td class="td-m">'+dt+'</td>';
-    h+='<td><button class="can-btn" onclick="cancelOrder(\''+o.id+'\')">Cancel</button></td>';
-    h+='</tr>';
+    h+='<td><button class="can-btn" onclick="cancelOrder(\''+o.id+'\')">Cancel</button></td></tr>';
   });
   el.innerHTML=h+'</tbody></table>';
 }
@@ -987,7 +979,6 @@ function loadHistory(){
   });
 }
 
-// ── UPDATE OPEN PNL — cross/isolated aware ──
 function updateOpenPnL(){
   if(!account)return;
   var total=0,used=0;
@@ -995,25 +986,16 @@ function updateOpenPnL(){
   openPos.forEach(function(p){
     var cur=prices[p.symbol]?prices[p.symbol].price:p.entry_price;
     var pnl=p.direction==='long'?(cur-p.entry_price)*p.size/p.entry_price:(p.entry_price-cur)*p.size/p.entry_price;
-    // Isolated: cap loss at margin amount
     if(marginMode==='isolated'&&pnl<-p.amount)pnl=-p.amount;
     total+=pnl;used+=+(p.amount);
-    // Check liquidation
     var liq=calcLiqPrice(p.entry_price,p.leverage,p.direction,marginMode,p.amount);
     var isLiquidated=false;
-    if(marginMode==='isolated'){
-      isLiquidated=(p.direction==='long'&&cur<=liq)||(p.direction==='short'&&cur>=liq);
-    } else {
-      // Cross: liquidated when equity hits 0
-      var equity=+account.balance+total;
-      isLiquidated=equity<=0;
-    }
+    if(marginMode==='isolated'){isLiquidated=(p.direction==='long'&&cur<=liq)||(p.direction==='short'&&cur>=liq);}
+    else{isLiquidated=(+account.balance+total)<=0;}
     if(isLiquidated){closePos(p.id);return;}
-    // Check challenge rules first
     var equity2=+account.balance+total;
     var dd=(5000-equity2)/5000*100;
     if(dd>=8){closePos(p.id);return;}
-    // Check TP/SL
     var hit=false;
     if(p.take_profit&&p.direction==='long'&&cur>=+p.take_profit)hit=true;
     if(p.take_profit&&p.direction==='short'&&cur<=+p.take_profit)hit=true;
@@ -1024,19 +1006,15 @@ function updateOpenPnL(){
   var bal=+account.balance,eq=bal+total,avail=Math.max(0,bal-used);
   g('st-eq','$'+eq.toFixed(2));g('st-avail','$'+avail.toFixed(2));g('st-used','$'+used.toFixed(2));
   var ue=g2('st-upnl');ue.textContent=(total>=0?'+':'')+'$'+total.toFixed(2);ue.className='sv '+(total>=0?'g':'r');
-  checkAlerts();
-  if(activeTab==='open')renderOpen();
+  checkAlerts();if(activeTab==='open')renderOpen();
 }
 
-// ── CLOSE POSITION — cross/isolated aware ──
 function closePos(id){
   var pos=openPos.find(function(p){return p.id===id;});if(!pos)return;
-  // Remove from local array immediately to prevent double close
   openPos=openPos.filter(function(p){return p.id!==id;});
   var cur=prices[pos.symbol]?prices[pos.symbol].price:pos.entry_price;
   var marginMode=getMarginMode();
   var pnl=pos.direction==='long'?(cur-pos.entry_price)*pos.size/pos.entry_price:(pos.entry_price-cur)*pos.size/pos.entry_price;
-  // Isolated: cap loss at margin amount
   if(marginMode==='isolated'&&pnl<-pos.amount)pnl=-pos.amount;
   sb.from('positions').update({status:'closed',close_price:cur,pnl:pnl,closed_at:new Date().toISOString()}).eq('id',id).then(function(){
     var nb=+account.balance+pos.amount+pnl;
@@ -1044,21 +1022,69 @@ function closePos(id){
     var nd=Math.max(+(account.max_drawdown||0),nb<5000?(5000-nb)/5000*100:0);
     var nl=pnl<0?+(account.daily_loss||0)+(-pnl/5000*100):+(account.daily_loss||0);
     var ns=account.status;
-    if(nd>=8||nl>=5)ns='failed';
-    if(np>=400)ns='funded';
+    if(nd>=8||nl>=5){
+      ns='failed';
+      sb.from('accounts').update({balance:nb,profit:np,max_drawdown:nd,daily_loss:nl,status:ns}).eq('account_id',accountId).then(function(){
+        account.balance=nb;account.profit=np;account.max_drawdown=nd;account.daily_loss=nl;account.status=ns;
+        updateStats();loadPositions();
+        fetch('https://fortiqfunded-backend.onrender.com/notify-status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({account_id:accountId,status:'failed',reason:nd>=8?'Max drawdown breached (8%)':'Daily loss limit breached (5%)'})});
+        setTimeout(function(){alert('❌ Challenge Failed! Your account has been closed. Please purchase a new challenge to continue.');window.location.href='dashboard.html';},400);
+      });
+      return;
+    }
+    if(accountStage===1&&np>=400){
+      ns='funded';
+      sb.from('accounts').update({balance:nb,profit:np,max_drawdown:nd,daily_loss:nl,status:ns}).eq('account_id',accountId).then(function(){
+        account.balance=nb;account.profit=np;account.max_drawdown=nd;account.daily_loss=nl;account.status=ns;
+        updateStats();
+        if(!stage2CreationInProgress){stage2CreationInProgress=true;createStage2Account();}
+      });
+      return;
+    }
+    if(accountStage===2&&np>=5000){
+      ns='funded';
+      sb.from('accounts').update({balance:nb,profit:np,max_drawdown:nd,daily_loss:nl,status:ns,paid_out:false}).eq('account_id',accountId).then(function(){
+        account.balance=nb;account.profit=np;account.max_drawdown=nd;account.daily_loss=nl;account.status=ns;
+        updateStats();
+        fetch('https://fortiqfunded-backend.onrender.com/stage2-cap',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({account_id:accountId,user_id:userId})});
+        setTimeout(function(){alert('🎉 Incredible! You reached the $5,000 profit cap! Your $4,000 payout will be processed this Saturday. Well done!');window.location.href='dashboard.html';},400);
+      });
+      return;
+    }
     sb.from('accounts').update({balance:nb,profit:np,max_drawdown:nd,daily_loss:nl,status:ns}).eq('account_id',accountId).then(function(){
       account.balance=nb;account.profit=np;account.max_drawdown=nd;account.daily_loss=nl;account.status=ns;
       updateStats();loadPositions();
-      if(ns==='funded')setTimeout(function(){alert('🎉 Congratulations! You passed the challenge!');window.location.href='dashboard.html';},400);
     });
+  });
+}
+
+function createStage2Account(){
+  fetch('https://fortiqfunded-backend.onrender.com/create-stage2',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({stage1_account_id:accountId,user_id:userId})
+  }).then(function(r){return r.json();}).then(function(data){
+    if(data.success){
+      setTimeout(function(){
+        alert('🏆 Congratulations! You passed the challenge! Your funded account is now active. Welcome to Stage 2!');
+        window.location.reload();
+      },400);
+    } else {
+      console.log('Stage 2 creation error:',data.error);
+      stage2CreationInProgress=false;
+      window.location.href='dashboard.html';
+    }
+  }).catch(function(err){
+    console.log('Stage 2 fetch error:',err.message);
+    stage2CreationInProgress=false;
+    window.location.href='dashboard.html';
   });
 }
 
 function closeAll(){
   if(!openPos.length){showMsg('No open positions.','err');return;}
   if(!confirm('Close all '+openPos.length+' position(s)?'))return;
-  var toClose=openPos.slice();
-  toClose.forEach(function(p){closePos(p.id);});
+  var toClose=openPos.slice();toClose.forEach(function(p){closePos(p.id);});
 }
 
 function updateStats(){
@@ -1070,11 +1096,19 @@ function updateStats(){
   var dle=g2('st-dl');dle.textContent=dl.toFixed(2)+'%';dle.className='sv '+(dl>=4?'r':dl>=3?'gold':'g');
   var dde=g2('st-dd');dde.textContent=dd.toFixed(2)+'%';dde.className='sv '+(dd>=7?'r':dd>=5?'gold':'g');
   g('st-days',days+' / 5');
-  var se=g2('st-status');se.textContent={to_be_active:'Awaiting Trade',active:'Active ✓',failed:'FAILED ✗',funded:'FUNDED 🎉'}[account.status]||'—';
-  se.className='sv '+(account.status==='funded'?'g':account.status==='failed'?'r':'gold');
+  if(accountStage===2){
+    var remaining=Math.max(0,5000-profit).toFixed(2);
+    g('st-target','$'+profit.toFixed(2)+' / $5,000');
+    var se=g2('st-status');se.textContent='Funded — $'+remaining+' to cap';se.className='sv gold';
+  } else {
+    var se=g2('st-status');
+    se.textContent={to_be_active:'Awaiting Trade',active:'Active ✓',failed:'FAILED ✗',funded:'FUNDED 🎉'}[account.status]||'—';
+    se.className='sv '+(account.status==='funded'?'g':account.status==='failed'?'r':'gold');
+  }
 }
 
 function updateActiveDays(){
+  if(accountStage===2)return;
   var today=new Date().toDateString();
   if(account.last_active_day!==today){
     var nd=(account.active_days||0)+1;
@@ -1091,6 +1125,10 @@ function checkAlerts(){
   if(dl>=5)h+='<div class="alert danger">✕ Daily loss limit reached (5%). No new trades today.</div>';
   if(dd>=6&&dd<8)h+='<div class="alert warn">⚠ Drawdown nearing limit: '+dd.toFixed(2)+'% / 8%</div>';
   if(dd>=8)h+='<div class="alert danger">✕ Max drawdown breached (8%). Account failed.</div>';
+  if(accountStage===2){
+    var profit=+(account.profit||0);var remaining=5000-profit;
+    if(remaining<=500&&remaining>0)h+='<div class="alert info">💰 Almost there! $'+remaining.toFixed(2)+' until your $4,000 payout!</div>';
+  }
   g2('alerts').innerHTML=h;
 }
 
@@ -1102,7 +1140,6 @@ function g(id,v){var e=document.getElementById(id);if(e&&v!==undefined)e.textCon
 function g2(id){return document.getElementById(id);}
 function fmt(p){if(!p||p===0)return'0.00';if(p>=1000)return p.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});if(p>=1)return p.toFixed(4);return p.toFixed(6);}
 
-// ── ADVANCED TP/SL ──
 var advSide='long';var advEP=0;
 function openAdvModal(){
   var ep=getEP()||price;
@@ -1111,7 +1148,6 @@ function openAdvModal(){
   g2('adv-pair-info').innerHTML=pair.replace('USDT','')+'USDT · '+mt+' <span class="adv-pair-badge">·'+(side==='buy'?'Long':'Short')+'·'+lev+'X</span>';
   advEP=ep;
   g('adv-cur-price','$'+fmt(price)+' USDT');
-  g('adv-mark-price','$'+fmt(price)+' USDT');
   g('adv-entry-price','$'+fmt(ep)+' USDT');
   var existTP=g2('inp-tp')?g2('inp-tp').value:'';
   var existSL=g2('inp-sl')?g2('inp-sl').value:'';
@@ -1136,8 +1172,8 @@ function setAdvSide(s){
   g2('adv-tab-short').className='adv-side-tab'+(s==='short'?' adv-active-short':'');
   updateAdvTPEst();updateAdvSLEst();
 }
-function clearAdvTP(){g2('adv-tp-price').value='';g2('adv-tp-pct').value=0;}
-function clearAdvSL(){g2('adv-sl-price').value='';g2('adv-sl-pct').value=0;}
+function clearAdvTP(){g2('adv-tp-price').value='';g2('adv-tp-pct').value=0;g('adv-tp-est','Set a take profit price above.');}
+function clearAdvSL(){g2('adv-sl-price').value='';g2('adv-sl-pct').value=0;g('adv-sl-est','Set a stop loss price above.');}
 function calcAdvPnl(targetPrice,ep,amt,dir){var sz=amt*lev;return dir==='long'?(targetPrice-ep)*sz/ep:(ep-targetPrice)*sz/ep;}
 function updateAdvTPEst(){
   var ep=advEP||getEP()||price;if(!ep)return;
@@ -1155,7 +1191,7 @@ function updateAdvTPEstAndSlider(){
 }
 function _renderTPEst(ep,amt){
   var tpPrice=parseFloat(g2('adv-tp-price').value)||0;
-  if(!tpPrice||!ep){g('adv-tp-est','When the Last Price reaches -- USDT, estimated profit: -- USDT (--).');return;}
+  if(!tpPrice||!ep){g('adv-tp-est','Set a take profit price above.');return;}
   var pnl=calcAdvPnl(tpPrice,ep,amt,advSide);
   var pnlPct=amt>0?(pnl/amt*100).toFixed(2):'0.00';
   var estEl=g2('adv-tp-est');
@@ -1177,7 +1213,7 @@ function updateAdvSLEstAndSlider(){
 }
 function _renderSLEst(ep,amt){
   var slPrice=parseFloat(g2('adv-sl-price').value)||0;
-  if(!slPrice||!ep){g('adv-sl-est','When the Last Price reaches -- USDT, estimated loss: -- USDT (--).');return;}
+  if(!slPrice||!ep){g('adv-sl-est','Set a stop loss price above.');return;}
   var pnl=calcAdvPnl(slPrice,ep,amt,advSide);
   var pnlPct=amt>0?(pnl/amt*100).toFixed(2):'0.00';
   var estEl=g2('adv-sl-est');
