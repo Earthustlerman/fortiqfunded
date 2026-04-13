@@ -132,6 +132,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .payout-paid{background:rgba(0,214,143,0.08);border:1px solid rgba(0,214,143,0.3);border-radius:12px;padding:2rem;margin-top:1.5rem;text-align:center;}
 .payout-paid h4{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;color:var(--success);margin-bottom:0.5rem;}
 .rules-notice{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:1rem 1.2rem;font-size:12px;color:var(--warning);line-height:1.7;margin-top:1rem;}
+.warn-box{background:rgba(255,77,77,0.06);border:1px solid rgba(255,77,77,0.2);border-radius:10px;padding:1rem 1.2rem;font-size:12px;color:var(--error);line-height:1.7;margin-top:1rem;}
 .aff-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem;}
 .aff-stat{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:1.2rem;}
 .aff-stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem;}
@@ -144,14 +145,14 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .challenge-terminal-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
 .challenge-terminal-info h3{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px;}
 .challenge-terminal-info p{color:var(--muted);font-size:13px;font-weight:300;}
-
-/* ── MOBILE TOPBAR & HAMBURGER ── */
+.funded-banner{background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04));border:1px solid rgba(201,168,76,0.3);border-radius:14px;padding:1.5rem 2rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.funded-banner h3{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px;}
+.funded-banner p{font-size:13px;color:var(--muted);font-weight:300;}
 .mobile-topbar{display:none;align-items:center;justify-content:space-between;padding:1rem 1.2rem;background:var(--bg2);border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:150;}
 .hamburger{background:none;border:1px solid var(--border2);border-radius:8px;padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;gap:4px;}
-.hamburger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;transition:all 0.3s;}
+.hamburger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:190;backdrop-filter:blur(2px);}
 .overlay.open{display:block;}
-
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%)}
   .sidebar.open{transform:translateX(0)}
@@ -164,7 +165,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 </head>
 <body>
 
-<!-- OVERLAY (closes sidebar when tapped) -->
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
 <aside class="sidebar" id="sidebar">
@@ -226,7 +226,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 </aside>
 
 <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
-  <!-- MOBILE TOPBAR -->
   <div class="mobile-topbar">
     <button class="hamburger" onclick="openSidebar()">
       <span></span><span></span><span></span>
@@ -239,8 +238,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="page active" id="page-overview">
       <div class="page-header"><h1>Dashboard</h1><p id="welcome-msg">Welcome back!</p></div>
       <div class="metrics">
-        <div class="metric-card"><div class="metric-label">Account Size</div><div class="metric-value purple">$5,000</div><div class="metric-sub">Funded account value</div></div>
-        <div class="metric-card"><div class="metric-label">Profit Target</div><div class="metric-value gold">8%</div><div class="metric-sub">$400 USDT needed</div></div>
+        <div class="metric-card"><div class="metric-label">Account Size</div><div class="metric-value purple">$5,000</div><div class="metric-sub">Simulated account value</div></div>
+        <div class="metric-card"><div class="metric-label">Stage 1 Target</div><div class="metric-value gold">8%</div><div class="metric-sub">$400 USDT needed</div></div>
         <div class="metric-card"><div class="metric-label">Your Split</div><div class="metric-value green">80%</div><div class="metric-sub">Of all profits earned</div></div>
         <div class="metric-card"><div class="metric-label">Account Status</div><div class="metric-value purple" id="overview-status">—</div><div class="metric-sub" id="overview-acc-id">Waiting for challenge</div></div>
       </div>
@@ -253,7 +252,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
 
     <div class="page" id="page-payouts">
-      <div class="page-header"><h1>Payouts</h1><p>Submit your wallet and receive your 80% profit share</p></div>
+      <div class="page-header"><h1>Payouts</h1><p>Request your 80% profit share every Saturday</p></div>
       <div id="payouts-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
     </div>
 
@@ -263,7 +262,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
 
     <div class="page" id="page-active-challenge">
-      <div class="page-header"><h1>Active Challenge</h1><p>Your current challenge account</p></div>
+      <div class="page-header"><h1>Active Challenge</h1><p>Your current trading account</p></div>
       <div id="active-challenge-section"><div class="spinner-wrap"><div class="spinner"></div></div></div>
     </div>
   </main>
@@ -271,9 +270,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 
 <script>
 var sb=window.supabase.createClient('https://qhfsvazxpnjwfxhamkea.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo');
-var profile=null,account=null,currentUser=null;
+var profile=null,account=null,fundedAccount=null,currentUser=null;
 
-// ── MOBILE SIDEBAR ──
 function openSidebar(){
   document.getElementById('sidebar').classList.add('open');
   document.getElementById('overlay').classList.add('open');
@@ -330,9 +328,17 @@ function loadData(user){
     document.getElementById('avatar-initials').textContent=name.charAt(0).toUpperCase();
     document.getElementById('welcome-msg').textContent='Welcome back, '+name.split(' ')[0]+'!';
 
-    sb.from('accounts').select('*').eq('user_id',profile.user_id).order('created_at',{ascending:false}).limit(1).then(function(ar){
-      if(ar.data&&ar.data.length>0){
-        account=ar.data[0];
+    sb.from('accounts').select('*').eq('user_id',profile.user_id).order('created_at',{ascending:false}).then(function(ar){
+      var accounts=ar.data||[];
+      // Find active Stage 2 funded account
+      fundedAccount=accounts.find(function(a){return (a.stage===2)&&(a.status==='active'||a.status==='funded');});
+      // Most recent account overall for stage 1 display
+      account=accounts.find(function(a){return a.stage===1||!a.stage;})||accounts[0]||null;
+
+      if(fundedAccount){
+        document.getElementById('overview-status').textContent='Stage 2 — Funded';
+        document.getElementById('overview-acc-id').textContent=fundedAccount.account_id;
+      } else if(account){
         document.getElementById('overview-status').textContent=sl(account.status);
         document.getElementById('overview-acc-id').textContent=account.account_id;
       } else {
@@ -346,142 +352,249 @@ function loadData(user){
 
 function renderAll(user){renderOverview();renderBilling();renderPayouts();renderAffiliate(user);renderActiveChallenge();}
 
-function buildAccountCard(){
-  if(!account)return '<div class="empty-state"><div class="empty-icon">🏆</div><h3>No Active Challenge</h3><p>You haven\'t purchased a challenge yet. Start your $150 one-phase evaluation.</p><a href="checkout.html" class="btn-primary">Start Challenge — $150</a></div>';
-  var pp=((account.profit/5000)*100).toFixed(2);
-  var dp=parseFloat(account.daily_loss).toFixed(2);
-  var ddp=parseFloat(account.max_drawdown).toFixed(2);
-  return '<div class="account-card">'+
-    '<div class="account-header">'+
-      '<div class="account-id-wrap"><h3>Challenge Account</h3><div class="acc-id">'+account.account_id+'</div></div>'+
-      '<div class="status-badge '+sc(account.status)+'"><div class="status-dot"></div>'+sl(account.status)+'</div>'+
-    '</div>'+
-    '<div class="progress-section">'+
-      '<div class="progress-item"><div class="progress-header"><span class="progress-label">Profit Progress</span><span class="progress-val" style="color:var(--success)">'+pp+'% / 8%</span></div><div class="progress-bar"><div class="progress-fill fill-green" style="width:'+Math.min((pp/8)*100,100)+'%"></div></div></div>'+
-      '<div class="progress-item"><div class="progress-header"><span class="progress-label">Daily Loss Used</span><span class="progress-val" style="color:var(--error)">'+dp+'% / 5%</span></div><div class="progress-bar"><div class="progress-fill fill-red" style="width:'+Math.min((dp/5)*100,100)+'%"></div></div></div>'+
-      '<div class="progress-item"><div class="progress-header"><span class="progress-label">Max Drawdown Used</span><span class="progress-val" style="color:var(--warning)">'+ddp+'% / 8%</span></div><div class="progress-bar"><div class="progress-fill fill-gold" style="width:'+Math.min((ddp/8)*100,100)+'%"></div></div></div>'+
-      '<div class="progress-item"><div class="progress-header"><span class="progress-label">Active Trading Days</span><span class="progress-val" style="color:var(--purple3)">'+account.active_days+' / 5</span></div><div class="progress-bar"><div class="progress-fill fill-purple" style="width:'+Math.min((account.active_days/5)*100,100)+'%"></div></div></div>'+
-    '</div>'+
-    '<div class="rules-check">'+
-      '<div class="rule-check-item"><div class="rci-icon '+(account.profit>=0?'rci-ok':'rci-warn')+'">'+(account.profit>=0?'✓':'!')+'</div><div class="rci-text"><strong>Profit Target</strong>$'+parseFloat(account.profit).toFixed(2)+' earned</div></div>'+
-      '<div class="rule-check-item"><div class="rci-icon '+(account.daily_loss<5?'rci-ok':'rci-warn')+'">'+(account.daily_loss<5?'✓':'!')+'</div><div class="rci-text"><strong>Daily Loss Limit</strong>'+dp+'% of 5% used</div></div>'+
-      '<div class="rule-check-item"><div class="rci-icon '+(account.max_drawdown<8?'rci-ok':'rci-warn')+'">'+(account.max_drawdown<8?'✓':'!')+'</div><div class="rci-text"><strong>Max Drawdown</strong>'+ddp+'% of 8% used</div></div>'+
-      '<div class="rule-check-item"><div class="rci-icon '+(account.active_days>=5?'rci-ok':'rci-warn')+'">'+(account.active_days>=5?'✓':'!')+'</div><div class="rci-text"><strong>Trading Days</strong>'+account.active_days+' of 5 required</div></div>'+
-    '</div>'+
-    (account.status==='funded'?'<div style="margin-top:1.5rem;text-align:center;"><a href="#" onclick="showPage(\'payouts\',document.querySelectorAll(\'.nav-item\')[2]);return false;" class="btn-gold">💰 Claim Your Payout →</a></div>':'')+
-  '</div>';
+// ── OVERVIEW ──
+function renderOverview(){
+  var el=document.getElementById('overview-account-section');
+
+  if(fundedAccount){
+    var profit=parseFloat(fundedAccount.profit||0);
+    var payout=(profit*0.8).toFixed(2);
+    var dl=parseFloat(fundedAccount.daily_loss||0).toFixed(2);
+    var dd=parseFloat(fundedAccount.max_drawdown||0).toFixed(2);
+    el.innerHTML=
+      '<div class="account-card" style="border-color:rgba(201,168,76,0.3);">'+
+        '<div class="account-header">'+
+          '<div class="account-id-wrap"><h3>🏆 Stage 2 — Funded Account</h3><div class="acc-id" style="color:var(--gold);">'+fundedAccount.account_id+'</div></div>'+
+          '<div class="status-badge funded"><div class="status-dot"></div>Funded</div>'+
+        '</div>'+
+        '<div class="progress-section">'+
+          '<div class="progress-item"><div class="progress-header"><span class="progress-label">Total Profit</span><span class="progress-val" style="color:var(--gold);">$'+profit.toFixed(2)+' (Payout: $'+payout+')</span></div><div class="progress-bar"><div class="progress-fill fill-gold" style="width:'+Math.min((profit/5000)*100,100)+'%"></div></div></div>'+
+          '<div class="progress-item"><div class="progress-header"><span class="progress-label">Daily Loss Used</span><span class="progress-val" style="color:var(--error);">'+dl+'% / 5%</span></div><div class="progress-bar"><div class="progress-fill fill-red" style="width:'+Math.min((dl/5)*100,100)+'%"></div></div></div>'+
+          '<div class="progress-item"><div class="progress-header"><span class="progress-label">Max Drawdown Used</span><span class="progress-val" style="color:var(--warning);">'+dd+'% / 8%</span></div><div class="progress-bar"><div class="progress-fill fill-gold" style="width:'+Math.min((dd/8)*100,100)+'%"></div></div></div>'+
+        '</div>'+
+        '<div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.5rem;">'+
+          '<a href="terminal.html" target="_blank" class="btn-terminal"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Open Terminal</a>'+
+          '<a href="#" onclick="showPage(\'payouts\',document.querySelectorAll(\'.nav-item\')[2]);return false;" class="btn-gold">💰 Request Payout</a>'+
+        '</div>'+
+      '</div>';
+    return;
+  }
+
+  if(!account){
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">🏆</div><h3>No Active Challenge</h3><p>You haven\'t purchased a challenge yet. Start your $150 evaluation.</p><a href="checkout.html" class="btn-primary">Start Challenge — $150</a></div>';
+    return;
+  }
+
+  var pp=((parseFloat(account.profit||0)/5000)*100).toFixed(2);
+  var dp=parseFloat(account.daily_loss||0).toFixed(2);
+  var ddp=parseFloat(account.max_drawdown||0).toFixed(2);
+
+  el.innerHTML=
+    '<div class="account-card">'+
+      '<div class="account-header">'+
+        '<div class="account-id-wrap"><h3>Stage 1 — Challenge Account</h3><div class="acc-id">'+account.account_id+'</div></div>'+
+        '<div class="status-badge '+sc(account.status)+'"><div class="status-dot"></div>'+sl(account.status)+'</div>'+
+      '</div>'+
+      '<div class="progress-section">'+
+        '<div class="progress-item"><div class="progress-header"><span class="progress-label">Profit Progress</span><span class="progress-val" style="color:var(--success);">'+pp+'% / 8%</span></div><div class="progress-bar"><div class="progress-fill fill-green" style="width:'+Math.min((pp/8)*100,100)+'%"></div></div></div>'+
+        '<div class="progress-item"><div class="progress-header"><span class="progress-label">Daily Loss Used</span><span class="progress-val" style="color:var(--error);">'+dp+'% / 5%</span></div><div class="progress-bar"><div class="progress-fill fill-red" style="width:'+Math.min((dp/5)*100,100)+'%"></div></div></div>'+
+        '<div class="progress-item"><div class="progress-header"><span class="progress-label">Max Drawdown Used</span><span class="progress-val" style="color:var(--warning);">'+ddp+'% / 8%</span></div><div class="progress-bar"><div class="progress-fill fill-gold" style="width:'+Math.min((ddp/8)*100,100)+'%"></div></div></div>'+
+        '<div class="progress-item"><div class="progress-header"><span class="progress-label">Active Trading Days</span><span class="progress-val" style="color:var(--purple3);">'+(account.active_days||0)+' / 5</span></div><div class="progress-bar"><div class="progress-fill fill-purple" style="width:'+Math.min(((account.active_days||0)/5)*100,100)+'%"></div></div></div>'+
+      '</div>'+
+      '<div class="rules-check">'+
+        '<div class="rule-check-item"><div class="rci-icon '+(parseFloat(account.profit||0)>=400?'rci-ok':'rci-warn')+'">'+(parseFloat(account.profit||0)>=400?'✓':'!')+'</div><div class="rci-text"><strong>Profit Target</strong>$'+parseFloat(account.profit||0).toFixed(2)+' / $400 needed</div></div>'+
+        '<div class="rule-check-item"><div class="rci-icon '+(parseFloat(account.daily_loss||0)<5?'rci-ok':'rci-warn')+'">'+(parseFloat(account.daily_loss||0)<5?'✓':'!')+'</div><div class="rci-text"><strong>Daily Loss Limit</strong>'+dp+'% of 5% used</div></div>'+
+        '<div class="rule-check-item"><div class="rci-icon '+(parseFloat(account.max_drawdown||0)<8?'rci-ok':'rci-warn')+'">'+(parseFloat(account.max_drawdown||0)<8?'✓':'!')+'</div><div class="rci-text"><strong>Max Drawdown</strong>'+ddp+'% of 8% used</div></div>'+
+        '<div class="rule-check-item"><div class="rci-icon '+((account.active_days||0)>=5?'rci-ok':'rci-warn')+'">'+(account.active_days>=5?'✓':'!')+'</div><div class="rci-text"><strong>Trading Days</strong>'+(account.active_days||0)+' of 5 required</div></div>'+
+      '</div>'+
+      (account.status==='active'?'<div style="margin-top:1.5rem;"><a href="terminal.html" target="_blank" class="btn-terminal"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Open Terminal</a></div>':'')+
+      (account.status==='failed'?'<div style="margin-top:1.5rem;"><a href="checkout.html" class="btn-primary">Buy New Challenge — $150</a></div>':'')+
+    '</div>';
 }
 
-function renderOverview(){document.getElementById('overview-account-section').innerHTML=buildAccountCard();}
-
+// ── ACTIVE CHALLENGE ──
 function renderActiveChallenge(){
   var el=document.getElementById('active-challenge-section');
+
+  if(fundedAccount){
+    var profit=parseFloat(fundedAccount.profit||0);
+    var payout=(profit*0.8).toFixed(2);
+    var dl=parseFloat(fundedAccount.daily_loss||0).toFixed(2);
+    var dd=parseFloat(fundedAccount.max_drawdown||0).toFixed(2);
+    el.innerHTML=
+      '<div class="funded-banner">'+
+        '<div><h3>🏆 You Are a Funded Trader!</h3><p>Your Stage 2 funded account is active. Trade freely and request a payout whenever you are ready.</p></div>'+
+        '<div class="status-badge funded"><div class="status-dot"></div>Stage 2 — Funded</div>'+
+      '</div>'+
+      '<div class="challenge-terminal-card" style="border-color:rgba(201,168,76,0.3);">'+
+        '<div class="challenge-terminal-row">'+
+          '<div class="challenge-terminal-info">'+
+            '<h3>Funded Account</h3>'+
+            '<div style="font-size:12px;color:var(--gold);font-family:Cinzel,serif;margin-bottom:8px;">'+fundedAccount.account_id+'</div>'+
+            '<p>Trade freely. When you are ready to cash out, close all positions and request a payout from the Payouts section. Your account will close after payment is sent.</p>'+
+            '<div style="display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap;">'+
+              '<div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Total Profit</div><div style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;color:var(--gold);">$'+profit.toFixed(2)+'</div></div>'+
+              '<div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Your Payout (80%)</div><div style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;color:var(--success);">$'+payout+'</div></div>'+
+              '<div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Daily Loss</div><div style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;color:'+(parseFloat(dl)>=4?'var(--error)':'var(--success)')+';">'+dl+'%</div></div>'+
+              '<div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Max Drawdown</div><div style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;color:'+(parseFloat(dd)>=6?'var(--error)':'var(--success)')+';">'+dd+'%</div></div>'+
+            '</div>'+
+          '</div>'+
+          '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.8rem;">'+
+            '<a href="terminal.html" target="_blank" class="btn-terminal"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Open Terminal</a>'+
+            '<a href="#" onclick="showPage(\'payouts\',document.querySelectorAll(\'.nav-item\')[2]);return false;" class="btn-gold">💰 Request Payout</a>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    return;
+  }
+
   if(!account){
-    el.innerHTML='<div class="empty-state"><div class="empty-icon">📊</div><h3>No Active Challenge</h3><p>You don\'t have an active challenge yet. Purchase one to start trading.</p><a href="checkout.html" class="btn-primary">Start Challenge — $150</a></div>';
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">📊</div><h3>No Active Challenge</h3><p>You don\'t have an active challenge yet.</p><a href="checkout.html" class="btn-primary">Start Challenge — $150</a></div>';
     return;
   }
   if(account.status==='to_be_active'){
-    el.innerHTML='<div class="challenge-terminal-card"><div class="challenge-terminal-row"><div class="challenge-terminal-info"><h3>Challenge Account</h3><div style="font-size:12px;color:var(--purple3);font-family:Cinzel,serif;margin-bottom:6px;">'+account.account_id+'</div><p>Your payment is being confirmed on the blockchain. The terminal will unlock once your account is activated.</p></div><div class="status-badge to_be_active"><div class="status-dot"></div>Awaiting Activation</div></div></div>';
+    el.innerHTML='<div class="challenge-terminal-card"><div class="challenge-terminal-row"><div class="challenge-terminal-info"><h3>Stage 1 — Challenge Account</h3><div style="font-size:12px;color:var(--purple3);font-family:Cinzel,serif;margin-bottom:6px;">'+account.account_id+'</div><p>Your payment is being confirmed on the blockchain. The terminal will unlock once your account is activated (usually within a few minutes).</p></div><div class="status-badge to_be_active"><div class="status-dot"></div>Awaiting Activation</div></div></div>';
     return;
   }
   if(account.status==='failed'){
-    el.innerHTML='<div class="challenge-terminal-card"><div class="challenge-terminal-row"><div class="challenge-terminal-info"><h3>Challenge Account</h3><div style="font-size:12px;color:var(--purple3);font-family:Cinzel,serif;margin-bottom:6px;">'+account.account_id+'</div><p>This challenge has ended. Purchase a new challenge to trade again.</p></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.8rem;"><div class="status-badge failed"><div class="status-dot"></div>Failed</div><a href="checkout.html" class="btn-primary">New Challenge — $150</a></div></div></div>';
+    el.innerHTML='<div class="challenge-terminal-card"><div class="challenge-terminal-row"><div class="challenge-terminal-info"><h3>Stage 1 — Challenge Account</h3><div style="font-size:12px;color:var(--purple3);font-family:Cinzel,serif;margin-bottom:6px;">'+account.account_id+'</div><p>This challenge has ended due to a rule breach. Purchase a new challenge to trade again.</p></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.8rem;"><div class="status-badge failed"><div class="status-dot"></div>Failed</div><a href="checkout.html" class="btn-primary">New Challenge — $150</a></div></div></div>';
     return;
   }
   if(account.status==='funded'){
-    el.innerHTML='<div class="challenge-terminal-card"><div class="challenge-terminal-row"><div class="challenge-terminal-info"><h3>Challenge Account</h3><div style="font-size:12px;color:var(--purple3);font-family:Cinzel,serif;margin-bottom:6px;">'+account.account_id+'</div><p>You passed this challenge! Claim your payout below, then purchase a new challenge to continue trading.</p></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.8rem;"><div class="status-badge funded"><div class="status-dot"></div>Funded 🎉</div><a href="#" onclick="showPage(\'payouts\',document.querySelectorAll(\'.nav-item\')[2]);return false;" class="btn-gold">💰 Claim Payout</a></div></div></div>';
+    el.innerHTML='<div class="challenge-terminal-card"><div class="challenge-terminal-row"><div class="challenge-terminal-info"><h3>Stage 1 — Challenge Passed!</h3><div style="font-size:12px;color:var(--gold);font-family:Cinzel,serif;margin-bottom:6px;">'+account.account_id+'</div><p>🎉 You passed Stage 1! Your Stage 2 funded account is being created. Please refresh the page in a moment.</p></div><div class="status-badge funded"><div class="status-dot"></div>Passed</div></div></div>';
     return;
   }
-  el.innerHTML='<div class="challenge-terminal-card">'+
-    '<div class="challenge-terminal-row">'+
-      '<div class="challenge-terminal-info">'+
-        '<h3>Challenge Account</h3>'+
-        '<div style="font-size:12px;color:var(--purple3);font-family:Cinzel,serif;margin-bottom:6px;">'+account.account_id+'</div>'+
-        '<p>Your challenge is active. Open the trading terminal to place trades and track your progress.</p>'+
-        '<div style="display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap;">'+
-          '<div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Profit</div><div style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;color:var(--success);">$'+parseFloat(account.profit||0).toFixed(2)+'</div></div>'+
-          '<div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Active Days</div><div style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;color:var(--purple3);">'+(account.active_days||0)+' / 5</div></div>'+
-          '<div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Balance</div><div style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;color:var(--text);">$'+parseFloat(account.balance||5000).toFixed(2)+'</div></div>'+
+  el.innerHTML=
+    '<div class="challenge-terminal-card">'+
+      '<div class="challenge-terminal-row">'+
+        '<div class="challenge-terminal-info">'+
+          '<h3>Stage 1 — Challenge Account</h3>'+
+          '<div style="font-size:12px;color:var(--purple3);font-family:Cinzel,serif;margin-bottom:6px;">'+account.account_id+'</div>'+
+          '<p>Hit 8% profit ($400) with at least 5 active trading days to pass Stage 1 and unlock your funded account.</p>'+
+          '<div style="display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap;">'+
+            '<div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Profit</div><div style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;color:var(--success);">$'+parseFloat(account.profit||0).toFixed(2)+'</div></div>'+
+            '<div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Active Days</div><div style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;color:var(--purple3);">'+(account.active_days||0)+' / 5</div></div>'+
+            '<div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Balance</div><div style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;color:var(--text);">$'+parseFloat(account.balance||5000).toFixed(2)+'</div></div>'+
+          '</div>'+
+        '</div>'+
+        '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.8rem;">'+
+          '<div class="status-badge active"><div class="status-dot"></div>Active</div>'+
+          '<a href="terminal.html" target="_blank" class="btn-terminal"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Open Terminal</a>'+
         '</div>'+
       '</div>'+
-      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.8rem;">'+
-        '<div class="status-badge active"><div class="status-dot"></div>Active</div>'+
-        '<a href="terminal.html" target="_blank" class="btn-terminal">'+
-          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>'+
-          'Open Terminal'+
-        '</a>'+
-      '</div>'+
-    '</div>'+
-  '</div>';
+    '</div>';
 }
 
-function renderBilling(){
-  var el=document.getElementById('billing-section');
-  if(!account){
-    el.innerHTML='<div class="empty-state"><div class="empty-icon">💳</div><h3>No Payments Yet</h3><p>Your payment history will appear here after you purchase a challenge.</p><a href="checkout.html" class="btn-primary">Buy Challenge — $150</a></div>';
-    return;
-  }
-  el.innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';
-  sb.from('payments').select('*').eq('account_id',account.account_id).order('created_at',{ascending:false}).then(function(r){
-    var payments=r.data||[];
-    if(!payments.length){
-      el.innerHTML='<div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody><tr><td>'+new Date(account.created_at).toLocaleDateString()+'</td><td class="highlight">One-Phase Challenge — '+account.account_id+'</td><td class="highlight">$150.00 USDT</td><td><span class="pill pill-green">Confirmed</span></td></tr></tbody></table></div>';
-      return;
-    }
-    var rows=payments.map(function(p){
-      return '<tr><td>'+new Date(p.created_at).toLocaleDateString()+'</td><td class="highlight">One-Phase Challenge — '+account.account_id+'</td><td class="highlight">$'+parseFloat(p.amount).toFixed(2)+' USDT</td><td><span class="pill pill-green">Confirmed</span></td></tr>';
-    }).join('');
-    el.innerHTML='<div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
-  });
-}
-
+// ── PAYOUTS ──
 function renderPayouts(){
   var el=document.getElementById('payouts-section');
-  if(!account||(account.status!=='funded'&&account.status!=='failed')){
-    var pp=account?((account.profit/5000)*100).toFixed(2):0;
-    var needed=account?Math.max(0,400-parseFloat(account.profit)).toFixed(2):400;
-    el.innerHTML='<div class="empty-state"><div class="empty-icon">💰</div><h3>Keep Trading!</h3><p>Payouts unlock when you reach 8% profit ($400) with at least 5 active trading days.</p>'+(account?'<p style="margin-top:0.5rem;color:var(--purple3);font-weight:500;">Current: '+pp+'% — $'+needed+' more needed</p>':'')+'<a href="terminal.html" class="btn-primary" style="margin-top:1.5rem;" target="_blank">Open Trading Terminal</a></div>';
+
+  // Stage 1 active — no payout yet
+  if(!fundedAccount){
+    if(!account){
+      el.innerHTML='<div class="empty-state"><div class="empty-icon">💰</div><h3>No Challenge Yet</h3><p>Purchase a challenge to begin your journey to a funded account.</p><a href="checkout.html" class="btn-primary">Start Challenge — $150</a></div>';
+      return;
+    }
+    if(account.status==='failed'){
+      el.innerHTML='<div class="empty-state"><div class="empty-icon">❌</div><h3>Challenge Failed</h3><p>Your account breached the trading rules. Purchase a new challenge to try again.</p><a href="checkout.html" class="btn-primary">Buy New Challenge — $150</a></div>';
+      return;
+    }
+    var pp=((parseFloat(account.profit||0)/5000)*100).toFixed(2);
+    var needed=Math.max(0,400-parseFloat(account.profit||0)).toFixed(2);
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">🎯</div><h3>Complete Stage 1 First</h3><p>You are currently in Stage 1. Hit 8% profit ($400) with at least 5 active trading days to unlock your Stage 2 funded account.</p><p style="margin-top:0.5rem;color:var(--purple3);font-weight:500;margin-bottom:0;">Current profit: '+pp+'% — $'+needed+' more needed</p><a href="terminal.html" target="_blank" class="btn-primary" style="margin-top:1.5rem;">Open Trading Terminal</a></div>';
     return;
   }
-  if(account.status==='failed'){
-    el.innerHTML='<div class="empty-state"><div class="empty-icon">❌</div><h3>Challenge Failed</h3><p>Your account breached the rules. Start a new challenge to try again.</p><a href="checkout.html" class="btn-primary">Buy New Challenge — $150</a></div>';
+
+  // Stage 2 — paid out already
+  if(fundedAccount.paid_out){
+    el.innerHTML=
+      '<div class="payout-card">'+
+        '<div class="account-header">'+
+          '<div class="account-id-wrap"><h3>Payout Complete</h3><div class="acc-id">'+fundedAccount.account_id+'</div></div>'+
+          '<div class="status-badge funded"><div class="status-dot"></div>Paid Out</div>'+
+        '</div>'+
+        '<div class="payout-paid">'+
+          '<h4>🎉 Payment Sent!</h4>'+
+          '<p style="color:var(--muted);font-size:14px;margin-top:0.5rem;">Your payout of <strong style="color:var(--success);">$'+(fundedAccount.payout_amount||(parseFloat(fundedAccount.profit||0)*0.8).toFixed(2))+' USDT</strong> has been sent to your wallet.</p>'+
+          '<p style="color:var(--muted2);font-size:12px;margin-top:0.8rem;line-height:1.7;">Your funded account is now closed. Purchase a new $150 challenge to start trading again!</p>'+
+        '</div>'+
+        '<div style="margin-top:1.5rem;text-align:center;">'+
+          '<a href="checkout.html" class="btn-primary">Start New Challenge — $150</a>'+
+        '</div>'+
+      '</div>';
     return;
   }
-  if(account.paid_out){
-    el.innerHTML='<div class="payout-card"><div class="account-header"><div class="account-id-wrap"><h3>Payout Complete</h3><div class="acc-id">'+account.account_id+'</div></div><div class="status-badge funded"><div class="status-dot"></div>Paid Out</div></div><div class="payout-paid"><h4>🎉 Payment Sent!</h4><p style="color:var(--muted);font-size:14px;margin-top:0.5rem;">Your payout of <strong style="color:var(--success)">$'+(account.payout_amount||(parseFloat(account.profit||0)*0.8).toFixed(2))+' USDT</strong> has been sent to your wallet.</p><p style="color:var(--muted2);font-size:12px;margin-top:0.8rem;">This funded account has reached its lifetime cap. Thank you for trading with Fortiq Funded.</p></div></div>';
+
+  // Stage 2 — wallet already submitted, awaiting payment
+  if(fundedAccount.payout_wallet){
+    var profit=parseFloat(fundedAccount.profit||0);
+    var payout=(profit*0.8).toFixed(2);
+    el.innerHTML=
+      '<div class="payout-card">'+
+        '<div class="account-header">'+
+          '<div class="account-id-wrap"><h3>Payout Pending</h3><div class="acc-id">'+fundedAccount.account_id+'</div></div>'+
+          '<div class="status-badge funded"><div class="status-dot"></div>Under Review</div>'+
+        '</div>'+
+        '<div class="metrics" style="margin-bottom:1.5rem;">'+
+          '<div class="metric-card"><div class="metric-label">Your Profit</div><div class="metric-value green">$'+profit.toFixed(2)+'</div></div>'+
+          '<div class="metric-card"><div class="metric-label">Your Payout (80%)</div><div class="metric-value gold">$'+payout+'</div></div>'+
+          '<div class="metric-card"><div class="metric-label">Status</div><div class="metric-value purple">Pending</div></div>'+
+        '</div>'+
+        '<div class="payout-submitted">'+
+          '<h4>⏳ Payout Request Submitted — Awaiting Saturday Payment</h4>'+
+          '<p style="font-size:13px;color:var(--muted);margin-bottom:0.5rem;">Your payout of <strong>$'+payout+' USDT</strong> will be sent this Saturday. Your funded account will close once payment is sent.</p>'+
+          '<p style="margin-top:0.8rem;font-size:12px;color:var(--muted2);">Wallet: <span style="font-family:Courier New,monospace;color:var(--purple3);">'+fundedAccount.payout_wallet+'</span></p>'+
+        '</div>'+
+        '<div class="rules-notice">📧 You will receive an email confirmation once payment is sent. Questions? <a href="mailto:support@fortiqfunded.com" style="color:var(--warning);">support@fortiqfunded.com</a></div>'+
+      '</div>';
     return;
   }
-  if(account.payout_wallet){
-    var p80=(parseFloat(account.profit||0)*0.8).toFixed(2);
-    el.innerHTML='<div class="payout-card"><div class="account-header"><div class="account-id-wrap"><h3>Payout Pending</h3><div class="acc-id">'+account.account_id+'</div></div><div class="status-badge funded"><div class="status-dot"></div>Under Review</div></div><div class="metrics" style="margin-bottom:1.5rem;"><div class="metric-card"><div class="metric-label">Your Profit</div><div class="metric-value green">$'+parseFloat(account.profit||0).toFixed(2)+'</div></div><div class="metric-card"><div class="metric-label">Your Payout (80%)</div><div class="metric-value gold">$'+p80+'</div></div><div class="metric-card"><div class="metric-label">Status</div><div class="metric-value purple">Pending</div></div></div><div class="payout-submitted"><h4>⏳ Wallet Submitted — Awaiting Payment</h4><p>We are verifying your trading history. Your payout of <strong>$'+p80+' USDT</strong> will be sent every Saturday.</p><p style="margin-top:0.8rem;font-size:12px;color:var(--muted2);">Wallet: <span style="font-family:Courier New,monospace;color:var(--purple3);">'+account.payout_wallet+'</span></p></div><div class="rules-notice">📧 You will be notified once payment is sent. Questions? <a href="mailto:payments@fortiqfunded.com" style="color:var(--warning);">payments@fortiqfunded.com</a></div></div>';
-    return;
-  }
-  var profit=parseFloat(account.profit||0);
-  var payout=(profit*0.8).toFixed(2);
-  var firm=(profit*0.2).toFixed(2);
-  el.innerHTML='<div class="payout-card">'+
-    '<div class="account-header"><div class="account-id-wrap"><h3>🏆 Challenge Passed!</h3><div class="acc-id">'+account.account_id+'</div></div><div class="status-badge funded"><div class="status-dot"></div>Funded</div></div>'+
-    '<div class="payout-steps">'+
-      '<div class="payout-step"><div class="payout-step-num">1</div><div class="payout-step-title">Close All Positions</div><div class="payout-step-desc">Ensure all trades are closed in the terminal before requesting payout.</div></div>'+
-      '<div class="payout-step"><div class="payout-step-num">2</div><div class="payout-step-title">Submit Your Wallet</div><div class="payout-step-desc">Enter your USDT TRC20 wallet address below.</div></div>'+
-      '<div class="payout-step"><div class="payout-step-num">3</div><div class="payout-step-title">Receive Payment</div><div class="payout-step-desc">We verify and send your 80% share every Saturday.</div></div>'+
-    '</div>'+
-    '<div class="metrics">'+
-      '<div class="metric-card"><div class="metric-label">Total Profit</div><div class="metric-value green">$'+profit.toFixed(2)+'</div><div class="metric-sub">USDT</div></div>'+
-      '<div class="metric-card"><div class="metric-label">Your Share (80%)</div><div class="metric-value gold">$'+payout+'</div><div class="metric-sub">USDT TRC20</div></div>'+
-      '<div class="metric-card"><div class="metric-label">Firm Share (20%)</div><div class="metric-value purple">$'+firm+'</div><div class="metric-sub">Performance fee</div></div>'+
-    '</div>'+
-    '<div class="wallet-form">'+
-      '<h4>Submit Your TRC20 Wallet Address</h4>'+
-      '<p>Enter your Trust Wallet or any TRC20-compatible wallet. Double-check carefully — crypto is irreversible.</p>'+
-      '<div class="wallet-input-wrap">'+
-        '<input type="text" class="wallet-input" id="wallet-addr" placeholder="T... (USDT TRC20 wallet address)" maxlength="50"/>'+
-        '<button class="wallet-submit-btn" id="wallet-btn" onclick="submitWallet()">Submit Wallet</button>'+
-      '</div>'+
-      '<div class="form-msg" id="wallet-msg"></div>'+
-    '</div>'+
-    '<div class="rules-notice">⚠ By submitting, you confirm all positions are closed and agree to our <a href="terms.html" style="color:var(--warning);">Terms</a>. One payout per funded account only.</div>'+
-  '</div>';
+
+  // Stage 2 — ready to request payout
+  // First check for open positions
+  sb.from('positions').select('id').eq('account_id',fundedAccount.account_id).eq('status','open').then(function(r){
+    var openCount=(r.data||[]).length;
+    var profit=parseFloat(fundedAccount.profit||0);
+    var payout=(profit*0.8).toFixed(2);
+    var firm=(profit*0.2).toFixed(2);
+
+    el.innerHTML=
+      '<div class="payout-card">'+
+        '<div class="account-header">'+
+          '<div class="account-id-wrap"><h3>💰 Request Payout</h3><div class="acc-id" style="color:var(--gold);">'+fundedAccount.account_id+' — Stage 2 Funded</div></div>'+
+          '<div class="status-badge funded"><div class="status-dot"></div>Funded</div>'+
+        '</div>'+
+        '<div class="payout-steps">'+
+          '<div class="payout-step"><div class="payout-step-num">1</div><div class="payout-step-title">Close All Positions</div><div class="payout-step-desc">Go to the terminal and close all open trades before requesting.</div></div>'+
+          '<div class="payout-step"><div class="payout-step-num">2</div><div class="payout-step-title">Submit Your Wallet</div><div class="payout-step-desc">Enter your USDT TRC20 wallet address below.</div></div>'+
+          '<div class="payout-step"><div class="payout-step-num">3</div><div class="payout-step-title">Get Paid Saturday</div><div class="payout-step-desc">We verify and send your 80% share every Saturday. Account closes after payment.</div></div>'+
+        '</div>'+
+        '<div class="metrics">'+
+          '<div class="metric-card"><div class="metric-label">Total Profit</div><div class="metric-value green">$'+profit.toFixed(2)+'</div><div class="metric-sub">USDT earned</div></div>'+
+          '<div class="metric-card"><div class="metric-label">Your Payout (80%)</div><div class="metric-value gold">$'+payout+'</div><div class="metric-sub">USDT TRC20</div></div>'+
+          '<div class="metric-card"><div class="metric-label">Firm Share (20%)</div><div class="metric-value purple">$'+firm+'</div><div class="metric-sub">Performance fee</div></div>'+
+        '</div>'+
+        (openCount>0?
+          '<div class="warn-box">⛔ You have <strong>'+openCount+' open position'+(openCount>1?'s':'')+
+          '</strong> in the terminal. You must close all positions before requesting a payout. <a href="terminal.html" target="_blank" style="color:var(--error);font-weight:600;">Go to Terminal →</a></div>'
+        :
+          (profit<=0?
+            '<div class="warn-box">⚠ You need to make a profit before requesting a payout. Open the terminal and start trading!</div>'
+          :
+            '<div class="wallet-form">'+
+              '<h4>Submit Your TRC20 Wallet Address</h4>'+
+              '<p>Enter your Trust Wallet or any TRC20-compatible wallet address. Double-check carefully — crypto transactions are irreversible. Your funded account will close after your payout is sent on Saturday.</p>'+
+              '<div class="wallet-input-wrap">'+
+                '<input type="text" class="wallet-input" id="wallet-addr" placeholder="T... (USDT TRC20 wallet address)" maxlength="50"/>'+
+                '<button class="wallet-submit-btn" id="wallet-btn" onclick="submitWallet()">Request Payout</button>'+
+              '</div>'+
+              '<div class="form-msg" id="wallet-msg"></div>'+
+            '</div>'+
+            '<div class="rules-notice">⚠ By submitting you confirm all positions are closed and agree to our <a href="terms.html" style="color:var(--warning);">Terms</a>. Payouts are processed every Saturday. Your funded account will close after payment is sent.</div>'
+          )
+        )+
+      '</div>';
+  });
 }
 
 function submitWallet(){
@@ -491,30 +604,39 @@ function submitWallet(){
   if(!addr){msg.textContent='Please enter your wallet address.';msg.className='form-msg err';return;}
   if(!addr.startsWith('T')||addr.length<30||addr.length>45){msg.textContent='Invalid TRC20 address. Must start with T and be 34 characters.';msg.className='form-msg err';return;}
   btn.disabled=true;btn.textContent='Submitting...';msg.className='form-msg';
-  sb.from('accounts').update({payout_wallet:addr}).eq('account_id',account.account_id).then(function(r){
-    if(r.error){msg.textContent='Error: '+r.error.message;msg.className='form-msg err';btn.disabled=false;btn.textContent='Submit Wallet';return;}
-    account.payout_wallet=addr;
-    msg.textContent='Wallet submitted! Refreshing...';msg.className='form-msg ok';
+  sb.from('accounts').update({payout_wallet:addr}).eq('account_id',fundedAccount.account_id).then(function(r){
+    if(r.error){msg.textContent='Error: '+r.error.message;msg.className='form-msg err';btn.disabled=false;btn.textContent='Request Payout';return;}
+    fundedAccount.payout_wallet=addr;
+    msg.textContent='Payout request submitted! You will receive payment this Saturday.';msg.className='form-msg ok';
     setTimeout(function(){renderPayouts();},1500);
   });
 }
 
-function submitAffiliateWallet(){
-  var addr=document.getElementById('aff-wallet-addr').value.trim();
-  var msg=document.getElementById('aff-wallet-msg');
-  var btn=document.getElementById('aff-wallet-btn');
-  if(!addr){msg.textContent='Please enter your wallet address.';msg.className='form-msg err';return;}
-  if(!addr.startsWith('T')||addr.length<30||addr.length>45){msg.textContent='Invalid TRC20 address. Must start with T and be 34 characters.';msg.className='form-msg err';return;}
-  btn.disabled=true;btn.textContent='Submitting...';msg.className='form-msg';
-  sb.from('profiles').update({affiliate_wallet:addr}).eq('id',currentUser.id).then(function(r){
-    if(r.error){msg.textContent='Error: '+r.error.message;msg.className='form-msg err';btn.disabled=false;btn.textContent='Save Wallet';return;}
-    profile.affiliate_wallet=addr;
-    msg.textContent='Affiliate wallet saved! Commissions will be sent here every Saturday.';msg.className='form-msg ok';
-    btn.disabled=false;btn.textContent='Save Wallet';
-    setTimeout(function(){renderAffiliate(currentUser);},1500);
+// ── BILLING ──
+function renderBilling(){
+  var el=document.getElementById('billing-section');
+  var acc=account||fundedAccount;
+  if(!acc){
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">💳</div><h3>No Payments Yet</h3><p>Your payment history will appear here after you purchase a challenge.</p><a href="checkout.html" class="btn-primary">Buy Challenge — $150</a></div>';
+    return;
+  }
+  el.innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';
+  // Use the stage 1 account for billing since that's where the payment was made
+  var billingAccId=account?account.account_id:fundedAccount.account_id;
+  sb.from('payments').select('*').eq('account_id',billingAccId).order('created_at',{ascending:false}).then(function(r){
+    var payments=r.data||[];
+    if(!payments.length){
+      el.innerHTML='<div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody><tr><td>'+new Date(acc.created_at).toLocaleDateString()+'</td><td class="highlight">Stage 1 Challenge — '+billingAccId+'</td><td class="highlight">$150.00 USDT</td><td><span class="pill pill-green">Confirmed</span></td></tr></tbody></table></div>';
+      return;
+    }
+    var rows=payments.map(function(p){
+      return '<tr><td>'+new Date(p.created_at).toLocaleDateString()+'</td><td class="highlight">Stage 1 Challenge — '+billingAccId+'</td><td class="highlight">$'+parseFloat(p.amount).toFixed(2)+' USDT</td><td><span class="pill pill-green">Confirmed</span></td></tr>';
+    }).join('');
+    el.innerHTML='<div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
   });
 }
 
+// ── AFFILIATES ──
 function renderAffiliate(user){
   var el=document.getElementById('affiliate-section');
   if(!profile){el.innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';return;}
@@ -537,7 +659,7 @@ function renderAffiliate(user){
           '<h4>💳 Affiliate Payout Wallet</h4>'+
           '<p style="font-size:13px;color:var(--muted);margin-bottom:0.5rem;">Your affiliate commissions will be sent to:</p>'+
           '<p style="font-family:Courier New,monospace;color:var(--purple3);font-size:12px;word-break:break-all;">'+affWallet+'</p>'+
-          '<p style="margin-top:0.8rem;font-size:12px;color:var(--muted2);">Paid every Saturday in USDT on TRC20. <span style="cursor:pointer;color:var(--purple3);text-decoration:underline;" onclick="profile.affiliate_wallet=\'\';renderAffiliate(currentUser);">Change wallet</span></p>'+
+          '<p style="margin-top:0.8rem;font-size:12px;color:var(--muted2);">Paid every Saturday in USDT TRC20. <span style="cursor:pointer;color:var(--purple3);text-decoration:underline;" onclick="profile.affiliate_wallet=\'\';renderAffiliate(currentUser);">Change wallet</span></p>'+
           (pendingPayout.length>0?'<p style="margin-top:0.8rem;font-size:13px;color:var(--gold);font-weight:600;">🎉 You have $'+(pendingPayout.length*50)+' USDT in approved commissions awaiting payment!</p>':'')+
         '</div>';
     } else {
@@ -577,13 +699,36 @@ function renderAffiliate(user){
           '</div>'+
         '</div>'+
       '</div>'+
-      (refs.length>0?'<div class="account-card" style="margin-top:1rem;"><h3 style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;margin-bottom:1rem;">Referral History</h3>'+refs.map(function(ref){return '<div class="aff-ref-row"><span style="color:var(--muted);font-size:12px;">Referral: '+ref.referred_id+'</span><span style="display:flex;align-items:center;gap:0.8rem;"><span style="color:var(--gold);font-size:12px;">'+(ref.status==='approved'?'$50 USDT':'Pending')+'</span><span class="pill '+(ref.status==='approved'?'pill-green':ref.status==='rejected'?'pill-red':'pill-yellow')+'">'+ref.status+'</span></span></div>';}).join('')+'</div>':'')+
+      (refs.length>0?
+        '<div class="account-card" style="margin-top:1rem;">'+
+          '<h3 style="font-family:Cinzel,serif;font-size:1rem;font-weight:700;margin-bottom:1rem;">Referral History</h3>'+
+          refs.map(function(ref){
+            return '<div class="aff-ref-row"><span style="color:var(--muted);font-size:12px;">Referral: '+ref.referred_id+'</span><span style="display:flex;align-items:center;gap:0.8rem;"><span style="color:var(--gold);font-size:12px;">'+(ref.status==='approved'?'$50 USDT':'Pending')+'</span><span class="pill '+(ref.status==='approved'?'pill-green':'pill-yellow')+'">'+ref.status+'</span></span></div>';
+          }).join('')+
+        '</div>'
+      :'')+
       '<div class="info-box" style="margin-top:1rem;">'+
         '• Commissions paid in USDT TRC20 after your referral\'s payment is confirmed.<br>'+
-        '• Fraud checks apply: same IP, device, or email pattern will be flagged and rejected.<br>'+
+        '• Fraud checks apply — same IP, device, or email pattern will be flagged and rejected.<br>'+
         '• Commissions paid every Saturday.<br>'+
         '• Self-referrals are not permitted and will be rejected.'+
       '</div>';
+  });
+}
+
+function submitAffiliateWallet(){
+  var addr=document.getElementById('aff-wallet-addr').value.trim();
+  var msg=document.getElementById('aff-wallet-msg');
+  var btn=document.getElementById('aff-wallet-btn');
+  if(!addr){msg.textContent='Please enter your wallet address.';msg.className='form-msg err';return;}
+  if(!addr.startsWith('T')||addr.length<30||addr.length>45){msg.textContent='Invalid TRC20 address. Must start with T and be 34 characters.';msg.className='form-msg err';return;}
+  btn.disabled=true;btn.textContent='Submitting...';msg.className='form-msg';
+  sb.from('profiles').update({affiliate_wallet:addr}).eq('id',currentUser.id).then(function(r){
+    if(r.error){msg.textContent='Error: '+r.error.message;msg.className='form-msg err';btn.disabled=false;btn.textContent='Save Wallet';return;}
+    profile.affiliate_wallet=addr;
+    msg.textContent='Affiliate wallet saved! Commissions will be sent here every Saturday.';msg.className='form-msg ok';
+    btn.disabled=false;btn.textContent='Save Wallet';
+    setTimeout(function(){renderAffiliate(currentUser);},1500);
   });
 }
 </script>
