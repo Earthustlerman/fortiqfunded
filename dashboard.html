@@ -306,9 +306,33 @@ function copyText(text,btn){
   });
 }
 
+// ── TRACK PENDING REFERRAL ON FIRST LOGIN ──
+// Referral code is saved to localStorage at signup time.
+// It is tracked here on first dashboard load when the profile is guaranteed to exist.
+function trackPendingReferral(userId){
+  var ref=localStorage.getItem('pending_referral');
+  if(!ref)return;
+  sb.from('profiles').select('user_id').eq('id',userId).single().then(function(pr){
+    if(!pr.data||!pr.data.user_id)return;
+    fetch('https://fortiqfunded-backend.onrender.com/track-referral',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({referrer_code:ref,referred_user_id:pr.data.user_id})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.success||d.message){
+        console.log('Referral tracked successfully!');
+        localStorage.removeItem('pending_referral');
+      }
+    }).catch(function(e){
+      console.log('Referral tracking failed:',e);
+    });
+  });
+}
+
 sb.auth.getSession().then(function(r){
   if(!r.data.session){window.location.href='login.html';return;}
   currentUser=r.data.session.user;
+  trackPendingReferral(currentUser.id);
   loadData(currentUser);
 });
 
@@ -330,9 +354,7 @@ function loadData(user){
 
     sb.from('accounts').select('*').eq('user_id',profile.user_id).order('created_at',{ascending:false}).then(function(ar){
       var accounts=ar.data||[];
-      // Find active Stage 2 funded account
       fundedAccount=accounts.find(function(a){return (a.stage===2)&&(a.status==='active'||a.status==='funded');});
-      // Most recent account overall for stage 1 display
       account=accounts.find(function(a){return a.stage===1||!a.stage;})||accounts[0]||null;
 
       if(fundedAccount){
@@ -489,7 +511,6 @@ function renderActiveChallenge(){
 function renderPayouts(){
   var el=document.getElementById('payouts-section');
 
-  // Stage 1 active — no payout yet
   if(!fundedAccount){
     if(!account){
       el.innerHTML='<div class="empty-state"><div class="empty-icon">💰</div><h3>No Challenge Yet</h3><p>Purchase a challenge to begin your journey to a funded account.</p><a href="checkout.html" class="btn-primary">Start Challenge — $150</a></div>';
@@ -505,7 +526,6 @@ function renderPayouts(){
     return;
   }
 
-  // Stage 2 — paid out already
   if(fundedAccount.paid_out){
     el.innerHTML=
       '<div class="payout-card">'+
@@ -525,7 +545,6 @@ function renderPayouts(){
     return;
   }
 
-  // Stage 2 — wallet already submitted, awaiting payment
   if(fundedAccount.payout_wallet){
     var profit=parseFloat(fundedAccount.profit||0);
     var payout=(profit*0.8).toFixed(2);
@@ -550,14 +569,11 @@ function renderPayouts(){
     return;
   }
 
-  // Stage 2 — ready to request payout
-  // First check for open positions
   sb.from('positions').select('id').eq('account_id',fundedAccount.account_id).eq('status','open').then(function(r){
     var openCount=(r.data||[]).length;
     var profit=parseFloat(fundedAccount.profit||0);
     var payout=(profit*0.8).toFixed(2);
     var firm=(profit*0.2).toFixed(2);
-
     el.innerHTML=
       '<div class="payout-card">'+
         '<div class="account-header">'+
@@ -621,7 +637,6 @@ function renderBilling(){
     return;
   }
   el.innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';
-  // Use the stage 1 account for billing since that's where the payment was made
   var billingAccId=account?account.account_id:fundedAccount.account_id;
   sb.from('payments').select('*').eq('account_id',billingAccId).order('created_at',{ascending:false}).then(function(r){
     var payments=r.data||[];
