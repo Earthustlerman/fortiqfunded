@@ -85,9 +85,9 @@ footer-note{display:block;color:var(--muted2);font-size:12px;text-align:center;p
     <h2>4. Account Registration and Security</h2>
     <p>You are responsible for maintaining the confidentiality of your account credentials. Each account is strictly personal and may only be used by the registered account holder. You must not share, sell, or transfer your account to any third party.</p>
     <ul>
-      <li>You must provide a valid email address and create a strong password</li>
+      <li>You must provide a valid email address and create a secure password</li>
       <li>Email verification is required to activate your account</li>
-      <li>A one-time password (OTP) is required on every login for security</li>
+      <li>Login requires your registered email address and password</li>
       <li>You are responsible for all activity that occurs under your account</li>
       <li>You must notify us immediately of any unauthorised access to your account</li>
     </ul>
@@ -96,19 +96,32 @@ footer-note{display:block;color:var(--muted2);font-size:12px;text-align:center;p
 
   <div class="section">
     <h2>5. The Challenge and Evaluation Process</h2>
-    <p>Fortiq Funded offers a one-phase trading evaluation challenge. To participate, you must purchase a challenge by paying the applicable entry fee in USDT on the TRC20 network.</p>
-    <p>The current challenge parameters are as follows:</p>
+    <p>Fortiq Funded operates a two-stage trading evaluation programme. To participate, you must purchase a challenge by paying the applicable entry fee in USDT on the TRC20 network.</p>
+
+    <p><strong style="color:var(--text)">Stage 1 — The Challenge:</strong></p>
+    <p>Upon payment confirmation, you will receive a simulated $5,000 challenge account. To pass Stage 1 you must meet all of the following requirements:</p>
     <ul>
       <li>Entry fee: $150 USDT (TRC20)</li>
-      <li>Funded account size upon passing: $5,000 USDT (simulated)</li>
-      <li>Profit target: 8% of account balance</li>
-      <li>Maximum daily loss limit: 5% of account balance</li>
-      <li>Maximum total drawdown: 8% of account balance</li>
+      <li>Challenge account size: $5,000 USDT (simulated)</li>
+      <li>Profit target: 8% of account balance ($400)</li>
+      <li>Maximum daily loss limit: 5% of account balance ($250)</li>
+      <li>Maximum total drawdown: 8% of account balance ($400)</li>
       <li>Minimum active trading days: 5 calendar days</li>
       <li>Leverage: 1x to 5x</li>
       <li>No maximum time limit</li>
     </ul>
-    <p>An active trading day is defined as any calendar day on which the account has at least one open position at any point during that day. A position may remain open across multiple days and still count toward the active day requirement.</p>
+    <p>An active trading day is defined as any calendar day on which the account has at least one open position at any point during that day. Upon meeting all Stage 1 requirements, a Stage 2 funded account is automatically created for the trader.</p>
+
+    <p><strong style="color:var(--text)">Stage 2 — The Funded Account:</strong></p>
+    <p>Upon passing Stage 1, you will automatically receive access to a simulated funded account of $5,000 USDT. The funded account operates under the following conditions:</p>
+    <ul>
+      <li>No profit target — trade freely and take profits at any time</li>
+      <li>No minimum active trading days requirement</li>
+      <li>Maximum daily loss limit: 5% of account balance ($250)</li>
+      <li>Maximum total drawdown: 8% of account balance ($400)</li>
+      <li>Maximum total profit on a single funded account: $5,000</li>
+      <li>Leverage: 1x to 5x</li>
+    </ul>
     <p>Challenge parameters are subject to change. The parameters in effect at the time of your purchase will apply to your challenge.</p>
   </div>
 
@@ -119,7 +132,6 @@ footer-note{display:block;color:var(--muted2);font-size:12px;text-align:center;p
       <li>Only manual trading is permitted</li>
       <li>Cross-asset positions are permitted — you may trade multiple different assets simultaneously</li>
       <li>Hedging on the same asset is strictly prohibited — you may not hold a long and short position on the same asset simultaneously</li>
-      <li>Martingale strategies, grid trading, and other high-risk compounding strategies are prohibited</li>
       <li>Account sharing is strictly prohibited — only the registered account holder may trade the account</li>
       <li>News trading is permitted</li>
       <li>Weekend holding is permitted</li>
@@ -130,18 +142,18 @@ footer-note{display:block;color:var(--muted2);font-size:12px;text-align:center;p
 
   <div class="section">
     <h2>7. Funded Accounts and Payouts</h2>
-    <p>Upon successfully passing the evaluation challenge, you will receive access to a simulated funded account of $5,000 USDT. The funded account is subject to the same trading rules as the challenge account.</p>
-    <p>Each funded account has a lifetime profit cap of $5,000. Once this cap is reached, the funded account lifecycle is complete. A single payout will be processed upon meeting all of the following conditions:</p>
+    <p>Upon successfully passing Stage 1, you will automatically receive access to a Stage 2 simulated funded account of $5,000 USDT. The funded account is subject to the same daily loss and drawdown rules as the challenge account.</p>
+    <p>Traders may request a payout at any time during Stage 2, provided all of the following conditions are met:</p>
     <ul>
       <li>The account is a valid, active funded account in good standing</li>
-      <li>All open positions are closed</li>
-      <li>Profit is fully realised</li>
+      <li>All open positions are closed prior to requesting a payout</li>
+      <li>The account has a positive profit balance</li>
       <li>No trading rule violations have occurred</li>
-      <li>A valid verified payout wallet address has been provided</li>
+      <li>A valid USDT TRC20 payout wallet address has been provided</li>
       <li>No fraud or risk flags are present on the account</li>
-      <li>The account has not previously received a payout</li>
     </ul>
-    <p>The profit split is 80% to the trader and 20% to the Company. This means a trader can earn a maximum payout of <strong style="color:var(--gold)">$4,000 USDT</strong> (80% of the $5,000 profit cap) from a single funded account. Payouts are made in USDT on the TRC20 network and are processed every <strong style="color:var(--gold)">Saturday</strong>. After a payout is processed, the funded account is closed. You may purchase a new challenge to continue trading.</p>
+    <p>The profit split is 80% to the trader and 20% to the Company. The maximum total profit on a single funded account is $5,000, meaning the maximum payout a trader can receive from a single funded account is <strong style="color:var(--gold)">$4,000 USDT</strong>. Traders are not required to reach the $5,000 profit cap before requesting a payout — they may request a payout at any profit level above zero.</p>
+    <p>Payouts are made in USDT on the TRC20 network and are processed every <strong style="color:var(--gold)">Saturday</strong>. Once a payout is processed, the funded account is closed. You may purchase a new $150 challenge to continue trading.</p>
     <p>There are no resets, no free retries, and no automatic account renewals. If you fail the challenge or breach the funded account rules, you must purchase a new challenge.</p>
   </div>
 
@@ -167,7 +179,7 @@ footer-note{display:block;color:var(--muted2);font-size:12px;text-align:center;p
       <li>Commissions found to involve fraudulent activity will be rejected and not paid</li>
       <li>Self-referrals are strictly prohibited</li>
       <li>The Company reserves the right to withhold or reverse commission payments where fraud is suspected</li>
-      <li>Affiliate commissions are paid to the same TRC20 wallet address registered for trading payouts</li>
+      <li>Affiliate commissions are paid to the TRC20 wallet address registered in your affiliate profile</li>
     </ul>
   </div>
 
