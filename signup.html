@@ -212,21 +212,12 @@ function doSignup(){
       showMsg(res.error.message,'error');
       btn.disabled=false;btn.textContent='Create Account';
     } else {
-      var newUserId=res.data.user?res.data.user.id:null;
-      if(ref&&newUserId){
-        setTimeout(function(){
-          sb.from('profiles').select('user_id').eq('id',newUserId).single().then(function(pr){
-            if(pr.data&&pr.data.user_id){
-              fetch('https://fortiqfunded-backend.onrender.com/track-referral',{
-                method:'POST',
-                headers:{'Content-Type':'application/json'},
-                body:JSON.stringify({referrer_code:ref,referred_user_id:pr.data.user_id})
-              }).then(function(r){return r.json();}).then(function(d){
-                console.log('Referral tracked:',d);
-              }).catch(function(e){console.log('Referral tracking failed:',e);});
-            }
-          });
-        },2000);
+      // ── Store referral code in localStorage ──
+      // Will be tracked on first login after email confirmation
+      // when the profile is guaranteed to exist in the database
+      if(ref){
+        localStorage.setItem('pending_referral',ref);
+        console.log('Referral code saved for tracking after login:',ref);
       }
       document.getElementById('form-view').style.display='none';
       document.getElementById('cemail').textContent=email;
