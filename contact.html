@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact Us — Fortiq Funded</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMWYY4XETF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LMWYY4XETF');
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#04060f;--bg2:#070b18;--surface:#0f1829;--surface2:#162038;--purple:#6c3de8;--purple3:#a78bfa;--blue:#1e5fff;--text:#f0eeff;--muted:#7a7a9a;--muted2:#555575;--border:rgba(108,61,232,0.25);--border2:rgba(255,255,255,0.06);--success:#00d68f;--error:#ff4d4d;--gold:#c9a84c;}
@@ -192,6 +200,11 @@ function submitForm(){
   })
   .then(function(r){
     if(r.ok){
+      // Track contact form submission
+      gtag('event', 'contact_form_submit', {
+        event_category: 'engagement',
+        event_label: subject
+      });
       document.getElementById('form-view').style.display='none';
       document.getElementById('success-view').style.display='block';
     } else {
