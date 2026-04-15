@@ -6,6 +6,14 @@
 <title>Sign Up — Fortiq Funded</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMWYY4XETF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LMWYY4XETF');
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#04060f;--surface:#0f1829;--surface2:#162038;--purple:#6c3de8;--purple3:#a78bfa;--blue:#1e5fff;--text:#f0eeff;--muted:#7a7a9a;--muted2:#555575;--border:rgba(108,61,232,0.25);--border2:rgba(255,255,255,0.06);--success:#00d68f;--error:#ff4d4d;}
@@ -153,6 +161,11 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     if(refField)refField.style.display='block';
     if(refInput)refInput.value=refCode;
     if(refBadge)refBadge.style.display='block';
+    // Track referral link visit
+    gtag('event', 'referral_visit', {
+      event_category: 'acquisition',
+      event_label: refCode
+    });
   }
 })();
 
@@ -212,12 +225,14 @@ function doSignup(){
       showMsg(res.error.message,'error');
       btn.disabled=false;btn.textContent='Create Account';
     } else {
-      // ── Store referral code in localStorage ──
-      // Will be tracked on first login after email confirmation
-      // when the profile is guaranteed to exist in the database
+      // Track successful signup
+      gtag('event', 'sign_up', {
+        method: 'email',
+        event_category: 'acquisition',
+        has_referral: ref ? 'yes' : 'no'
+      });
       if(ref){
         localStorage.setItem('pending_referral',ref);
-        console.log('Referral code saved for tracking after login:',ref);
       }
       document.getElementById('form-view').style.display='none';
       document.getElementById('cemail').textContent=email;
