@@ -162,6 +162,14 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
   .metrics{grid-template-columns:1fr 1fr}
 }
 </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMWYY4XETF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LMWYY4XETF');
+</script>
 </head>
 <body>
 
@@ -624,6 +632,18 @@ function submitWallet(){
     if(r.error){msg.textContent='Error: '+r.error.message;msg.className='form-msg err';btn.disabled=false;btn.textContent='Request Payout';return;}
     fundedAccount.payout_wallet=addr;
     msg.textContent='Payout request submitted! You will receive payment this Saturday.';msg.className='form-msg ok';
+        // Track payout request
+        gtag('event', 'payout_requested', {
+          event_category: 'monetization',
+          event_label: 'stage2_payout',
+          value: Math.round(parseFloat(fundedAccount.profit || 0) * 0.8)
+        });
+        // Track payout request
+        gtag('event', 'payout_requested', {
+          event_category: 'monetization',
+          event_label: 'stage2_payout',
+          value: Math.round(parseFloat(fundedAccount.profit || 0) * 0.8)
+        });
     setTimeout(function(){renderPayouts();},1500);
   });
 }

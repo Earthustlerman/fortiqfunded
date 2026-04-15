@@ -246,6 +246,14 @@ body{overflow:hidden;font-family:'Outfit',sans-serif;background:var(--bg);color:
 .adv-ok{flex:1;background:var(--gold);color:#000;border:none;padding:11px;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;}
 .adv-ok:hover{opacity:0.88}
 </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMWYY4XETF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LMWYY4XETF');
+</script>
 </head>
 <body>
 
@@ -781,6 +789,18 @@ function placeOrder(dir){
         account.balance=nb;account.status='active';
         updateStats();loadPositions();
         showMsg('✓ Market order executed @ $'+fmt(ep),'ok');
+        // Track trade opened
+        gtag('event', 'trade_opened', {
+          event_category: 'trading',
+          event_label: dir + '_' + pair,
+          value: Math.round(amt)
+        });
+        // Track trade opened
+        gtag('event', 'trade_opened', {
+          event_category: 'trading',
+          event_label: dir + '_' + pair,
+          value: Math.round(amt)
+        });
         resetForm();updateActiveDays();
       });
     });
