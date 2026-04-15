@@ -289,27 +289,19 @@ function submitTx(){
       return;
     }
 
-    sb.from('payments').select('id').eq('user_id',userId).eq('status','pending').then(function(pending){
-      if(pending.data&&pending.data.length>0){
-        showMsg('You already have a pending payment being processed. Please wait for it to confirm.','error');
+    sb.from('payments').insert({
+      user_id:userId,
+      tx_hash:tx,
+      amount:150,
+      status:'pending',
+      confirmations:0
+    }).then(function(r){
+      if(r.error){
+        showMsg('Error saving payment. Please try again.','error');
         btn.disabled=false;btn.textContent='Submit Payment';
         return;
       }
-
-      sb.from('payments').insert({
-        user_id:userId,
-        tx_hash:tx,
-        amount:150,
-        status:'pending',
-        confirmations:0
-      }).then(function(r){
-        if(r.error){
-          showMsg('Error saving payment. Please try again.','error');
-          btn.disabled=false;btn.textContent='Submit Payment';
-          return;
-        }
-        verifyOnChain(tx,userId);
-      });
+      verifyOnChain(tx,userId);
     });
   });
 }
