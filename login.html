@@ -7,6 +7,14 @@
 <title>Login — Fortiq Funded</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMWYY4XETF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LMWYY4XETF');
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#04060f;--surface:#0f1829;--surface2:#162038;--purple:#6c3de8;--purple3:#a78bfa;--blue:#1e5fff;--text:#f0eeff;--muted:#7a7a9a;--muted2:#555575;--border:rgba(108,61,232,0.25);--border2:rgba(255,255,255,0.06);--success:#00d68f;--error:#ff4d4d;}
@@ -115,7 +123,17 @@ function doLogin(){
     if(r.error){
       showMsg('Incorrect email or password. Please try again.','error');
       btn.disabled=false;btn.textContent='Sign In';
+      // Track failed login attempt
+      gtag('event', 'login_failed', {
+        event_category: 'authentication',
+        event_label: 'incorrect_credentials'
+      });
     } else {
+      // Track successful login
+      gtag('event', 'login', {
+        method: 'email',
+        event_category: 'authentication'
+      });
       window.location.href='dashboard.html';
     }
   });
