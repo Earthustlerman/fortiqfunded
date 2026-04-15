@@ -7,6 +7,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMWYY4XETF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LMWYY4XETF');
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#04060f;--bg2:#070b18;--surface:#0f1829;--surface2:#162038;--purple:#6c3de8;--purple3:#a78bfa;--blue:#1e5fff;--text:#f0eeff;--muted:#7a7a9a;--muted2:#555575;--border:rgba(108,61,232,0.25);--border2:rgba(255,255,255,0.06);--success:#00d68f;--error:#ff4d4d;--gold:#c9a84c;--warning:#f59e0b;}
@@ -98,7 +106,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
   <h1 class="page-title">Start Your Challenge</h1>
   <p class="page-sub">Send $150 USDT on TRC20 to activate your one-phase evaluation account.</p>
 
-  <!-- BLOCKED STATE — already has active challenge -->
   <div class="blocked-state" id="blocked-state">
     <div style="font-size:3rem;margin-bottom:1rem;">⚠️</div>
     <h2>You Already Have an Active Challenge</h2>
@@ -108,7 +115,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 
   <div id="main-content" style="display:none;">
     <div class="checkout-grid">
-      <!-- LEFT: PAYMENT -->
       <div class="payment-card">
         <div class="payment-badge">One-Phase Challenge</div>
         <div class="price-display">$150</div>
@@ -137,7 +143,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
         </div>
       </div>
 
-      <!-- RIGHT: STEPS + TX -->
       <div class="steps-card">
         <div class="steps-title">How to Complete Payment</div>
         <div class="step-item">
@@ -169,7 +174,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
     </div>
   </div>
 
-  <!-- SUCCESS STATE -->
   <div class="success-state" id="success-state">
     <div class="success-icon">✓</div>
     <h2>Payment Received!</h2>
@@ -189,6 +193,13 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
   }
 })();
 
+// Track checkout page view
+gtag('event', 'begin_checkout', {
+  currency: 'USD',
+  value: 150,
+  items: [{item_id: 'challenge_150', item_name: 'One-Phase Trading Challenge', price: 150, quantity: 1}]
+});
+
 var sb=window.supabase.createClient(
   'https://qhfsvazxpnjwfxhamkea.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo'
@@ -198,32 +209,26 @@ var WALLET='TUGcqK3s5EsXme3nMUVXH9LbmuyLf4c99d';
 var userId=null;
 var userProfileId=null;
 
-// Auth check + existing challenge check
 sb.auth.getSession().then(function(r){
   if(!r.data.session){window.location.href='login.html';return;}
   userId=r.data.session.user.id;
 
-  // Get profile to get user_id
   sb.from('profiles').select('user_id').eq('id',userId).single().then(function(pr){
     if(pr.error||!pr.data){showMain();return;}
     userProfileId=pr.data.user_id;
 
-    // Check for existing active/pending challenge
     sb.from('accounts').select('status').eq('user_id',userProfileId).order('created_at',{ascending:false}).limit(1).then(function(ar){
       if(ar.data&&ar.data.length>0){
         var status=ar.data[0].status;
         if(status==='to_be_active'||status==='active'){
-          // Block access — already has active challenge
           document.getElementById('blocked-state').style.display='block';
           document.getElementById('main-content').style.display='none';
           document.querySelector('.page-title').style.display='none';
           document.querySelector('.page-sub').style.display='none';
         } else {
-          // Failed or funded — allow new challenge
           showMain();
         }
       } else {
-        // No account yet — allow purchase
         showMain();
       }
     });
@@ -232,7 +237,6 @@ sb.auth.getSession().then(function(r){
 
 function showMain(){
   document.getElementById('main-content').style.display='block';
-  // Generate QR code
   new QRCode(document.getElementById('qrcode'),{
     text:WALLET,width:160,height:160,
     colorDark:'#000000',colorLight:'#ffffff',
@@ -246,6 +250,8 @@ function copyWallet(){
     btn.textContent='Copied!';
     btn.style.background='rgba(0,214,143,0.2)';
     btn.style.color='var(--success)';
+    // Track wallet copy
+    gtag('event', 'wallet_address_copied', {event_category: 'checkout'});
     setTimeout(function(){
       btn.textContent='Copy';
       btn.style.background='';
@@ -269,7 +275,13 @@ function submitTx(){
   btn.disabled=true;btn.textContent='Verifying...';
   showMsg('Checking your transaction on the blockchain...','info');
 
-  // Check for duplicate TX hash
+  // Track payment submission
+  gtag('event', 'payment_submitted', {
+    event_category: 'checkout',
+    event_label: 'tx_hash_submitted',
+    value: 150
+  });
+
   sb.from('payments').select('id').eq('tx_hash',tx).then(function(dup){
     if(dup.data&&dup.data.length>0){
       showMsg('This transaction hash has already been submitted.','error');
@@ -277,7 +289,6 @@ function submitTx(){
       return;
     }
 
-    // Check for existing pending payment
     sb.from('payments').select('id').eq('user_id',userId).eq('status','pending').then(function(pending){
       if(pending.data&&pending.data.length>0){
         showMsg('You already have a pending payment being processed. Please wait for it to confirm.','error');
@@ -285,7 +296,6 @@ function submitTx(){
         return;
       }
 
-      // Save payment record to Supabase
       sb.from('payments').insert({
         user_id:userId,
         tx_hash:tx,
@@ -340,6 +350,12 @@ function verifyOnChain(txHash,uid){
       activateChallenge(uid,amount);
     } else {
       showMsg('Transaction found! '+confirmations+'/19 confirmations. Your challenge will activate automatically once confirmed. Check your dashboard shortly.','info');
+      // Track pending payment
+      gtag('event', 'purchase_pending', {
+        currency: 'USD',
+        value: amount,
+        event_category: 'checkout'
+      });
       document.getElementById('success-state').style.display='block';
       document.getElementById('main-content').style.display='none';
     }
@@ -368,10 +384,15 @@ function activateChallenge(uid,amount){
       max_drawdown:0,
       active_days:0
     }).then(function(ar){
-      if(ar.error){
-        console.log('Account error:',ar.error);
-      }
+      if(ar.error){console.log('Account error:',ar.error);}
       sb.from('payments').update({status:'confirmed',account_id:accId}).eq('user_id',uid).then(function(){});
+      // Track confirmed purchase
+      gtag('event', 'purchase', {
+        transaction_id: accId,
+        currency: 'USD',
+        value: amount,
+        items: [{item_id: 'challenge_150', item_name: 'One-Phase Trading Challenge', price: amount, quantity: 1}]
+      });
       document.getElementById('success-state').style.display='block';
       document.getElementById('main-content').style.display='none';
     });
