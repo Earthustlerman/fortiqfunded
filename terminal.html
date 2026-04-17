@@ -864,13 +864,13 @@ function loadAccount(){
   sb.from('profiles').select('user_id').eq('id',userId).single().then(function(pr){
     if(pr.error||!pr.data){showAccessDenied();return;}
     var profileUserId=pr.data.user_id;
-    sb.from('accounts').select('*').eq('user_id',UserId).eq('status','active').eq('stage',2).order('created_at',{ascending:false}).limit(1).then(function(r2){
+    sb.from('accounts').select('*').eq('user_id',userId).eq('status','active').eq('stage',2).order('created_at',{ascending:false}).limit(1).then(function(r2){
       if(r2.data&&r2.data.length>0){
         account=r2.data[0];accountId=account.account_id;accountStage=2;
         g('top-acc',accountId);updateStageBadge(2);updateStageUI(2);
         updateStats();loadPositions();loadOpenOrders();
       } else {
-        sb.from('accounts').select('*').eq('user_id',profileUserId).eq('status','active').order('created_at',{ascending:false}).limit(1).then(function(r1){
+        sb.from('accounts').select('*').eq('user_id',userId).eq('status','active').order('created_at',{ascending:false}).limit(1).then(function(r1){
           if(!r1.data||!r1.data.length){showAccessDenied();return;}
           account=r1.data[0];accountId=account.account_id;accountStage=account.stage||1;
           g('top-acc',accountId);updateStageBadge(accountStage);updateStageUI(accountStage);
