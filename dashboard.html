@@ -360,7 +360,7 @@ function loadData(user){
     document.getElementById('avatar-initials').textContent=name.charAt(0).toUpperCase();
     document.getElementById('welcome-msg').textContent='Welcome back, '+name.split(' ')[0]+'!';
 
-    sb.from('accounts').select('*').eq('user_id',profile.user_id).order('created_at',{ascending:false}).then(function(ar){
+    sb.from('accounts').select('*').eq('user_id',user.id).order('created_at',{ascending:false}).then(function(ar){
       var accounts=ar.data||[];
       fundedAccount=accounts.find(function(a){return (a.stage===2)&&(a.status==='active'||a.status==='funded');});
       account=accounts.find(function(a){return a.stage===1||!a.stage;})||accounts[0]||null;
