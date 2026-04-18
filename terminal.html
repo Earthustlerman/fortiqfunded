@@ -795,12 +795,6 @@ function placeOrder(dir){
           event_label: dir + '_' + pair,
           value: Math.round(amt)
         });
-        // Track trade opened
-        gtag('event', 'trade_opened', {
-          event_category: 'trading',
-          event_label: dir + '_' + pair,
-          value: Math.round(amt)
-        });
         resetForm();updateActiveDays();
       });
     });
