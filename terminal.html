@@ -830,25 +830,6 @@ function resetForm(){
 }
 
 
-function executeLimitOrder(order){
-  openOrders=openOrders.filter(function(o){return o.id!==order.id;});
-  g('orders-count',openOrders.length);
-  var lp=parseFloat(order.limit_price);
-  var pos={user_id:userId,account_id:accountId,symbol:order.symbol,direction:order.direction,amount:order.amount,leverage:order.leverage,entry_price:lp,size:parseFloat(order.amount)*parseFloat(order.leverage),status:'open',opened_at:new Date().toISOString()};
-  if(order.take_profit)pos.take_profit=order.take_profit;
-  if(order.stop_loss)pos.stop_loss=order.stop_loss;
-  sb.from('positions').insert(pos).then(function(r){
-    if(r.error){console.log('Error executing limit order:',r.error.message);return;}
-    var nb=parseFloat(account.balance)-parseFloat(order.amount);
-    sb.from('accounts').update({balance:nb,status:'active'}).eq('account_id',accountId).then(function(){
-      account.balance=nb;account.status='active';
-      sb.from('orders').update({status:'executed',executed_at:new Date().toISOString()}).eq('id',order.id);
-      updateStats();loadPositions();loadOpenOrders();
-      showMsg('✓ Limit order executed @ $'+fmt(lp),'ok');
-      updateActiveDays();
-    });
-  });
-}
 
 function loadAccount(){
   sb.from('profiles').select('user_id').eq('id',userId).single().then(function(pr){
