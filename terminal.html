@@ -568,7 +568,7 @@ function connectTickerWS(){
     g2('ob-mid-price').textContent='$'+fmt(price);
     g2('ob-mid-price').className=isUp?'up':'down';
     if(orderType==='market'){var lp=g2('inp-price');if(lp)lp.value=price.toFixed(2);}
-    updateSum();updateOpenPnL();checkLimitOrdersClient();
+    updateSum();updateOpenPnL();
   };
 }
 
