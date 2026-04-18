@@ -829,18 +829,6 @@ function resetForm(){
   updateSum();
 }
 
-function checkLimitOrdersClient(){
-  if(!openOrders.length)return;
-  openOrders.forEach(function(order){
-    if(order.symbol!==pair)return;
-    var lp=parseFloat(order.limit_price);
-    var shouldExecute=false;
-    if(order.direction==='long'&&price<=lp)shouldExecute=true;
-    if(order.direction==='short'&&price>=lp)shouldExecute=true;
-    if(!shouldExecute)return;
-    executeLimitOrder(order);
-  });
-}
 
 function executeLimitOrder(order){
   openOrders=openOrders.filter(function(o){return o.id!==order.id;});
