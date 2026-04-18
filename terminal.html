@@ -781,23 +781,31 @@ function placeOrder(dir){
     }
     var pos={user_id:userId,account_id:accountId,symbol:pair,direction:dir,amount:amt,leverage:lev,entry_price:ep,size:amt*lev,status:'open',opened_at:new Date().toISOString()};
     if(tp)pos.take_profit=tp;if(sl)pos.stop_loss=sl;
-    sb.from('positions').insert(pos).then(function(r){
-      g2('btn-long').disabled=false;g2('btn-short').disabled=false;
-      if(r.error){showMsg('Error: '+r.error.message,'err');return;}
-      var nb=+account.balance-amt;
-      sb.from('accounts').update({balance:nb,status:'active'}).eq('account_id',accountId).then(function(){
-        account.balance=nb;account.status='active';
-        updateStats();loadPositions();
-        showMsg('✓ Market order executed @ $'+fmt(ep),'ok');
-        // Track trade opened
-        gtag('event', 'trade_opened', {
-          event_category: 'trading',
-          event_label: dir + '_' + pair,
-          value: Math.round(amt)
-        });
-        resetForm();updateActiveDays();
-      });
-    });
+   fetch('https://fortiqfunded-backend.onrender.com/open-position', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({
+    user_id: userId, account_id: accountId, symbol: pair,
+    direction: dir, amount: amt, leverage: lev,
+    entry_price: ep, size: amt*lev,
+    take_profit: tp||null, stop_loss: sl||null
+  })
+}).then(function(r){return r.json();}).then(function(data){
+  g2('btn-long').disabled=false;g2('btn-short').disabled=false;
+  if(!data.success){showMsg('Error: '+(data.error||'Unknown error'),'err');return;}
+  account.balance=data.newBalance;account.status='active';
+  updateStats();loadPositions();
+  showMsg('✓ Market order executed @ $'+fmt(ep),'ok');
+  gtag('event', 'trade_opened', {
+    event_category: 'trading',
+    event_label: dir + '_' + pair,
+    value: Math.round(amt)
+  });
+  resetForm();updateActiveDays();
+}).catch(function(err){
+  g2('btn-long').disabled=false;g2('btn-short').disabled=false;
+  showMsg('Error opening position: '+err.message,'err');
+});
   } else {
     var limitPrice=+g2('inp-price').value;
     if(!limitPrice){showMsg('Please enter a limit price.','err');g2('btn-long').disabled=false;g2('btn-short').disabled=false;return;}
