@@ -991,8 +991,10 @@ function updateOpenPnL(){
     var equity2=+account.balance+total;
     var dd=(5000-equity2)/5000*100;
     var currentDailyLoss=+(account.daily_loss||0);
-    var dailyLossWithPnl=pnl<0?currentDailyLoss+(Math.abs(pnl)/5000*100):currentDailyLoss;
-    if(dailyLossWithPnl>=5&&!closingPositions[p.id]){closePos(p.id);return;}
+    if(pnl<0){
+      var dailyLossWithPnl=currentDailyLoss+(Math.abs(pnl)/5000*100);
+      if(dailyLossWithPnl>=5&&!closingPositions[p.id]){closePos(p.id);return;}
+    }
     if(dd>=8&&!closingPositions[p.id]){closePos(p.id);return;}
     var hit=false;
     if(p.take_profit&&p.direction==='long'&&cur>=+p.take_profit)hit=true;
