@@ -167,10 +167,8 @@ fetch('https://fortiqfunded-backend.onrender.com/leaderboard')
     var topProfit=parseFloat(lb[0].profit).toFixed(2);
     var statsHtml=
       '<div class="stats-strip">'+
-        '<div class="strip-stat"><div class="strip-label">Traders on Board</div><div class="strip-value">'+lb.length+'</div></div>'+
-        '<div class="strip-stat"><div class="strip-label">Top Profit</div><div class="strip-value">$'+topProfit+'</div></div>'+
-        '<div class="strip-stat"><div class="strip-label">Avg Profit</div><div class="strip-value">$'+avgProfit+'</div></div>'+
-        '<div class="strip-stat"><div class="strip-label">Total Earned</div><div class="strip-value">$'+totalProfit.toFixed(2)+'</div></div>'+
+        '<div class="strip-stat"><div class="strip-label">Funded Traders</div><div class="strip-value">'+lb.length+'</div></div>'+
+        '<div class="strip-stat"><div class="strip-label">Total Paid Out</div><div class="strip-value">$'+totalProfit.toFixed(2)+'</div></div>'+
       '</div>';
 
     // Top 3 podium
