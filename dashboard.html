@@ -638,12 +638,6 @@ function submitWallet(){
           event_label: 'stage2_payout',
           value: Math.round(parseFloat(fundedAccount.profit || 0) * 0.8)
         });
-        // Track payout request
-        gtag('event', 'payout_requested', {
-          event_category: 'monetization',
-          event_label: 'stage2_payout',
-          value: Math.round(parseFloat(fundedAccount.profit || 0) * 0.8)
-        });
     setTimeout(function(){renderPayouts();},1500);
   });
 }
