@@ -817,7 +817,7 @@ function placeOrder(dir){
       g2('btn-long').disabled=false;g2('btn-short').disabled=false;
       if(r.error){showMsg('Error: '+r.error.message,'err');return;}
       showMsg('✓ Limit order placed @ $'+fmt(limitPrice)+' — waiting for price','ok');
-      resetForm();loadOpenOrders();
+      resetForm();loadOpenOrders();updateActiveDays();
     });
   }
 }
