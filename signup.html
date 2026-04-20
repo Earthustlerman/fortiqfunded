@@ -233,6 +233,10 @@ function doSignup(){
       });
       if(ref){
         localStorage.setItem('pending_referral',ref);
+        // Also save referred_by to profile as backup
+        if(res.data && res.data.user){
+          sb.from('profiles').update({referred_by: ref}).eq('id', res.data.user.id);
+        }
       }
       document.getElementById('form-view').style.display='none';
       document.getElementById('cemail').textContent=email;
