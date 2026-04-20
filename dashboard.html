@@ -318,9 +318,10 @@ function copyText(text,btn){
 // Referral code is saved to localStorage at signup time.
 // It is tracked here on first dashboard load when the profile is guaranteed to exist.
 function trackPendingReferral(userId){
-  var ref=localStorage.getItem('pending_referral');
-  if(!ref)return;
-  sb.from('profiles').select('user_id').eq('id',userId).single().then(function(pr){
+  sb.from('profiles').select('user_id, referred_by').eq('id',userId).single().then(function(pr){
+    if(!pr.data||!pr.data.user_id)return;
+    var ref=localStorage.getItem('pending_referral')||pr.data.referred_by;
+    if(!ref)return;
     if(!pr.data||!pr.data.user_id)return;
     fetch('https://fortiqfunded-backend.onrender.com/track-referral',{
       method:'POST',
