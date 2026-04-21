@@ -349,13 +349,15 @@ function verifyOnChain(txHash,uid){
         event_category: 'checkout'
       });
       document.getElementById('success-state').style.display='block';
-      document.getElementById('main-content').style.display='none';
+document.getElementById('main-content').style.display='none';
+setTimeout(function(){window.location.href='dashboard.html';},5000);
     }
   })
   .catch(function(){
     showMsg('Transaction found and recorded. We will verify it automatically. Check your dashboard in 10 minutes.','info');
     document.getElementById('success-state').style.display='block';
-    document.getElementById('main-content').style.display='none';
+document.getElementById('main-content').style.display='none';
+setTimeout(function(){window.location.href='dashboard.html';},5000);
   });
 }
 
@@ -386,7 +388,8 @@ function activateChallenge(uid,amount){
         items: [{item_id: 'challenge_150', item_name: 'One-Phase Trading Challenge', price: amount, quantity: 1}]
       });
       document.getElementById('success-state').style.display='block';
-      document.getElementById('main-content').style.display='none';
+document.getElementById('main-content').style.display='none';
+setTimeout(function(){window.location.href='dashboard.html';},5000);
     });
   });
 }
