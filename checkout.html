@@ -264,7 +264,18 @@ function showMsg(txt,type){
   var el=document.getElementById('txmsg');
   el.textContent=txt;el.className='msg '+type;
 }
-
+function pollForConfirmation(txHash){
+  var interval=setInterval(function(){
+    sb.from('payments').select('status').eq('tx_hash',txHash).single().then(function(r){
+      if(r.data&&r.data.status==='confirmed'){
+        clearInterval(interval);
+        document.getElementById('success-state').style.display='block';
+        document.getElementById('main-content').style.display='none';
+        setTimeout(function(){window.location.href='dashboard.html';},5000);
+      }
+    });
+  },10000);
+}
 function submitTx(){
   var tx=document.getElementById('txhash').value.trim();
   if(!tx){showMsg('Please paste your transaction hash.','error');return;}
