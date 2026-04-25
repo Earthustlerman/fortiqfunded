@@ -703,7 +703,13 @@ function loadPositions(){
     el.innerHTML=h+'</tbody></table>';
   });
 }
-
+function markAffiliatePaid(id){
+  sb.from('affiliates').update({paid:true}).eq('id',id).then(function(r){
+    if(r.error){showNotif('Error: '+r.error.message,'err');return;}
+    showNotif('✓ Affiliate marked as paid!','ok');
+    loadAffiliates();
+  });
+}
 // ── AFFILIATES ACTION ──
 function updateAffiliate(id,status){
   sb.from('affiliates').update({status:status}).eq('id',id).then(function(r){
