@@ -293,10 +293,15 @@ function submitTx(){
     value: 150
   });
 
-  sb.from('payments').select('id').eq('tx_hash',tx).then(function(dup){
+  sb.from('payments').select('id,status').eq('tx_hash',tx).then(function(dup){
     if(dup.data&&dup.data.length>0){
-      showMsg('This transaction hash has already been submitted.','error');
-      btn.disabled=false;btn.textContent='Submit Payment';
+      if(dup.data[0].status==='confirmed'){
+        window.location.href='dashboard.html';
+        return;
+      }
+      showMsg('Transaction submitted! Waiting for blockchain confirmation — this usually takes 2–5 minutes. Do not close this page.','info');
+      btn.disabled=true;btn.textContent='Waiting for confirmation...';
+      pollForConfirmation(tx);
       return;
     }
 
