@@ -646,6 +646,8 @@ function loadAffiliates(){
       var walletMap={};
       (pr.data||[]).forEach(function(p){if(p.affiliate_wallet)walletMap[p.user_id]=p.affiliate_wallet;});
       var filtered=data.filter(function(a){return walletMap[a.referrer_id];});
+      console.log('Wallet map:', walletMap);
+console.log('Filtered:', filtered);
       if(!filtered.length){
         el.innerHTML='<div class="empty"><div class="empty-icon">🤝</div>No affiliates with wallet submitted yet</div>';
         return;
