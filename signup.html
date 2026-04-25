@@ -238,9 +238,7 @@ function doSignup(){
           sb.from('profiles').update({referred_by: ref}).eq('id', res.data.user.id);
         }
       }
-      document.getElementById('form-view').style.display='none';
-      document.getElementById('cemail').textContent=email;
-      document.getElementById('success-view').style.display='block';
+      window.location.href='dashboard.html';
     }
   });
 }
