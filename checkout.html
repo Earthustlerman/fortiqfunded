@@ -311,9 +311,10 @@ function verifyOnChain(txHash,uid){
   .then(function(r){return r.json();})
   .then(function(data){
     if(!data.data||data.data.length===0){
-      showMsg('Transaction not found yet. It may still be pending. Please wait a few minutes and try again.','info');
-      document.getElementById('submit-btn').disabled=false;
-      document.getElementById('submit-btn').textContent='Submit Payment';
+      showMsg('Transaction submitted! Waiting for blockchain confirmation — this usually takes 2–5 minutes. Do not close this page.','info');
+      document.getElementById('submit-btn').disabled=true;
+      document.getElementById('submit-btn').textContent='Waiting for confirmation...';
+      pollForConfirmation(txHash);
       return;
     }
     var tx=data.data[0];
