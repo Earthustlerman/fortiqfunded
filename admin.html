@@ -643,6 +643,7 @@ function loadAffiliates(){
     var referrerIds=data.map(function(a){return a.referrer_id;}).filter(function(v,i,s){return s.indexOf(v)===i;});
     console.log('Referrer IDs:', referrerIds);
     sb.from('profiles').select('user_id,affiliate_wallet').in('user_id',referrerIds).then(function(pr){
+      console.log('Profiles result:', pr.data, pr.error);
       var walletMap={};
       (pr.data||[]).forEach(function(p){if(p.affiliate_wallet)walletMap[p.user_id]=p.affiliate_wallet;});
       var filtered=data.filter(function(a){return walletMap[a.referrer_id];});
