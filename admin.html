@@ -641,7 +641,6 @@ function loadAffiliates(){
     var el=document.getElementById('affiliates-body');
     if(!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">🤝</div>No affiliate records yet</div>';return;}
     var referrerIds=data.map(function(a){return a.referrer_id;}).filter(function(v,i,s){return s.indexOf(v)===i;});
-    console.log('Referrer IDs:', referrerIds);
     sb.from('profiles').select('user_id,affiliate_wallet').in('user_id',referrerIds).then(function(pr){
       console.log('Profiles result:', pr.data, pr.error);
       var walletMap={};
