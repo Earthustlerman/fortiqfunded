@@ -665,7 +665,11 @@ function loadAffiliates(){
           h+='<button class="action-btn approve" onclick="updateAffiliate(\''+a.id+'\',\'approved\')">Approve</button>';
           h+='<button class="action-btn reject" onclick="updateAffiliate(\''+a.id+'\',\'rejected\')">Reject</button>';
         } else if(a.status==='approved'){
-          h+='<span style="color:var(--green);font-size:11px;">✓ Pay $'+(a.commission||50)+' USDT via TRC20</span>';
+          if(a.paid){
+            h+='<span style="color:var(--green);font-size:11px;">✓ Paid</span>';
+          } else {
+            h+='<span style="color:var(--green);font-size:11px;">✓ Pay $'+(a.commission||50)+' USDT via TRC20</span> <button class="action-btn approve" onclick="markAffiliatePaid(\''+a.id+'\')">Mark Paid</button>';
+          }
         } else {
           h+='<span style="color:var(--muted);font-size:11px;">'+a.status+'</span>';
         }
