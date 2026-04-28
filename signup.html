@@ -216,6 +216,17 @@ var recaptchaResponse=grecaptcha.getResponse();
   var btn=document.getElementById('signup-btn');
   btn.disabled=true;btn.textContent='Creating account...';
 
+  fetch('https://fortiqfunded-backend.onrender.com/verify-recaptcha',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({token:recaptchaResponse})
+  }).then(function(r){return r.json();}).then(function(rd){
+    if(!rd.success){
+      showMsg('reCAPTCHA verification failed. Please try again.','error');
+      btn.disabled=false;btn.textContent='Create Account';
+      grecaptcha.reset();
+      return;
+    }
+
   sb.auth.signUp({
     email:email,
     password:pwd,
