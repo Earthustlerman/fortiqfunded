@@ -202,7 +202,8 @@ function doSignup(){
   var conf=document.getElementById('confirm').value;
   var terms=document.getElementById('terms').checked;
   var ref=document.getElementById('referral').value.trim();
-
+var recaptchaResponse=grecaptcha.getResponse();
+  if(!recaptchaResponse){showMsg('Please complete the reCAPTCHA verification.','error');return;}
   if(!name){showMsg('Please enter your full name.','error');return;}
   if(!email||!email.includes('@')){showMsg('Please enter a valid email address.','error');return;}
   if(pwd.length<8){showMsg('Password must be at least 8 characters.','error');return;}
