@@ -756,8 +756,11 @@ function submitAffiliateWallet(){
   if(!addr){msg.textContent='Please enter your wallet address.';msg.className='form-msg err';return;}
   if(!addr.startsWith('T')||addr.length<30||addr.length>45){msg.textContent='Invalid TRC20 address. Must start with T and be 34 characters.';msg.className='form-msg err';return;}
   btn.disabled=true;btn.textContent='Submitting...';msg.className='form-msg';
-  sb.from('profiles').update({affiliate_wallet:addr}).eq('id',currentUser.id).then(function(r){
-    if(r.error){msg.textContent='Error: '+r.error.message;msg.className='form-msg err';btn.disabled=false;btn.textContent='Save Wallet';return;}
+  fetch('https://fortiqfunded-backend.onrender.com/submit-affiliate-wallet',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({user_id:currentUser.id,wallet:addr})
+  }).then(function(r){return r.json();}).then(function(d){
+    if(d.error){msg.textContent='Error: '+d.error;msg.className='form-msg err';btn.disabled=false;btn.textContent='Save Wallet';return;}
     profile.affiliate_wallet=addr;
     msg.textContent='Affiliate wallet saved! Commissions will be sent here every Saturday.';msg.className='form-msg ok';
     btn.disabled=false;btn.textContent='Save Wallet';
