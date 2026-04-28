@@ -5,10 +5,132 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sign Up — Fortiq Funded</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>  
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMWYY4XETF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LMWYY4XETF');
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#04060f;--surface:#0f1829;--surface2:#162038;--purple:#6c3de8;--purple3:#a78bfa;--blue:#1e5fff;--text:#f0eeff;--muted:#7a7a9a;--muted2:#555575;--border:rgba(108,61,232,0.25);--border2:rgba(255,255,255,0.06);--success:#00d68f;--error:#ff4d4d;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s)}
+@keyframes twinkle{0%,100%{opacity:var(--min,0.1)}50%{opacity:var(--max,0.7)}}
+.glow{position:fixed;top:-100px;left:50%;transform:translateX(-50%);width:700px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(108,61,232,0.15) 0%,transparent 70%);pointer-events:none;z-index:0;}
+.card{position:relative;z-index:1;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:460px;box-shadow:0 0 60px rgba(108,61,232,0.15);}
+.logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:2rem;text-decoration:none}
+.logo-wordmark{font-family:'Cinzel',serif;font-weight:700;font-size:20px;letter-spacing:1px;background:linear-gradient(135deg,#a78bfa,#6c3de8,#3d7fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-wordmark span{background:linear-gradient(135deg,#c9a84c,#e8c96a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.card-title{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:0.4rem}
+.card-sub{color:var(--muted);font-size:14px;text-align:center;font-weight:300;margin-bottom:2rem}
+.field{margin-bottom:1.2rem}
+.field label{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:6px;}
+.field input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;color:var(--text);font-family:'Outfit',sans-serif;font-size:14px;transition:border-color 0.2s;outline:none;}
+.field input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(108,61,232,0.15)}
+.field input::placeholder{color:var(--muted2)}
+.strength-bar{display:flex;gap:4px;margin-top:8px;margin-bottom:4px}
+.strength-seg{height:3px;flex:1;border-radius:100px;background:var(--border2);transition:background 0.3s}
+.strength-label{font-size:11px;color:var(--muted)}
+.req-list{margin-top:8px;list-style:none}
+.req-item{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;padding:2px 0;transition:color 0.2s}
+.req-item.met{color:var(--success)}
+.req-dot{width:5px;height:5px;border-radius:50%;background:var(--muted2);flex-shrink:0;transition:background 0.2s}
+.req-item.met .req-dot{background:var(--success)}
+.referral-toggle{font-size:12px;color:var(--purple3);cursor:pointer;text-decoration:underline;margin-bottom:1.2rem;display:inline-block;}
+.terms-wrap{display:flex;align-items:flex-start;gap:10px;margin-bottom:1.5rem}
+.terms-wrap input[type=checkbox]{width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--purple);cursor:pointer;}
+.terms-wrap label{font-size:12px;color:var(--muted);font-weight:300;line-height:1.6;cursor:pointer}
+.terms-wrap a{color:var(--purple3);text-decoration:none}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border:none;padding:14px;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:opacity 0.2s;box-shadow:0 0 30px rgba(108,61,232,0.3);}
+.btn-submit:hover{opacity:0.9}
+.btn-submit:disabled{opacity:0.5;cursor:not-allowed}
+.msg{padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:1.2rem;display:none}
+.msg.error{background:rgba(255,77,77,0.1);border:1px solid rgba(255,77,77,0.3);color:#ff6b6b;display:block}
+.msg.success{background:rgba(0,214,143,0.1);border:1px solid rgba(0,214,143,0.3);color:#00d68f;display:block}
+.divider{display:flex;align-items:center;gap:1rem;margin:1.5rem 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border2)}
+.divider span{color:var(--muted2);font-size:12px}
+.login-link{text-align:center;font-size:13px;color:var(--muted)}
+.login-link a{color:var(--purple3);text-decoration:none;font-weight:500}
+.ref-badge{background:rgba(108,61,232,0.1);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--purple3);margin-bottom:1.2rem;display:none;}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div class="glow"></div>
+<div class="card">
+  <a href="index.html" class="logo">
+    <svg width="34" height="34" viewBox="0 0 38 38" fill="none">
+      <defs>
+        <linearGradient id="lg1" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#a78bfa"/><stop offset="55%" stop-color="#6c3de8"/><stop offset="100%" stop-color="#3d7fff"/></linearGradient>
+        <linearGradient id="lg2" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#e8c96a"/></linearGradient>
+      </defs>
+      <rect x="4" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"/>
+      <rect x="15.5" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"/>
+      <rect x="27" y="6" width="7" height="9" rx="1.5" fill="url(#lg1)"/>
+      <rect x="4" y="14" width="30" height="7" fill="url(#lg1)" opacity="0.85"/>
+      <polygon points="19,22 27,28 19,38 11,28" fill="url(#lg2)" opacity="0.95"/>
+      <polygon points="19,22 27,28 19,26 11,28" fill="url(#lg1)" opacity="0.7"/>
+    </svg>
+    <span class="logo-wordmark">Fortiq <span>Funded</span></span>
+  </a>
+
+  <div id="form-view">
+    <h2 class="card-title">Create Your Account</h2>
+    <p class="card-sub">Join Fortiq Funded and start your challenge</p>
+    <div class="msg" id="msg"></div>
+    <div class="ref-badge" id="ref-badge">🔗 Referred by a friend — referral code applied!</div>
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="fullname" placeholder="Your full name" onkeydown="if(event.key==='Enter')doSignup()"/>
+    </div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doSignup()"/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Create a strong password" oninput="checkPwd(this.value)" onkeydown="if(event.key==='Enter')doSignup()"/>
+      <div class="strength-bar">
+        <div class="strength-seg" id="s1"></div>
+        <div class="strength-seg" id="s2"></div>
+        <div class="strength-seg" id="s3"></div>
+        <div class="strength-seg" id="s4"></div>
+      </div>
+      <div class="strength-label" id="slabel">Enter a password</div>
+      <ul class="req-list">
+        <li class="req-item" id="r1"><span class="req-dot"></span>At least 8 characters</li>
+        <li class="req-item" id="r2"><span class="req-dot"></span>One uppercase letter</li>
+        <li class="req-item" id="r3"><span class="req-dot"></span>One number</li>
+        <li class="req-item" id="r4"><span class="req-dot"></span>One special character</li>
+      </ul>
+    </div>
+    <div class="field">
+      <label>Confirm Password</label>
+      <input type="password" id="confirm" placeholder="Repeat your password" onkeydown="if(event.key==='Enter')doSignup()"/>
+    </div>
+    <span class="referral-toggle" onclick="document.getElementById('reffield').style.display=document.getElementById('reffield').style.display==='none'?'block':'none'">Have a referral code?</span>
+    <div class="field" id="reffield" style="display:none">
+      <label>Referral Code (optional)</label>
+      <input type="text" id="referral" placeholder="Enter referral code" onkeydown="if(event.key==='Enter')doSignup()"/>
+    </div>
+    <div class="terms-wrap">
+      <input type="checkbox" id="terms"/>
+      <label for="terms">I agree to the <a href="terms.html" target="_blank">Terms &amp; Conditions</a>, <a href="privacy.html" target="_blank">Privacy Policy</a>, and <a href="crypto-disclaimer.html" target="_blank">Crypto Payment Disclaimer</a></label>
+    </div>
+    <div class="g-recaptcha" data-sitekey="6LcCLM8sAAAAAFuteX2JhT28xLFvfnm6GVdgt6oR" style="margin-bottom:1rem;"></div>
+    <button class="btn-submit" id="signup-btn" onclick="doSignup()">Create Account</button>
+    <div class="divider"><span>already have an account?</span></div>
+    <div class="login-link"><a href="login.html">Sign in to your account →</a></div>
+  </div>
+</div>
+
 <script>
 (function(){
   var c=document.getElementById('stars');
@@ -116,120 +238,6 @@ function doSignup(){
     showMsg('Verification failed. Please try again.','error');
     btn.disabled=false;btn.textContent='Create Account';
     grecaptcha.reset();
-  });
-}
-</script>
-(function(){
-  var c=document.getElementById('stars');
-  for(var i=0;i<80;i++){
-    var s=document.createElement('div');s.className='star';
-    var sz=Math.random()*2+0.5;
-    s.style.cssText='width:'+sz+'px;height:'+sz+'px;top:'+Math.random()*100+'%;left:'+Math.random()*100+'%;--d:'+(2+Math.random()*4)+'s;--delay:-'+(Math.random()*5)+'s;--min:'+(0.05+Math.random()*0.1)+';--max:'+(0.4+Math.random()*0.6);
-    c.appendChild(s);
-  }
-})();
-
-(function(){
-  var params=new URLSearchParams(window.location.search);
-  var refCode=params.get('ref');
-  if(refCode){
-    var refField=document.getElementById('reffield');
-    var refInput=document.getElementById('referral');
-    var refBadge=document.getElementById('ref-badge');
-    if(refField)refField.style.display='block';
-    if(refInput)refInput.value=refCode;
-    if(refBadge)refBadge.style.display='block';
-    // Track referral link visit
-    gtag('event', 'referral_visit', {
-      event_category: 'acquisition',
-      event_label: refCode
-    });
-  }
-})();
-
-function checkPwd(v){
-  var r={len:v.length>=8,upper:/[A-Z]/.test(v),num:/[0-9]/.test(v),sp:/[!@#$%^&*(),.?":{}|<>]/.test(v)};
-  document.getElementById('r1').className='req-item'+(r.len?' met':'');
-  document.getElementById('r2').className='req-item'+(r.upper?' met':'');
-  document.getElementById('r3').className='req-item'+(r.num?' met':'');
-  document.getElementById('r4').className='req-item'+(r.sp?' met':'');
-  var score=[r.len,r.upper,r.num,r.sp].filter(Boolean).length;
-  var colors=['','#ff4d4d','#ff9f43','#c9a84c','#00d68f'];
-  var labels=['','Weak','Fair','Good','Strong'];
-  for(var i=1;i<=4;i++)document.getElementById('s'+i).style.background=i<=score?colors[score]:'rgba(255,255,255,0.06)';
-  document.getElementById('slabel').textContent=v?labels[score]:'Enter a password';
-  document.getElementById('slabel').style.color=v?colors[score]:'var(--muted)';
-}
-
-function showMsg(txt,type){
-  var el=document.getElementById('msg');
-  el.textContent=txt;el.className='msg '+type;
-}
-
-var sb=window.supabase.createClient(
-  'https://qhfsvazxpnjwfxhamkea.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo'
-);
-
-function doSignup(){
-  var name=document.getElementById('fullname').value.trim();
-  var email=document.getElementById('email').value.trim();
-  var pwd=document.getElementById('password').value;
-  var conf=document.getElementById('confirm').value;
-  var terms=document.getElementById('terms').checked;
-  var ref=document.getElementById('referral').value.trim();
-var recaptchaResponse=grecaptcha.getResponse();
-  if(!recaptchaResponse){showMsg('Please complete the reCAPTCHA verification.','error');return;}
-  if(!name){showMsg('Please enter your full name.','error');return;}
-  if(!email||!email.includes('@')){showMsg('Please enter a valid email address.','error');return;}
-  if(pwd.length<8){showMsg('Password must be at least 8 characters.','error');return;}
-  if(!/[A-Z]/.test(pwd)){showMsg('Password must contain an uppercase letter.','error');return;}
-  if(!/[0-9]/.test(pwd)){showMsg('Password must contain a number.','error');return;}
-  if(!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)){showMsg('Password must contain a special character.','error');return;}
-  if(pwd!==conf){showMsg('Passwords do not match.','error');return;}
-  if(!terms){showMsg('Please accept the Terms & Conditions.','error');return;}
-
-  var btn=document.getElementById('signup-btn');
-  btn.disabled=true;btn.textContent='Creating account...';
-
-  fetch('https://fortiqfunded-backend.onrender.com/verify-recaptcha',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({token:recaptchaResponse})
-  }).then(function(r){return r.json();}).then(function(rd){
-    if(!rd.success){
-      showMsg('reCAPTCHA verification failed. Please try again.','error');
-      btn.disabled=false;btn.textContent='Create Account';
-      grecaptcha.reset();
-      return;
-    }
-
-  sb.auth.signUp({
-    email:email,
-    password:pwd,
-    options:{
-      data:{full_name:name,referral_code:ref||null},
-      emailRedirectTo:'https://fortiqfunded.com/dashboard.html'
-    }
-  }).then(function(res){
-    if(res.error){
-      showMsg(res.error.message,'error');
-      btn.disabled=false;btn.textContent='Create Account';
-    } else {
-      // Track successful signup
-      gtag('event', 'sign_up', {
-        method: 'email',
-        event_category: 'acquisition',
-        has_referral: ref ? 'yes' : 'no'
-      });
-      if(ref){
-        localStorage.setItem('pending_referral',ref);
-        // Also save referred_by to profile as backup
-        if(res.data && res.data.user){
-          sb.from('profiles').update({referred_by: ref}).eq('id', res.data.user.id);
-        }
-      }
-      window.location.href='dashboard.html';
-    }
   });
 }
 </script>
