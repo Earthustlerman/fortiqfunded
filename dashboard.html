@@ -629,8 +629,11 @@ function submitWallet(){
   if(!addr){msg.textContent='Please enter your wallet address.';msg.className='form-msg err';return;}
   if(!addr.startsWith('T')||addr.length<30||addr.length>45){msg.textContent='Invalid TRC20 address. Must start with T and be 34 characters.';msg.className='form-msg err';return;}
   btn.disabled=true;btn.textContent='Submitting...';msg.className='form-msg';
-  sb.from('accounts').update({payout_wallet:addr}).eq('account_id',fundedAccount.account_id).then(function(r){
-    if(r.error){msg.textContent='Error: '+r.error.message;msg.className='form-msg err';btn.disabled=false;btn.textContent='Request Payout';return;}
+  fetch('https://fortiqfunded-backend.onrender.com/submit-payout-wallet',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({account_id:fundedAccount.account_id,wallet:addr,user_id:currentUser.id})
+  }).then(function(r){return r.json();}).then(function(d){
+    if(d.error){msg.textContent='Error: '+d.error;msg.className='form-msg err';btn.disabled=false;btn.textContent='Request Payout';return;}
     fundedAccount.payout_wallet=addr;
     msg.textContent='Payout request submitted! You will receive payment this Saturday.';msg.className='form-msg ok';
         // Track payout request
