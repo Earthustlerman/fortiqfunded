@@ -563,7 +563,7 @@ function connectTickerWS(){
   if(wsTicker)wsTicker.close();
   wsTicker=new WebSocket('wss://fstream.binance.com/ws/'+pair.toLowerCase()+'@markPrice');
   wsTicker.onmessage=function(e){
-    var d=JSON.parse(e.data);price=+d.c;
+    var d=JSON.parse(e.data);price=+d.p;
     var chg=((+d.c-+d.o)/+d.o*100).toFixed(2);var isUp=chg>=0;
     var base=pair.replace('USDT','');
     var icons={'BTC':'₿','ETH':'Ξ','BNB':'◈','SOL':'◎','XRP':'✕','DOGE':'Ð'};
