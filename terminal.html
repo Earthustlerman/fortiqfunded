@@ -1006,7 +1006,7 @@ function updateOpenPnL(){
       if(dailyLossWithPnl>=5&&!closingPositions[p.id]){closePos(p.id);return;}
     }
     var existingDD=+(account.max_drawdown||0);
-    var totalDD=Math.max(dd,existingDD+(pnl<0?(Math.abs(pnl)/5000*100):0));
+    var totalDD=existingDD+(pnl<0?(Math.abs(pnl)/5000*100):0);
     if(totalDD>=8&&!closingPositions[p.id]){closePos(p.id);return;}
     var hit=false;
     if(p.take_profit&&p.direction==='long'&&cur>=+p.take_profit)hit=true;
