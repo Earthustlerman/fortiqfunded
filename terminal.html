@@ -584,7 +584,7 @@ function connectTickerWS(){
 
 function connectBookWS(){
   if(wsBook)wsBook.close();
-  wsBook=new WebSocket('wss://stream.binance.com:9443/ws/'+pair.toLowerCase()+'@depth20@100ms');
+  wsBook=new WebSocket('wss://fstream.binance.com/ws/'+pair.toLowerCase()+'@depth20@100ms');
   wsBook.onmessage=function(e){var m=JSON.parse(e.data);renderBook(m.bids||[],m.asks||[]);};
 }
 
