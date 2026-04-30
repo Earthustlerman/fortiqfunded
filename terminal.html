@@ -561,7 +561,7 @@ function connectPriceWS(){
 
 function connectTickerWS(){
   if(wsTicker)wsTicker.close();
-  wsTicker=new WebSocket('wss://stream.binance.com:9443/ws/'+pair.toLowerCase()+'@ticker');
+  wsTicker=new WebSocket('wss://fstream.binance.com/ws/'+pair.toLowerCase()+'@ticker');
   wsTicker.onmessage=function(e){
     var d=JSON.parse(e.data);price=+d.c;
     var chg=((+d.c-+d.o)/+d.o*100).toFixed(2);var isUp=chg>=0;
