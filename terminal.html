@@ -551,7 +551,7 @@ function initChart(){
 function connectPriceWS(){
   if(wsPrice)wsPrice.close();
   var streams=PAIRS.slice(0,60).map(function(p){return p.toLowerCase()+'@miniTicker';}).join('/');
-  wsPrice=new WebSocket('wss://fstream.binance.com/stream?streams='+streams);
+  wsPrice=new WebSocket('wss://stream.binance.com:9443/stream?streams='+streams);
   wsPrice.onmessage=function(e){
     var msg=JSON.parse(e.data);if(!msg.data)return;var d=msg.data;
     prices[d.s]={price:+d.c,chg:((+d.c-+d.o)/+d.o*100).toFixed(2)};
