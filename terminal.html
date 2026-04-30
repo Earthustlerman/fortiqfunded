@@ -1013,7 +1013,13 @@ function updateOpenPnL(){
     if(p.take_profit&&p.direction==='short'&&cur<=+p.take_profit)hit=true;
     if(p.stop_loss&&p.direction==='long'&&cur<=+p.stop_loss)hit=true;
     if(p.stop_loss&&p.direction==='short'&&cur>=+p.stop_loss)hit=true;
-    if(hit&&!closingPositions[p.id])closePos(p.id);
+    if(hit&&!closingPositions[p.id]){
+      if(!p._tpslHitCount)p._tpslHitCount=0;
+      p._tpslHitCount++;
+      if(p._tpslHitCount>=3)closePos(p.id);
+    } else {
+      p._tpslHitCount=0;
+    }
   });
   var bal=+account.balance,eq=bal+total,avail=Math.max(0,bal-used);
   g('st-eq','$'+eq.toFixed(2));g('st-avail','$'+avail.toFixed(2));g('st-used','$'+used.toFixed(2));
