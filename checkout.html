@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMWYY4XETF"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -28,7 +27,24 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .logo-wordmark span{background:linear-gradient(135deg,#c9a84c,#e8c96a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .container{max-width:900px;margin:0 auto;padding:3rem 2rem;position:relative;z-index:1;}
 .page-title{font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;margin-bottom:0.5rem;}
-.page-sub{color:var(--muted);font-size:15px;font-weight:300;margin-bottom:3rem;}
+.page-sub{color:var(--muted);font-size:15px;font-weight:300;margin-bottom:2rem;}
+
+/* NETWORK SELECTOR */
+.network-selector{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;}
+.network-option{background:var(--surface);border:2px solid var(--border2);border-radius:14px;padding:1.2rem 1.4rem;cursor:pointer;transition:all 0.2s;position:relative;}
+.network-option:hover{border-color:var(--border);background:var(--surface2);}
+.network-option.selected{border-color:var(--purple);background:rgba(108,61,232,0.08);}
+.network-option.selected-bep20{border-color:#f0b90b;background:rgba(240,185,11,0.06);}
+.network-option-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;}
+.network-name{font-family:'Cinzel',serif;font-size:14px;font-weight:700;}
+.network-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--muted2);display:flex;align-items:center;justify-content:center;font-size:10px;transition:all 0.2s;}
+.network-option.selected .network-check{background:var(--purple);border-color:var(--purple);color:#fff;}
+.network-option.selected-bep20 .network-check{background:#f0b90b;border-color:#f0b90b;color:#000;}
+.network-currency{font-size:13px;font-weight:600;margin-bottom:3px;}
+.network-desc{font-size:11px;color:var(--muted);font-weight:300;line-height:1.5;}
+.network-fee{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:100px;margin-top:6px;}
+.fee-low{background:rgba(0,214,143,0.1);color:var(--success);}
+
 .checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
 .payment-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;overflow:hidden;}
 .payment-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(108,61,232,0.08),transparent 60%);pointer-events:none;}
@@ -42,8 +58,10 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .wallet-addr{font-family:'Courier New',monospace;font-size:11px;color:var(--purple3);flex:1;word-break:break-all;}
 .copy-btn{background:rgba(108,61,232,0.15);border:1px solid var(--border);color:var(--purple3);padding:6px 14px;border-radius:7px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0;}
 .copy-btn:hover{background:rgba(108,61,232,0.3)}
-.network-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,214,143,0.08);border:1px solid rgba(0,214,143,0.2);color:var(--success);font-size:12px;font-weight:600;padding:5px 12px;border-radius:100px;margin-bottom:1.5rem;}
-.net-dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
+.network-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 12px;border-radius:100px;margin-bottom:1.5rem;}
+.network-badge.trc20{background:rgba(0,214,143,0.08);border:1px solid rgba(0,214,143,0.2);color:var(--success);}
+.network-badge.bep20{background:rgba(240,185,11,0.08);border:1px solid rgba(240,185,11,0.2);color:#f0b90b;}
+.net-dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.4)}}
 .warning-box{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:1rem;margin-bottom:1.5rem;}
 .warning-box p{font-size:12px;color:var(--warning);font-weight:300;line-height:1.7;}
@@ -80,7 +98,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .blocked-state{display:none;text-align:center;padding:4rem 2rem;background:var(--surface);border:1px solid var(--border2);border-radius:20px;max-width:500px;margin:0 auto;}
 .blocked-state h2{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;margin-bottom:0.8rem;}
 .blocked-state p{color:var(--muted);font-size:14px;font-weight:300;line-height:1.7;margin-bottom:1.5rem;}
-@media(max-width:700px){.checkout-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.checkout-grid{grid-template-columns:1fr}.network-selector{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -104,42 +122,66 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 
 <div class="container">
   <h1 class="page-title">Start Your Challenge</h1>
-  <p class="page-sub">Send $150 USDT on TRC20 to activate your one-phase evaluation account.</p>
+  <p class="page-sub">Choose your payment network and send $150 to activate your one-phase evaluation account.</p>
 
   <div class="blocked-state" id="blocked-state">
     <div style="font-size:3rem;margin-bottom:1rem;">⚠️</div>
     <h2>You Already Have an Active Challenge</h2>
-    <p>You currently have a challenge account that is active or pending activation. You can only have one challenge at a time. Complete or fail your current challenge before purchasing a new one.</p>
+    <p>You currently have a challenge account that is active or pending activation. You can only have one challenge at a time.</p>
     <a href="dashboard.html" style="display:inline-block;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;text-decoration:none;padding:14px 32px;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;">Go to Dashboard</a>
   </div>
 
   <div id="main-content" style="display:none;">
+
+    <!-- NETWORK SELECTOR -->
+    <div class="network-selector">
+      <div class="network-option selected" id="opt-trc20" onclick="selectNetwork('TRC20')">
+        <div class="network-option-top">
+          <span class="network-name">TRC20</span>
+          <div class="network-check" id="check-trc20">✓</div>
+        </div>
+        <div class="network-currency" style="color:var(--success);">USDT · Tron Network</div>
+        <div class="network-desc">Most popular. Ultra-low fees. Recommended for all regions.</div>
+        <span class="network-fee fee-low">~$0.01 fee</span>
+      </div>
+      <div class="network-option" id="opt-bep20" onclick="selectNetwork('BEP20')">
+        <div class="network-option-top">
+          <span class="network-name">BEP20</span>
+          <div class="network-check" id="check-bep20"></div>
+        </div>
+        <div class="network-currency" style="color:#f0b90b;">USDC · BNB Smart Chain</div>
+        <div class="network-desc">MiCA compliant. Ideal for EU traders. Low fees.</div>
+        <span class="network-fee fee-low">~$0.30 fee</span>
+      </div>
+    </div>
+
     <div class="checkout-grid">
       <div class="payment-card">
         <div class="payment-badge">One-Phase Challenge</div>
         <div class="price-display">$150</div>
-        <div class="price-sub">USDT · TRC20 Network Only · Non-refundable</div>
+        <div class="price-sub" id="price-sub">USDT · TRC20 Network · Non-refundable</div>
         <div class="qr-wrap">
           <div class="qr-box" id="qrcode"></div>
         </div>
-        <div class="wallet-label">Send USDT (TRC20) to this address</div>
+        <div class="wallet-label" id="wallet-label">Send USDT (TRC20) to this address</div>
         <div class="wallet-box">
           <span class="wallet-addr" id="wallet-display">TUGcqK3s5EsXme3nMUVXH9LbmuyLf4c99d</span>
           <button class="copy-btn" onclick="copyWallet()">Copy</button>
         </div>
-        <div class="network-badge">
+        <div class="network-badge trc20" id="network-badge">
           <div class="net-dot"></div>
-          TRC20 Network Only
+          <span id="network-badge-text">TRC20 Network</span>
         </div>
         <div class="warning-box">
-          <p><strong>⚠ Important:</strong> Send on <strong>TRC20 only</strong>. Do not send on ERC20, BEP20, or any other network — funds sent on the wrong network will be permanently lost. Transactions are irreversible. Minimum $148 USDT required to activate.</p>
+          <p id="warning-text"><strong>⚠ Important:</strong> Send on <strong>TRC20 only</strong>. Do not send on ERC20, BEP20, or any other network — funds sent on the wrong network will be permanently lost. Minimum $148 USDT required.</p>
         </div>
         <div class="summary-box">
           <div class="summary-row"><span class="summary-label">Challenge Type</span><span class="summary-val">One-Phase Evaluation</span></div>
           <div class="summary-row"><span class="summary-label">Funded Account Size</span><span class="summary-val">$5,000 USDT</span></div>
           <div class="summary-row"><span class="summary-label">Profit Target</span><span class="summary-val">8%</span></div>
           <div class="summary-row"><span class="summary-label">Profit Split</span><span class="summary-val green">80% Yours</span></div>
-          <div class="summary-row"><span class="summary-label">Entry Fee</span><span class="summary-val">$150 USDT</span></div>
+          <div class="summary-row"><span class="summary-label">Entry Fee</span><span class="summary-val">$150</span></div>
+          <div class="summary-row"><span class="summary-label">Network</span><span class="summary-val" id="summary-network">TRC20 (USDT)</span></div>
         </div>
       </div>
 
@@ -147,27 +189,31 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
         <div class="steps-title">How to Complete Payment</div>
         <div class="step-item">
           <div class="step-num">1</div>
-          <div class="step-text"><strong>Copy the wallet address</strong>Copy the TRC20 wallet address shown on the left.</div>
+          <div class="step-text"><strong>Select your network above</strong>Choose TRC20 (USDT) for most regions, or BEP20 (USDC) if you are in the EU.</div>
         </div>
         <div class="step-item">
           <div class="step-num">2</div>
-          <div class="step-text"><strong>Send exactly $150 USDT</strong>Open your exchange or wallet and withdraw $150 USDT to that address on the TRC20 network.</div>
+          <div class="step-text"><strong>Copy the wallet address</strong>Copy the wallet address shown on the left for your chosen network.</div>
         </div>
         <div class="step-item">
           <div class="step-num">3</div>
-          <div class="step-text"><strong>Copy your transaction hash</strong>After sending, find your transaction hash (TX ID) in your wallet or exchange history.</div>
+          <div class="step-text" id="step3-text"><strong>Send exactly $150 USDT</strong>Open your exchange or wallet and send $150 USDT to that address on the TRC20 network.</div>
         </div>
         <div class="step-item">
           <div class="step-num">4</div>
-          <div class="step-text"><strong>Submit below</strong>Paste your transaction hash below. We'll verify it on the blockchain and activate your challenge automatically after 19 confirmations.</div>
+          <div class="step-text"><strong>Copy your transaction hash</strong>After sending, find your transaction hash (TX ID) in your wallet or exchange history.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-text" id="step5-text"><strong>Submit below</strong>Paste your transaction hash below. We verify it on the blockchain and activate your challenge automatically after 19 confirmations.</div>
         </div>
         <div class="tx-section">
           <div class="tx-label">Transaction Hash (TX ID)</div>
-          <input class="tx-input" type="text" id="txhash" placeholder="Paste your TRC20 transaction hash here..." onkeydown="if(event.key==='Enter')submitTx()"/>
+          <input class="tx-input" type="text" id="txhash" placeholder="Paste your transaction hash here..." onkeydown="if(event.key==='Enter')submitTx()"/>
           <div class="msg" id="txmsg"></div>
           <button class="btn-submit" id="submit-btn" onclick="submitTx()">Submit Payment</button>
           <div style="margin-top:1rem;text-align:center">
-            <p style="color:var(--muted2);font-size:12px;font-weight:300;">Your challenge activates automatically after 19 blockchain confirmations. This usually takes 5–10 minutes.</p>
+            <p style="color:var(--muted2);font-size:12px;font-weight:300;" id="confirm-note">Your challenge activates automatically after 19 blockchain confirmations. This usually takes 5–10 minutes.</p>
           </div>
         </div>
       </div>
@@ -177,7 +223,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
   <div class="success-state" id="success-state">
     <div class="success-icon">✓</div>
     <h2>Payment Received!</h2>
-    <p>Your transaction has been submitted. Your challenge will activate automatically once 19 blockchain confirmations are reached — usually within 5–10 minutes.<br><br>You'll receive an email confirmation when your account is active. You can check your dashboard for status updates.</p>
+    <p>Your transaction has been submitted. Your challenge will activate automatically once confirmations are reached — usually within 5–10 minutes.<br><br>You'll receive an email confirmation when your account is active.</p>
     <a href="dashboard.html" style="display:inline-block;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;text-decoration:none;padding:14px 32px;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;">Go to Dashboard</a>
   </div>
 </div>
@@ -193,30 +239,82 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
   }
 })();
 
-// Track checkout page view
-gtag('event', 'begin_checkout', {
-  currency: 'USD',
-  value: 150,
-  items: [{item_id: 'challenge_150', item_name: 'One-Phase Trading Challenge', price: 150, quantity: 1}]
-});
+gtag('event','begin_checkout',{currency:'USD',value:150,items:[{item_id:'challenge_150',item_name:'One-Phase Trading Challenge',price:150,quantity:1}]});
 
 var sb=window.supabase.createClient(
   'https://qhfsvazxpnjwfxhamkea.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo'
 );
 
-var WALLET='TUGcqK3s5EsXme3nMUVXH9LbmuyLf4c99d';
-var userId=null;
-var userProfileId=null;
+var TRC20_WALLET = 'TUGcqK3s5EsXme3nMUVXH9LbmuyLf4c99d';
+var BEP20_WALLET = '0xC5c3f3E0f9267701987ED62Bd715e61cfB8749F9';
+var selectedNetwork = 'TRC20';
+var currentWallet = TRC20_WALLET;
+var userId = null;
+var userProfileId = null;
+var qrInstance = null;
+
+// ── NETWORK SELECTOR ──
+function selectNetwork(network) {
+  selectedNetwork = network;
+
+  // Update option styles
+  var trcOpt = document.getElementById('opt-trc20');
+  var bepOpt = document.getElementById('opt-bep20');
+  var trcCheck = document.getElementById('check-trc20');
+  var bepCheck = document.getElementById('check-bep20');
+
+  if (network === 'TRC20') {
+    trcOpt.className = 'network-option selected';
+    bepOpt.className = 'network-option';
+    trcCheck.textContent = '✓';
+    bepCheck.textContent = '';
+    currentWallet = TRC20_WALLET;
+    document.getElementById('price-sub').textContent = 'USDT · TRC20 Network · Non-refundable';
+    document.getElementById('wallet-label').textContent = 'Send USDT (TRC20) to this address';
+    document.getElementById('wallet-display').textContent = TRC20_WALLET;
+    document.getElementById('network-badge').className = 'network-badge trc20';
+    document.getElementById('network-badge-text').textContent = 'TRC20 Network';
+    document.getElementById('warning-text').innerHTML = '<strong>⚠ Important:</strong> Send on <strong>TRC20 only</strong>. Do not send on ERC20, BEP20, or any other network — funds sent on the wrong network will be permanently lost. Minimum $148 USDT required.';
+    document.getElementById('summary-network').textContent = 'TRC20 (USDT)';
+    document.getElementById('step3-text').innerHTML = '<strong>Send exactly $150 USDT</strong>Open your exchange or wallet and send $150 USDT to that address on the TRC20 network.';
+    document.getElementById('step5-text').innerHTML = '<strong>Submit below</strong>Paste your transaction hash below. We verify it on the blockchain and activate your challenge automatically after 19 confirmations.';
+    document.getElementById('confirm-note').textContent = 'Your challenge activates automatically after 19 blockchain confirmations. This usually takes 5–10 minutes.';
+    document.getElementById('txhash').placeholder = 'Paste your TRC20 transaction hash here...';
+  } else {
+    trcOpt.className = 'network-option';
+    bepOpt.className = 'network-option selected-bep20';
+    trcCheck.textContent = '';
+    bepCheck.textContent = '✓';
+    currentWallet = BEP20_WALLET;
+    document.getElementById('price-sub').textContent = 'USDC · BEP20 Network · Non-refundable';
+    document.getElementById('wallet-label').textContent = 'Send USDC (BEP20) to this address';
+    document.getElementById('wallet-display').textContent = BEP20_WALLET;
+    document.getElementById('network-badge').className = 'network-badge bep20';
+    document.getElementById('network-badge-text').textContent = 'BEP20 Network (BNB Smart Chain)';
+    document.getElementById('warning-text').innerHTML = '<strong>⚠ Important:</strong> Send <strong>USDC on BEP20 only</strong>. Do not send on ERC20, TRC20, or any other network. Make sure you are sending USDC (not USDT) on the BNB Smart Chain. Minimum $148 USDC required.';
+    document.getElementById('summary-network').textContent = 'BEP20 (USDC)';
+    document.getElementById('step3-text').innerHTML = '<strong>Send exactly $150 USDC</strong>Open your exchange or wallet and send $150 USDC to that address on the BEP20 (BNB Smart Chain) network.';
+    document.getElementById('step5-text').innerHTML = '<strong>Submit below</strong>Paste your transaction hash below. We verify it on the BNB Smart Chain and activate your challenge automatically after 15 confirmations.';
+    document.getElementById('confirm-note').textContent = 'Your challenge activates automatically after 15 blockchain confirmations. This usually takes 1–3 minutes.';
+    document.getElementById('txhash').placeholder = 'Paste your BEP20 transaction hash here...';
+  }
+
+  // Regenerate QR code
+  document.getElementById('qrcode').innerHTML = '';
+  new QRCode(document.getElementById('qrcode'), {
+    text: currentWallet, width: 160, height: 160,
+    colorDark: '#000000', colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+}
 
 sb.auth.getSession().then(function(r){
   if(!r.data.session){window.location.href='login.html';return;}
   userId=r.data.session.user.id;
-
   sb.from('profiles').select('user_id').eq('id',userId).single().then(function(pr){
     if(pr.error||!pr.data){showMain();return;}
     userProfileId=pr.data.user_id;
-
     sb.from('accounts').select('status').eq('user_id',userProfileId).order('created_at',{ascending:false}).limit(1).then(function(ar){
       if(ar.data&&ar.data.length>0){
         var status=ar.data[0].status;
@@ -225,12 +323,8 @@ sb.auth.getSession().then(function(r){
           document.getElementById('main-content').style.display='none';
           document.querySelector('.page-title').style.display='none';
           document.querySelector('.page-sub').style.display='none';
-        } else {
-          showMain();
-        }
-      } else {
-        showMain();
-      }
+        } else { showMain(); }
+      } else { showMain(); }
     });
   });
 });
@@ -238,25 +332,20 @@ sb.auth.getSession().then(function(r){
 function showMain(){
   document.getElementById('main-content').style.display='block';
   new QRCode(document.getElementById('qrcode'),{
-    text:WALLET,width:160,height:160,
+    text:TRC20_WALLET,width:160,height:160,
     colorDark:'#000000',colorLight:'#ffffff',
     correctLevel:QRCode.CorrectLevel.M
   });
 }
 
 function copyWallet(){
-  navigator.clipboard.writeText(WALLET).then(function(){
+  navigator.clipboard.writeText(currentWallet).then(function(){
     var btn=document.querySelector('.copy-btn');
     btn.textContent='Copied!';
     btn.style.background='rgba(0,214,143,0.2)';
     btn.style.color='var(--success)';
-    // Track wallet copy
-    gtag('event', 'wallet_address_copied', {event_category: 'checkout'});
-    setTimeout(function(){
-      btn.textContent='Copy';
-      btn.style.background='';
-      btn.style.color='';
-    },2000);
+    gtag('event','wallet_address_copied',{event_category:'checkout',event_label:selectedNetwork});
+    setTimeout(function(){btn.textContent='Copy';btn.style.background='';btn.style.color='';},2000);
   });
 }
 
@@ -264,6 +353,7 @@ function showMsg(txt,type){
   var el=document.getElementById('txmsg');
   el.textContent=txt;el.className='msg '+type;
 }
+
 function pollForConfirmation(txHash){
   var interval=setInterval(function(){
     sb.from('payments').select('status').eq('tx_hash',txHash).single().then(function(r){
@@ -276,6 +366,7 @@ function pollForConfirmation(txHash){
     });
   },10000);
 }
+
 function submitTx(){
   var tx=document.getElementById('txhash').value.trim();
   if(!tx){showMsg('Please paste your transaction hash.','error');return;}
@@ -286,48 +377,47 @@ function submitTx(){
   btn.disabled=true;btn.textContent='Verifying...';
   showMsg('Checking your transaction on the blockchain...','info');
 
-  // Track payment submission
-  gtag('event', 'payment_submitted', {
-    event_category: 'checkout',
-    event_label: 'tx_hash_submitted',
-    value: 150
-  });
+  gtag('event','payment_submitted',{event_category:'checkout',event_label:selectedNetwork+'_tx_submitted',value:150});
 
   sb.from('payments').select('id,status').eq('tx_hash',tx).then(function(dup){
     if(dup.data&&dup.data.length>0){
-      if(dup.data[0].status==='confirmed'){
-        window.location.href='dashboard.html';
-        return;
-      }
-      showMsg('Transaction submitted! Waiting for blockchain confirmation — this usually takes 2–5 minutes. Do not close this page.','info');
+      if(dup.data[0].status==='confirmed'){window.location.href='dashboard.html';return;}
+      showMsg('Transaction submitted! Waiting for blockchain confirmation.','info');
       btn.disabled=true;btn.textContent='Waiting for confirmation...';
       pollForConfirmation(tx);
       return;
     }
 
+    // Insert payment with correct network
     sb.from('payments').insert({
       user_id:userId,
       tx_hash:tx,
       amount:150,
       status:'pending',
-      confirmations:0
+      confirmations:0,
+      network:selectedNetwork
     }).then(function(r){
       if(r.error){
         showMsg('Error saving payment. Please try again.','error');
         btn.disabled=false;btn.textContent='Submit Payment';
         return;
       }
-      verifyOnChain(tx,userId);
+      if(selectedNetwork==='TRC20'){
+        verifyTRC20(tx,userId);
+      } else {
+        verifyBEP20(tx,userId);
+      }
     });
   });
 }
 
-function verifyOnChain(txHash,uid){
+// ── TRC20 VERIFICATION ──
+function verifyTRC20(txHash,uid){
   fetch('https://api.trongrid.io/v1/transactions/'+txHash)
   .then(function(r){return r.json();})
   .then(function(data){
     if(!data.data||data.data.length===0){
-      showMsg('Transaction submitted! Waiting for blockchain confirmation — this usually takes 2–5 minutes. Do not close this page.','info');
+      showMsg('Transaction submitted! Waiting for blockchain confirmation — usually 5–10 minutes.','info');
       document.getElementById('submit-btn').disabled=true;
       document.getElementById('submit-btn').textContent='Waiting for confirmation...';
       pollForConfirmation(txHash);
@@ -336,46 +426,41 @@ function verifyOnChain(txHash,uid){
     var tx=data.data[0];
     var confirmations=tx.confirmations||0;
     var amount=0;
-
     if(tx.trc20_transfers&&tx.trc20_transfers.length>0){
-      var transfer=tx.trc20_transfers[0];
-      amount=parseInt(transfer.amount_str||'0')/1000000;
+      amount=parseInt(tx.trc20_transfers[0].amount_str||'0')/1000000;
     }
-
     if(amount<148){
-      showMsg('Amount received ('+amount.toFixed(2)+' USDT) is below the minimum $148 required. Please contact support.','error');
+      showMsg('Amount received ('+amount.toFixed(2)+' USDT) is below the minimum $148 required.','error');
       document.getElementById('submit-btn').disabled=false;
       document.getElementById('submit-btn').textContent='Submit Payment';
       return;
     }
-
-    sb.from('payments').update({
-      amount:amount,
-      confirmations:confirmations,
-      status:confirmations>=19?'confirmed':'pending'
-    }).eq('tx_hash',txHash).then(function(){});
-
+    sb.from('payments').update({amount:amount,confirmations:confirmations,status:confirmations>=19?'confirmed':'pending'}).eq('tx_hash',txHash).then(function(){});
     if(confirmations>=19){
       activateChallenge(uid,amount);
     } else {
-      showMsg('Transaction found! '+confirmations+'/19 confirmations. Your challenge will activate automatically once confirmed. Check your dashboard shortly.','info');
-      // Track pending payment
-      gtag('event', 'purchase_pending', {
-        currency: 'USD',
-        value: amount,
-        event_category: 'checkout'
-      });
+      showMsg('Transaction found! '+confirmations+'/19 confirmations. Your challenge will activate automatically.','info');
       document.getElementById('success-state').style.display='block';
-document.getElementById('main-content').style.display='none';
-setTimeout(function(){window.location.href='dashboard.html';},5000);
+      document.getElementById('main-content').style.display='none';
+      setTimeout(function(){window.location.href='dashboard.html';},5000);
     }
   })
   .catch(function(){
-    showMsg('Transaction found and recorded. We will verify it automatically. Check your dashboard in 10 minutes.','info');
+    showMsg('Transaction recorded. We will verify it automatically. Check your dashboard in 10 minutes.','info');
     document.getElementById('success-state').style.display='block';
-document.getElementById('main-content').style.display='none';
-setTimeout(function(){window.location.href='dashboard.html';},5000);
+    document.getElementById('main-content').style.display='none';
+    setTimeout(function(){window.location.href='dashboard.html';},5000);
   });
+}
+
+// ── BEP20 VERIFICATION ──
+function verifyBEP20(txHash,uid){
+  // For BEP20 we just confirm the tx was submitted and let Render verify it
+  // since we need the BSCScan API key which is only on the server
+  showMsg('BEP20 transaction submitted! We will verify it on the BNB Smart Chain automatically — usually 1–3 minutes.','info');
+  document.getElementById('submit-btn').disabled=true;
+  document.getElementById('submit-btn').textContent='Waiting for confirmation...';
+  pollForConfirmation(txHash);
 }
 
 function activateChallenge(uid,amount){
@@ -383,30 +468,16 @@ function activateChallenge(uid,amount){
     if(r.error||!r.data)return;
     var userNum=r.data.user_id.replace('USR-','');
     var accId='ACC-'+userNum;
-
     sb.from('accounts').insert({
-      user_id:r.data.user_id,
-      account_id:accId,
-      account_type:'challenge',
-      status:'to_be_active',
-      balance:5000,
-      profit:0,
-      daily_loss:0,
-      max_drawdown:0,
-      active_days:0
+      user_id:r.data.user_id,account_id:accId,account_type:'challenge',
+      status:'to_be_active',balance:5000,profit:0,daily_loss:0,max_drawdown:0,active_days:0
     }).then(function(ar){
       if(ar.error){console.log('Account error:',ar.error);}
       sb.from('payments').update({status:'confirmed',account_id:accId}).eq('user_id',uid).then(function(){});
-      // Track confirmed purchase
-      gtag('event', 'purchase', {
-        transaction_id: accId,
-        currency: 'USD',
-        value: amount,
-        items: [{item_id: 'challenge_150', item_name: 'One-Phase Trading Challenge', price: amount, quantity: 1}]
-      });
+      gtag('event','purchase',{transaction_id:accId,currency:'USD',value:amount,items:[{item_id:'challenge_150',item_name:'One-Phase Trading Challenge',price:amount,quantity:1}]});
       document.getElementById('success-state').style.display='block';
-document.getElementById('main-content').style.display='none';
-setTimeout(function(){window.location.href='dashboard.html';},5000);
+      document.getElementById('main-content').style.display='none';
+      setTimeout(function(){window.location.href='dashboard.html';},5000);
     });
   });
 }
