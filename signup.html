@@ -202,7 +202,6 @@ function doSignup(){
         grecaptcha.reset();
       } else {
         gtag('event', 'sign_up', {method: 'email', event_category: 'acquisition'});
-        }
         window.location.href='dashboard.html';
       }
     });
