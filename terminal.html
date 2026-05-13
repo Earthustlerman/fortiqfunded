@@ -1038,7 +1038,7 @@ function closePos(id){
   fetch('https://fortiqfunded-backend.onrender.com/close-position',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({position_id:id,account_id:accountId,user_id:userId})
+    body:JSON.stringify({position_id:id,account_id:accountId,user_id:userId,exit_price:(function(){var pos=openPos.find(function(p){return p.id===id;});return pos&&prices[pos.symbol]?prices[pos.symbol].price:price;}())})
   }).then(function(r){return r.json();}).then(function(data){
     delete closingPositions[id];
     if(!data.success){
