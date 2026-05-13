@@ -165,11 +165,7 @@ tr:hover td{background:rgba(108,61,232,0.03)}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
         Payouts
       </div>
-      <div class="sidebar-section">Growth</div>
-      <div class="sidebar-item" onclick="showPage('affiliates',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        Affiliates
-      </div>
+      <div class="sidebar-section">Trading</div>
       <div class="sidebar-item" onclick="showPage('positions',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         Positions
@@ -238,14 +234,6 @@ tr:hover td{background:rgba(108,61,232,0.03)}
           <div id="stage2-body"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
         </div>
       </div>
-
-      <!-- AFFILIATES -->
-      <div class="admin-page" id="page-affiliates">
-        <div class="page-hd"><h1>Affiliates</h1><p>Only showing referrers who have submitted their affiliate wallet — ready to pay</p></div>
-        <div class="table-wrap">
-          <div class="table-head"><h3>Affiliate Records</h3></div>
-          <div id="affiliates-body"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
-        </div>
       </div>
 
       <!-- POSITIONS -->
@@ -349,7 +337,6 @@ function loadPage(page){
   else if(page==='accounts')loadAccounts();
   else if(page==='payments')loadPayments();
   else if(page==='payouts')loadPayouts();
-  else if(page==='affiliates')loadAffiliates();
   else if(page==='positions')loadPositions();
 }
 
@@ -448,15 +435,13 @@ function loadTraders(){
     var data=r.data||[];
     var el=document.getElementById('traders-body');
     if(!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">👤</div>No traders yet</div>';return;}
-    var h='<table id="traders-tbl"><thead><tr><th>User ID</th><th>Name</th><th>Email</th><th>Referral Code</th><th>Referred By</th><th>Joined</th></tr></thead><tbody>';
+    var h='<table id="traders-tbl"><thead><tr><th>User ID</th><th>Name</th><th>Email</th><th>Joined</th></tr></thead><tbody>';
     data.forEach(function(p){
       var dt=p.created_at?new Date(p.created_at).toLocaleDateString():'—';
       h+='<tr>';
       h+='<td class="td-mono">'+p.user_id+'</td>';
       h+='<td>'+(p.full_name||'—')+'</td>';
       h+='<td>'+(p.email||'—')+'</td>';
-      h+='<td class="td-mono">'+(p.referral_code||'—')+'</td>';
-      h+='<td class="td-mono">'+(p.referred_by||'—')+'</td>';
       h+='<td class="td-mono">'+dt+'</td>';
       h+='</tr>';
     });
@@ -644,24 +629,12 @@ function confirmPayout(accountId,amount,wallet){
     loadPayouts();
   });
 }
-
-// ── AFFILIATES ──
-function loadAffiliates(){
-  sb.from('affiliates').select('*').order('created_at',{ascending:false}).then(function(r){
-    var data=r.data||[];
-    var el=document.getElementById('affiliates-body');
-    if(!data.length){el.innerHTML='<div class="empty"><div class="empty-icon">🤝</div>No affiliate records yet</div>';return;}
-    var referrerIds=data.map(function(a){return a.referrer_id;}).filter(function(v,i,s){return s.indexOf(v)===i;});
-    sb.from('profiles').select('user_id,affiliate_wallet').in('user_id',referrerIds).then(function(pr){
-      var walletMap={};
-      (pr.data||[]).forEach(function(p){if(p.affiliate_wallet)walletMap[p.user_id]=p.affiliate_wallet;});
       var filtered=data.filter(function(a){return walletMap[a.referrer_id];});
       if(!filtered.length){
-        el.innerHTML='<div class="empty"><div class="empty-icon">🤝</div>No affiliates with wallet submitted yet</div>';
+        el.innerHTML='<div class="empty"><div class="empty-icon">📊</div>No data</div>';
         return;
       }
-      var h='<table><thead><tr><th>Referrer ID</th><th>Referred ID</th><th>Commission</th><th>Affiliate Wallet</th><th>Network</th><th>Status</th><th>Action</th></tr></thead><tbody>';
-      filtered.forEach(function(a){
+            filtered.forEach(function(a){
         var badge=a.status==='approved'?'green':a.status==='rejected'?'red':'gold';
         var wallet=walletMap[a.referrer_id];
         var isBEP20=wallet&&wallet.startsWith('0x');
@@ -719,17 +692,11 @@ function loadPositions(){
   });
 }
 
-function markAffiliatePaid(id){
-  sb.from('affiliates').update({paid:true}).eq('id',id).then(function(r){
-    if(r.error){showNotif('Error: '+r.error.message,'err');return;}
     showNotif('✓ Affiliate marked as paid!','ok');
     loadAffiliates();
   });
 }
 
-function updateAffiliate(id,status){
-  sb.from('affiliates').update({status:status}).eq('id',id).then(function(r){
-    if(r.error){showNotif('Error: '+r.error.message,'err');return;}
     showNotif('Affiliate '+status+'!','ok');
     loadAffiliates();
   });
