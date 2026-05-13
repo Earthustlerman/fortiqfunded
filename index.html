@@ -143,14 +143,8 @@ nav{position:sticky;top:0;z-index:300;pointer-events:all;display:flex;align-item
 .faq-answer{max-height:0;overflow:hidden;transition:max-height 0.35s ease;}
 .faq-item.open .faq-answer{max-height:300px}
 .faq-answer p{color:var(--muted);font-size:14px;font-weight:300;line-height:1.8;padding-bottom:1.3rem}
-.affiliate-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-top:3rem}
-.aff-card{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:1.8rem;text-align:center;transition:border-color 0.2s,transform 0.2s;}
-.aff-card:hover{border-color:var(--border);transform:translateY(-3px)}
-.aff-icon{width:52px;height:52px;border-radius:12px;margin:0 auto 1.2rem;background:rgba(108,61,232,0.12);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;}
-.aff-icon svg{width:24px;height:24px}
 .aff-card h3{font-size:15px;font-weight:600;margin-bottom:0.5rem}
 .aff-card p{color:var(--muted);font-size:13px;font-weight:300;line-height:1.6}
-.aff-reward{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-size:14px;font-weight:600;padding:8px 20px;border-radius:100px;margin-top:1.5rem;}
 .payout-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;margin-top:3rem}
 .payout-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;text-align:center;}
 .payout-ring-wrap{width:160px;height:160px;border-radius:50%;margin:0 auto 1.5rem;position:relative}
@@ -217,8 +211,7 @@ footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid va
     <li><a href="#challenge">Challenge</a></li>
     <li><a href="#rules">Rules</a></li>
     <li><a href="#faq">FAQ</a></li>
-    <li><a href="#affiliate">Affiliates</a></li>
-  </ul>
+    </ul>
   <div style="display:flex;align-items:center;gap:0">
     <a href="login.html" class="nav-login">Login</a>
     <a href="signup.html" class="nav-cta">Get Funded</a>
@@ -251,7 +244,7 @@ footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid va
 <div style="position:relative;z-index:1;padding:0 2rem">
   <div class="stats-bar">
     <div class="stat-item"><div class="stat-num">$5K</div><div class="stat-label">Funded Account Size</div></div>
-    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Profit Split</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Profits Yours</div></div>
     <div class="stat-item"><div class="stat-num">8%</div><div class="stat-label">Profit Target</div></div>
     <div class="stat-item"><div class="stat-num">100+</div><div class="stat-label">Crypto Pairs</div></div>
     <div class="stat-item"><div class="stat-num" style="font-size:1.1rem;margin-top:0.89rem">USDT · USDC</div><div class="stat-label" style="margin-top:7px">Payment Methods</div></div>
@@ -286,7 +279,7 @@ footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid va
         <li><span class="rule-label">Max Drawdown</span><span class="rule-val">8%</span></li>
         <li><span class="rule-label">Min Trading Days</span><span class="rule-val">5 Days</span></li>
         <li><span class="rule-label">Leverage</span><span class="rule-val">1x – 5x</span></li>
-        <li><span class="rule-label">Profit Split</span><span class="rule-val">100%</span></li>
+        <li><span class="rule-label">Profit Split</span><span class="rule-val">All Yours</span></li>
         <li><span class="rule-label">Max Time Limit</span><span class="rule-val">None</span></li>
       </ul>
       <a href="signup.html" class="btn-primary" style="width:100%;text-align:center;display:block;padding:14px">Start Challenge — $6</a>
@@ -354,7 +347,7 @@ footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid va
       <h3>Keep 100% of Your Profits</h3>
       <p>Once your funded account hits the profit target and all positions are closed, pay the $144 balance and your full profit is processed every Saturday in your chosen currency.</p>
       <ul class="payout-feats">
-        <li><span class="pf-check">✓</span>100% profit split — you keep everything</li>
+        <li><span class="pf-check">✓</span>keep 100% of your profits — you keep everything</li>
         <li><span class="pf-check">✓</span>Paid in USDT (TRC20) or USDC (BEP20)</li>
         <li><span class="pf-check">✓</span>Payout processed every Saturday once balance paid</li>
         <li><span class="pf-check">✓</span>No minimum withdrawal threshold</li>
@@ -383,36 +376,6 @@ footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid va
   </div>
 </section>
 
-<div class="section-divider"></div>
-
-<section class="section" id="affiliate">
-  <div class="section-eyebrow">Referrals</div>
-  <h2 class="section-title">Earn $50 USDT Per Referral</h2>
-  <p class="section-sub">Sign up free, share your unique link, and earn $50 USDT when someone you refer purchases a challenge.</p>
-
-  <div class="affiliate-steps">
-    <div class="aff-card">
-      <div class="aff-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="color:var(--purple3)"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></div>
-      <h3>Get Your Link</h3>
-      <p>Sign up free and receive your unique referral link from your dashboard instantly.</p>
-    </div>
-    <div class="aff-card">
-      <div class="aff-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="color:var(--purple3)"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
-      <h3>Refer a Trader</h3>
-      <p>Share your link. They sign up and purchase the challenge. Payment confirms on-chain.</p>
-    </div>
-    <div class="aff-card">
-      <div class="aff-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="color:var(--purple3)"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
-      <h3>Earn $50 USDT</h3>
-      <p>Once the challenge purchase is verified, you receive $50 — paid every Saturday in USDT (TRC20) or USDC (BEP20).</p>
-    </div>
-  </div>
-
-  <div style="text-align:center;margin-top:2.5rem">
-    <div class="aff-reward">$50 USDT · Per Referral · Paid Every Saturday</div>
-    <p style="color:var(--muted);font-size:13px;margin-top:1rem;font-weight:300">No cap on referrals. Earn indefinitely.</p>
-  </div>
-</section>
 
 <div class="section-divider"></div>
 
@@ -430,7 +393,7 @@ footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid va
 
 <div class="cta-banner">
   <h2>Ready to Prove Your Edge?</h2>
-  <p>Join Fortiq Funded. Pay $6 today. Keep 100% if you pass.</p>
+  <p>Join Fortiq Funded. Pay $6 today. Keep every dollar you earn.</p>
   <a href="signup.html" class="btn-primary" style="font-size:17px;padding:16px 44px">Start Your Challenge — $6</a>
 </div>
 
@@ -455,7 +418,6 @@ footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid va
       <h4>Company</h4>
       <ul>
         <li><a href="#how">About Us</a></li>
-        <li><a href="#affiliate">Affiliate Program</a></li>
         <li><a href="leaderboard.html">Leaderboard</a></li>
         <li><a href="contact.html">Contact Us</a></li>
       </ul>
@@ -465,7 +427,6 @@ footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid va
       <ul>
         <li><a href="terms.html">Terms & Conditions</a></li>
         <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="terms.html">Affiliate Terms</a></li>
         <li><a href="crypto-disclaimer.html">Crypto Disclaimer</a></li>
       </ul>
     </div>
