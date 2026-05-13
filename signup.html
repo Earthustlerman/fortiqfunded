@@ -42,7 +42,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .req-item.met{color:var(--success)}
 .req-dot{width:5px;height:5px;border-radius:50%;background:var(--muted2);flex-shrink:0;transition:background 0.2s}
 .req-item.met .req-dot{background:var(--success)}
-.referral-toggle{font-size:12px;color:var(--purple3);cursor:pointer;text-decoration:underline;margin-bottom:1.2rem;display:inline-block;}
 .terms-wrap{display:flex;align-items:flex-start;gap:10px;margin-bottom:1.5rem}
 .terms-wrap input[type=checkbox]{width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--purple);cursor:pointer;}
 .terms-wrap label{font-size:12px;color:var(--muted);font-weight:300;line-height:1.6;cursor:pointer}
@@ -58,7 +57,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .divider span{color:var(--muted2);font-size:12px}
 .login-link{text-align:center;font-size:13px;color:var(--muted)}
 .login-link a{color:var(--purple3);text-decoration:none;font-weight:500}
-.ref-badge{background:rgba(108,61,232,0.1);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--purple3);margin-bottom:1.2rem;display:none;}
 </style>
 </head>
 <body>
@@ -83,10 +81,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 
   <div id="form-view">
     <h2 class="card-title">Create Your Account</h2>
-    <p class="card-sub">Join Fortiq Funded and start your challenge for just $6</p>
-    <!-- $150 affiliate launch bonus banner removed -->
+    <p class="card-sub">Join Fortiq Funded · Pay $6 today · Keep 100% of your profits</p>
     <div class="msg" id="msg"></div>
-    <div class="ref-badge" id="ref-badge">🔗 Referred by a friend — referral code applied!</div>
     <div class="field">
       <label>Full Name</label>
       <input type="text" id="fullname" placeholder="Your full name" onkeydown="if(event.key==='Enter')doSignup()"/>
@@ -116,11 +112,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
       <label>Confirm Password</label>
       <input type="password" id="confirm" placeholder="Repeat your password" onkeydown="if(event.key==='Enter')doSignup()"/>
     </div>
-    <span class="referral-toggle" onclick="document.getElementById('reffield').style.display=document.getElementById('reffield').style.display==='none'?'block':'none'">Have a referral code?</span>
-    <div class="field" id="reffield" style="display:none">
-      <label>Referral Code (optional)</label>
-      <input type="text" id="referral" placeholder="Enter referral code" onkeydown="if(event.key==='Enter')doSignup()"/>
-    </div>
     <div class="terms-wrap">
       <input type="checkbox" id="terms"/>
       <label for="terms">I agree to the <a href="terms.html" target="_blank">Terms &amp; Conditions</a>, <a href="privacy.html" target="_blank">Privacy Policy</a>, and <a href="crypto-disclaimer.html" target="_blank">Crypto Payment Disclaimer</a></label>
@@ -140,20 +131,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     var sz=Math.random()*2+0.5;
     s.style.cssText='width:'+sz+'px;height:'+sz+'px;top:'+Math.random()*100+'%;left:'+Math.random()*100+'%;--d:'+(2+Math.random()*4)+'s;--delay:-'+(Math.random()*5)+'s;--min:'+(0.05+Math.random()*0.1)+';--max:'+(0.4+Math.random()*0.6);
     c.appendChild(s);
-  }
-})();
-
-(function(){
-  var params=new URLSearchParams(window.location.search);
-  var refCode=params.get('ref');
-  if(refCode){
-    var refField=document.getElementById('reffield');
-    var refInput=document.getElementById('referral');
-    var refBadge=document.getElementById('ref-badge');
-    if(refField)refField.style.display='block';
-    if(refInput)refInput.value=refCode;
-    if(refBadge)refBadge.style.display='block';
-    gtag('event', 'referral_visit', {event_category: 'acquisition', event_label: refCode});
   }
 })();
 
@@ -187,7 +164,6 @@ function doSignup(){
   var pwd=document.getElementById('password').value;
   var conf=document.getElementById('confirm').value;
   var terms=document.getElementById('terms').checked;
-  var ref=document.getElementById('referral').value.trim();
   var recaptchaResponse=grecaptcha.getResponse();
   if(!recaptchaResponse){showMsg('Please complete the reCAPTCHA verification.','error');return;}
   if(!name){showMsg('Please enter your full name.','error');return;}
@@ -216,7 +192,7 @@ function doSignup(){
       email:email,
       password:pwd,
       options:{
-        data:{full_name:name,referral_code:ref||null},
+        data:{full_name:name},
         emailRedirectTo:'https://fortiqfunded.com/dashboard.html'
       }
     }).then(function(res){
@@ -225,12 +201,7 @@ function doSignup(){
         btn.disabled=false;btn.textContent='Create Account';
         grecaptcha.reset();
       } else {
-        gtag('event', 'sign_up', {method: 'email', event_category: 'acquisition', has_referral: ref ? 'yes' : 'no'});
-        if(ref){
-          localStorage.setItem('pending_referral',ref);
-          if(res.data && res.data.user){
-            sb.from('profiles').update({referred_by: ref}).eq('id', res.data.user.id);
-          }
+        gtag('event', 'sign_up', {method: 'email', event_category: 'acquisition'});
         }
         window.location.href='dashboard.html';
       }
