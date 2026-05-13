@@ -307,7 +307,7 @@ async function init(){
   var pr=await sb.from('profiles').select('*').eq('id',userId).single();
   if(pr.error||!pr.data){window.location.href='login.html';return;}
   profileData=pr.data;
-  var ar=await sb.from('accounts').select('*').eq('user_id',profileData.user_id).order('created_at',{ascending:false}).limit(1);
+  var ar=await sb.from('accounts').select('*').eq('user_id',userId).order('created_at',{ascending:false}).limit(1);
   accountData=(ar.data&&ar.data.length>0)?ar.data[0]:null;
   if(accountData){
     var pymr=await sb.from('payments').select('*').eq('user_id',userId).order('created_at',{ascending:false});
@@ -443,7 +443,7 @@ async function saveWallet(){
   if(!w||w.length<10){showModalMsg('wallet-msg','Please enter a valid wallet address.','error');return;}
   var acc=accountData;
   try{
-    var r=await fetch(BACKEND+'/submit-payout-wallet',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({account_id:acc.account_id,wallet:w,user_id:profileData.user_id})});
+    var r=await fetch(BACKEND+'/submit-payout-wallet',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({account_id:acc.account_id,wallet:w,user_id:userId})});
     var d=await r.json();
     if(d.success){
       acc.payout_wallet=w;showModalMsg('wallet-msg','Wallet saved!','success');
@@ -458,7 +458,7 @@ async function submitBalanceTx(){
   var acc=accountData;
   if(!acc.payout_wallet){showModalMsg('balance-msg','Please save your payout wallet address first (Step 2).','error');return;}
   try{
-    var r=await fetch(BACKEND+'/submit-balance-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({account_id:acc.account_id,tx_hash:tx,user_id:profileData.user_id,network:acc.payment_network||'TRC20'})});
+    var r=await fetch(BACKEND+'/submit-balance-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({account_id:acc.account_id,tx_hash:tx,user_id:userId,network:acc.payment_network||'TRC20'})});
     var d=await r.json();
     if(d.success){
       showModalMsg('balance-msg','','success');
