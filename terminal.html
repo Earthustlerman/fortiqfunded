@@ -556,6 +556,7 @@ function connectPriceWS(){
     var msg=JSON.parse(e.data);if(!msg.data)return;var d=msg.data;
     prices[d.s]={price:+d.c,chg:((+d.c-+d.o)/+d.o*100).toFixed(2)};
     if(d.s===pair)updateOpenPnL();
+    checkLimitOrders();
   };
 }
 
@@ -789,8 +790,6 @@ function placeOrder(dir){
       showMsg('Hedging on same asset not allowed.','err');
       g2('btn-long').disabled=false;g2('btn-short').disabled=false;return;
     }
-    var pos={user_id:userId,account_id:accountId,symbol:pair,direction:dir,amount:amt,leverage:lev,entry_price:ep,size:amt*lev,status:'open',opened_at:new Date().toISOString()};
-    if(tp)pos.take_profit=tp;if(sl)pos.stop_loss=sl;
    fetch('https://fortiqfunded-backend.onrender.com/open-position', {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
@@ -838,8 +837,6 @@ function resetForm(){
   if(tpslOn){g2('inp-tp').value='';g2('inp-sl').value='';}
   updateSum();
 }
-
-
 
 function loadAccount(){
   sb.from('profiles').select('user_id').eq('id',userId).single().then(function(pr){
@@ -932,12 +929,12 @@ function renderOpen(){
     h+='<td class="td-n">$'+(+p.size).toFixed(2)+'</td>';
     h+='<td class="td-n">$'+fmt(p.entry_price)+'</td>';
     h+='<td class="td-n">$'+fmt(cur)+'</td>';
-    h+='<td style="color:var(--red);font-family:\'JetBrains Mono\',monospace;font-size:10px;">$'+fmt(liq)+'</td>';
+    h+='<td style="color:var(--red);font-family:'JetBrains Mono',monospace;font-size:10px;">$'+fmt(liq)+'</td>';
     h+='<td class="td-n">$'+(+p.amount).toFixed(2)+'</td>';
     h+='<td class="'+pc+'">'+(pnl>=0?'+':'')+pnl.toFixed(2)+'<br><span style="font-size:9px;">('+( pnl>=0?'+':'')+roe+'%)</span></td>';
     h+='<td>'+tpsl+'</td>';
     h+='<td class="td-m">'+dt+'</td>';
-    h+='<td>'+(isClosing?'<span style="color:var(--muted);font-size:10px;">Closing...</span>':'<button class="cls-btn" onclick="closePos(\''+p.id+'\')">Close</button>')+'</td></tr>';
+    h+='<td>'+(isClosing?'<span style="color:var(--muted);font-size:10px;">Closing...</span>':'<button class="cls-btn" onclick="closePos(''+p.id+'')">Close</button>')+'</td></tr>';
   });
   el.innerHTML=h+'</tbody></table>';
 }
@@ -958,7 +955,7 @@ function renderOpenOrders(){
     h+='<td class="td-n">'+o.leverage+'x</td>';
     h+='<td><span class="td-p" style="font-size:10px">'+(o.take_profit?'$'+fmt(o.take_profit):'—')+'</span><br><span class="td-l" style="font-size:10px">'+(o.stop_loss?'$'+fmt(o.stop_loss):'—')+'</span></td>';
     h+='<td class="td-m">'+dt+'</td>';
-    h+='<td><button class="can-btn" onclick="cancelOrder(\''+o.id+'\')">Cancel</button></td></tr>';
+    h+='<td><button class="can-btn" onclick="cancelOrder(''+o.id+'')">Cancel</button></td></tr>';
   });
   el.innerHTML=h+'</tbody></table>';
 }
@@ -992,7 +989,6 @@ function updateOpenPnL(){
     var pnl=p.direction==='long'?(cur-p.entry_price)*p.size/p.entry_price:(p.entry_price-cur)*p.size/p.entry_price;
     if(marginMode==='isolated'&&pnl<-p.amount)pnl=-p.amount;
     total+=pnl;used+=+(p.amount);
-    // Check auto-close conditions (TP/SL/liquidation) — still triggers closePos which calls backend
     var liq=calcLiqPrice(p.entry_price,p.leverage,p.direction,marginMode,p.amount);
     var isLiquidated=false;
     if(marginMode==='isolated'){isLiquidated=(p.direction==='long'&&cur<=liq)||(p.direction==='short'&&cur>=liq);}
@@ -1027,9 +1023,8 @@ function updateOpenPnL(){
   checkAlerts();if(activeTab==='open')renderOpen();
 }
 
-// ── SECURE CLOSE POSITION — calls backend, no client-side P&L manipulation possible ──
 function closePos(id){
-  if(closingPositions[id])return; // prevent double-close
+  if(closingPositions[id])return;
   closingPositions[id]=true;
   openPos=openPos.filter(function(p){return p.id!==id;});
   g('open-count',openPos.length);
@@ -1044,11 +1039,10 @@ function closePos(id){
     if(!data.success){
       console.log('Close position error:',data.error);
       showMsg('Error closing position: '+(data.error||'Unknown error'),'err');
-      loadPositions(); // reload to show correct state
+      loadPositions();
       return;
     }
 
-    // Update local account state with server-calculated values
     account.balance=data.newBalance;
     account.profit=data.newProfit;
     account.daily_loss=data.newDailyLoss;
@@ -1060,7 +1054,6 @@ function closePos(id){
     updateStats();
     loadPositions();
 
-    // Account failed
     if(data.accountFailed){
       setTimeout(function(){
         alert('❌ Challenge Failed! Your account has been closed due to: '+(data.reason==='daily_loss'?'Daily loss limit (5%) breached':'Max drawdown (8%) breached')+'. Please purchase a new challenge to continue.');
@@ -1069,7 +1062,6 @@ function closePos(id){
       return;
     }
 
-    // Stage 1 passed
     if(data.stage1Passed){
       setTimeout(function(){
         alert('🏆 Congratulations! You passed the Stage 1 challenge! Your funded account is now active. Welcome to Stage 2!');
@@ -1078,7 +1070,6 @@ function closePos(id){
       return;
     }
 
-    // Stage 2 profit cap hit
     if(data.stage2CapHit){
       setTimeout(function(){
         alert('🎉 Incredible! You reached the $5,000 profit cap! Your full profit will be paid out this Saturday. Well done!');
@@ -1099,6 +1090,31 @@ function closeAll(){
   if(!openPos.length){showMsg('No open positions.','err');return;}
   if(!confirm('Close all '+openPos.length+' position(s)?'))return;
   var toClose=openPos.slice();toClose.forEach(function(p){closePos(p.id);});
+}
+
+function checkLimitOrders(){
+  if(!openOrders.length)return;
+  openOrders.forEach(function(order){
+    var cur=prices[order.symbol]?prices[order.symbol].price:0;
+    if(!cur)return;
+    var lp=parseFloat(order.limit_price);
+    var shouldExecute=(order.direction==='long'&&cur<=lp)||(order.direction==='short'&&cur>=lp);
+    if(shouldExecute&&!order._executing){
+      order._executing=true;
+      fetch('https://fortiqfunded-backend.onrender.com/open-position',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({user_id:userId,account_id:accountId,symbol:order.symbol,direction:order.direction,amount:parseFloat(order.amount),leverage:parseFloat(order.leverage),entry_price:lp,size:parseFloat(order.amount)*parseFloat(order.leverage),take_profit:order.take_profit||null,stop_loss:order.stop_loss||null})
+      }).then(function(r){return r.json();}).then(function(data){
+        if(data.success){
+          sb.from('orders').update({status:'executed'}).eq('id',order.id).then(function(){
+            account.balance=data.newBalance;
+            loadOpenOrders();loadPositions();updateStats();
+            showMsg('✓ Limit order executed @ $'+fmt(lp),'ok');
+          });
+        }else{order._executing=false;console.log('Limit order execution failed:',data.error);}
+      }).catch(function(e){order._executing=false;console.log('Limit order fetch error:',e.message);});
+    }
+  });
 }
 
 function updateStats(){
@@ -1141,7 +1157,7 @@ function checkAlerts(){
   if(dd>=8)h+='<div class="alert danger">✕ Max drawdown breached (8%). Account failed.</div>';
   if(accountStage===2){
     var profit=+(account.profit||0);var remaining=5000-profit;
-    if(remaining<=500&&remaining>0)h+='<div class="alert info">💰 Almost there! $'+remaining.toFixed(2)+' until your $4,000 payout!</div>';
+    if(remaining<=500&&remaining>0)h+='<div class="alert info">💰 Almost there! $'+remaining.toFixed(2)+' to go!</div>';
   }
   g2('alerts').innerHTML=h;
 }
