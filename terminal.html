@@ -934,7 +934,7 @@ function renderOpen(){
     h+='<td class="'+pc+'">'+(pnl>=0?'+':'')+pnl.toFixed(2)+'<br><span style="font-size:9px;">('+( pnl>=0?'+':'')+roe+'%)</span></td>';
     h+='<td>'+tpsl+'</td>';
     h+='<td class="td-m">'+dt+'</td>';
-    h+='<td>'+(isClosing?'<span style="color:var(--muted);font-size:10px;">Closing...</span>':'<button class="cls-btn" onclick="closePos(\"'+p.id+'\")">Close</button>')+'</td></tr>';
+    h+='<td>'+(isClosing?'<span style="color:var(--muted);font-size:10px;">Closing...</span>':'<button class="cls-btn" onclick="closePos(this.dataset.id)" data-id="'+p.id+'">Close</button>')+'</td></tr>';
   });
   el.innerHTML=h+'</tbody></table>';
 }
@@ -955,7 +955,7 @@ function renderOpenOrders(){
     h+='<td class="td-n">'+o.leverage+'x</td>';
     h+='<td><span class="td-p" style="font-size:10px">'+(o.take_profit?'$'+fmt(o.take_profit):'—')+'</span><br><span class="td-l" style="font-size:10px">'+(o.stop_loss?'$'+fmt(o.stop_loss):'—')+'</span></td>';
     h+='<td class="td-m">'+dt+'</td>';
-    h+='<td><button class="can-btn" onclick="cancelOrder(''+o.id+'')">Cancel</button></td></tr>';
+    h+='<td><button class="can-btn" onclick="cancelOrder(this.dataset.id)" data-id="'+o.id+'">Cancel</button></td></tr>';
   });
   el.innerHTML=h+'</tbody></table>';
 }
