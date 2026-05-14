@@ -654,16 +654,6 @@ function loadPositions(){
   });
 }
 
-    showNotif('✓ Affiliate marked as paid!','ok');
-    loadAffiliates();
-  });
-}
-
-    showNotif('Affiliate '+status+'!','ok');
-    loadAffiliates();
-  });
-}
-
 function filterTable(tableId,q){
   var tbl=document.getElementById(tableId);if(!tbl)return;
   var rows=tbl.querySelectorAll('tbody tr');
