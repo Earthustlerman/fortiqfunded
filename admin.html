@@ -629,44 +629,6 @@ function confirmPayout(accountId,amount,wallet){
     loadPayouts();
   });
 }
-      var filtered=data.filter(function(a){return walletMap[a.referrer_id];});
-      if(!filtered.length){
-        el.innerHTML='<div class="empty"><div class="empty-icon">📊</div>No data</div>';
-        return;
-      }
-            filtered.forEach(function(a){
-        var badge=a.status==='approved'?'green':a.status==='rejected'?'red':'gold';
-        var wallet=walletMap[a.referrer_id];
-        var isBEP20=wallet&&wallet.startsWith('0x');
-        var netLabel=isBEP20?'USDC BEP20':'USDT TRC20';
-        var netBadge=isBEP20?'yellow':'purple';
-        var currency=isBEP20?'USDC':'USDT';
-        h+='<tr>';
-        h+='<td class="td-mono">'+a.referrer_id+'</td>';
-        h+='<td class="td-mono">'+a.referred_id+'</td>';
-        h+='<td class="td-mono" style="color:var(--gold);">$'+(a.commission||50)+' '+currency+'</td>';
-        h+='<td class="td-mono" style="font-size:10px;">'+wallet+'</td>';
-        h+='<td><span class="badge '+netBadge+'">'+netLabel+'</span></td>';
-        h+='<td><span class="badge '+badge+'">'+(a.status||'pending')+'</span></td>';
-        h+='<td style="display:flex;gap:5px;">';
-        if(a.status==='pending'){
-          h+='<button class="action-btn approve" onclick="updateAffiliate(\''+a.id+'\',\'approved\')">Approve</button>';
-          h+='<button class="action-btn reject" onclick="updateAffiliate(\''+a.id+'\',\'rejected\')">Reject</button>';
-        } else if(a.status==='approved'){
-          if(a.paid){
-            h+='<span style="color:var(--green);font-size:11px;">✓ Paid</span>';
-          } else {
-            h+='<span style="color:var(--green);font-size:11px;">Pay $'+(a.commission||50)+' '+currency+'</span> <button class="action-btn approve" onclick="markAffiliatePaid(\''+a.id+'\')">Mark Paid</button>';
-          }
-        } else {
-          h+='<span style="color:var(--muted);font-size:11px;">'+a.status+'</span>';
-        }
-        h+='</td></tr>';
-      });
-      el.innerHTML=h+'</tbody></table>';
-    });
-  });
-}
 
 // ── POSITIONS ──
 function loadPositions(){
