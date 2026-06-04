@@ -383,7 +383,7 @@ async function loadAffiliateStats(){
     }
     // Pre-fill wallet if already saved
     var pw=await sb.from('profiles').select('affiliate_wallet').eq('id',userId).single();
-    if(pw.data&&pw.data.affiliate_wallet&&pw.data.affiliate_wallet!=='test123'){
+    if(pw.data&&pw.data.affiliate_wallet){
       document.getElementById('aff-wallet-input').value=pw.data.affiliate_wallet;
     }
   }catch(e){}
@@ -394,16 +394,13 @@ async function saveAffWallet(){
   var msg=document.getElementById('aff-wallet-msg');
   if(!w||w.length<10){msg.textContent='Please enter a valid wallet address.';msg.style.color='var(--error)';msg.style.display='block';return;}
   try{
-    var session=await sb.auth.getSession();
-    var uid=session.data.session?session.data.session.user.id:userId;
-    if(!uid){msg.textContent='Please log in first.';msg.style.color='var(--error)';msg.style.display='block';return;}
-    var r=await fetch(BACKEND+'/save-affiliate-wallet',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,wallet:w})});
-    var d=await r.json();
-    if(d.success){msg.textContent='✓ Wallet saved successfully.';msg.style.color='var(--success)';}
-    else{msg.textContent='Error: '+(d.error||'Could not save wallet.');msg.style.color='var(--error)';}
+    var r=await sb.from('profiles').update({affiliate_wallet:w}).eq('id',userId);
+    if(r.error){msg.textContent='Error: '+r.error.message;msg.style.color='var(--error)';}
+    else{msg.textContent='✓ Wallet saved successfully.';msg.style.color='var(--success)';}
     msg.style.display='block';
     setTimeout(function(){msg.style.display='none';},3000);
   }catch(e){msg.textContent='Error saving wallet.';msg.style.color='var(--error)';msg.style.display='block';}
+}
 }
 }
 }
