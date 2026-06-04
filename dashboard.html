@@ -394,13 +394,17 @@ async function saveAffWallet(){
   var msg=document.getElementById('aff-wallet-msg');
   if(!w||w.length<10){msg.textContent='Please enter a valid wallet address.';msg.style.color='var(--error)';msg.style.display='block';return;}
   try{
-    var r=await fetch(BACKEND+'/save-affiliate-wallet',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:userId,wallet:w})});
+    var session=await sb.auth.getSession();
+    var uid=session.data.session?session.data.session.user.id:userId;
+    if(!uid){msg.textContent='Please log in first.';msg.style.color='var(--error)';msg.style.display='block';return;}
+    var r=await fetch(BACKEND+'/save-affiliate-wallet',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,wallet:w})});
     var d=await r.json();
     if(d.success){msg.textContent='✓ Wallet saved successfully.';msg.style.color='var(--success)';}
     else{msg.textContent='Error: '+(d.error||'Could not save wallet.');msg.style.color='var(--error)';}
     msg.style.display='block';
     setTimeout(function(){msg.style.display='none';},3000);
   }catch(e){msg.textContent='Error saving wallet.';msg.style.color='var(--error)';msg.style.display='block';}
+}
 }
 }
 
