@@ -19,10 +19,8 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .nav-right{display:flex;align-items:center;gap:1rem;}
 .nav-btn{background:rgba(108,61,232,0.15);border:1px solid var(--border);color:var(--purple3);padding:8px 18px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;}
 .nav-btn:hover{background:rgba(108,61,232,0.3);}
-.nav-btn.gold{background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.35);color:var(--gold);}
 .logout-btn{background:none;border:1px solid var(--border2);color:var(--muted);padding:8px 16px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;}
 .container{max-width:1000px;margin:0 auto;padding:2rem 2rem;}
-/* Grid */
 .dash-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;margin-bottom:2rem;}
 .stat-card{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:1.4rem 1.6rem;}
 .stat-label{font-size:12px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
@@ -31,7 +29,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .stat-val.red{color:var(--error)}
 .stat-val.gold{color:var(--gold)}
 .stat-val.purple{color:var(--purple3)}
-/* Account card */
 .account-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:2rem;position:relative;overflow:hidden;}
 .account-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top right,rgba(108,61,232,0.07),transparent 60%);pointer-events:none}
 .account-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
@@ -42,7 +39,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .status-funded{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);color:var(--gold);}
 .status-failed{background:rgba(255,77,77,0.1);border:1px solid rgba(255,77,77,0.25);color:var(--error);}
 .status-pending{background:rgba(108,61,232,0.1);border:1px solid rgba(108,61,232,0.25);color:var(--purple3);}
-/* Progress bar */
 .progress-section{margin-bottom:1.5rem;}
 .progress-label{display:flex;justify-content:space-between;margin-bottom:6px;}
 .progress-label span{font-size:12px;color:var(--muted);font-weight:400;}
@@ -51,12 +47,10 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .progress-fill{height:100%;border-radius:100px;transition:width 0.8s ease;}
 .progress-fill.profit{background:linear-gradient(90deg,var(--purple),var(--success));}
 .progress-fill.loss{background:linear-gradient(90deg,var(--warning),var(--error));}
-/* Metrics grid */
 .metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
 .metric-item{background:var(--surface2);border-radius:12px;padding:1rem;}
 .metric-label{font-size:11px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
 .metric-val{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;}
-/* Buttons */
 .btn-row{display:flex;gap:1rem;flex-wrap:wrap;}
 .btn-primary{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border:none;padding:12px 24px;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;cursor:pointer;text-decoration:none;transition:opacity 0.2s;display:inline-flex;align-items:center;gap:8px;}
 .btn-primary:hover{opacity:0.9}
@@ -64,11 +58,8 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .btn-secondary:hover{background:rgba(108,61,232,0.2);}
 .btn-gold{background:linear-gradient(135deg,var(--gold),#e8c96a);color:#000;border:none;padding:12px 24px;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;transition:opacity 0.2s;display:inline-flex;align-items:center;gap:8px;}
 .btn-gold:hover{opacity:0.9}
-.btn-disabled{opacity:0.4;cursor:not-allowed!important;}
-/* Section card */
 .section-card{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:1.8rem;margin-bottom:2rem;}
 .section-title{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;margin-bottom:1.2rem;display:flex;align-items:center;gap:8px;}
-/* Billing rows */
 .billing-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border2);}
 .billing-row:last-child{border-bottom:none}
 .billing-info strong{font-size:14px;font-weight:600;display:block;}
@@ -77,12 +68,20 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .billing-status{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;padding:3px 10px;border-radius:100px;}
 .paid-status{background:rgba(0,214,143,0.08);border:1px solid rgba(0,214,143,0.2);color:var(--success);}
 .pending-status{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);color:var(--gold);}
-/* Payout modal */
+/* Affiliate card */
+.aff-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+.aff-stat{background:var(--surface2);border-radius:12px;padding:1rem 1.2rem;}
+.aff-stat-label{font-size:11px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.aff-stat-val{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;color:var(--gold);}
+.ref-code-box{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.ref-code{font-family:'Courier New',monospace;font-size:15px;color:var(--purple3);font-weight:700;}
+.copy-btn-sm{background:rgba(108,61,232,0.15);border:1px solid var(--border);color:var(--purple3);padding:6px 14px;border-radius:7px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.copy-btn-sm:hover{background:rgba(108,61,232,0.3)}
+/* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem;}
 .modal-overlay.open{display:flex;}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
 .modal h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;margin-bottom:1.5rem;}
-.modal-steps{counter-reset:step;}
 .modal-step{display:flex;gap:12px;margin-bottom:1.5rem;}
 .modal-step-num{width:32px;height:32px;border-radius:50%;background:rgba(108,61,232,0.15);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:13px;font-weight:700;color:var(--purple3);flex-shrink:0;}
 .modal-step-content{flex:1;}
@@ -91,35 +90,23 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .modal-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'Courier New',monospace;font-size:12px;outline:none;transition:border-color 0.2s;margin-top:8px;}
 .modal-input:focus{border-color:var(--purple);}
 .modal-input::placeholder{color:var(--muted2);font-family:'Outfit',sans-serif;font-size:13px;}
-.wallet-info-box{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;margin:12px 0;}
-.wallet-info-label{font-size:11px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
-.wallet-info-val{font-family:'Courier New',monospace;font-size:11px;color:var(--purple3);word-break:break-all;}
-.copy-btn-sm{display:inline-block;background:rgba(108,61,232,0.15);border:1px solid var(--border);color:var(--purple3);padding:4px 12px;border-radius:6px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;cursor:pointer;margin-top:6px;}
-.balance-due-box{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:1rem 1.2rem;margin:12px 0;}
-.balance-due-label{font-size:12px;color:var(--gold);font-weight:600;margin-bottom:4px;}
-.balance-due-amount{font-family:'Cinzel',serif;font-size:2rem;font-weight:900;color:var(--gold);}
-.balance-due-sub{font-size:12px;color:var(--muted);font-weight:300;margin-top:2px;}
 .modal-warning{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12px;color:var(--warning);font-weight:300;line-height:1.7;}
 .msg{padding:12px 16px;border-radius:10px;font-size:13px;margin-top:10px;display:none;}
 .msg.error{background:rgba(255,77,77,0.1);border:1px solid rgba(255,77,77,0.3);color:#ff6b6b;display:block}
 .msg.success{background:rgba(0,214,143,0.1);border:1px solid rgba(0,214,143,0.3);color:var(--success);display:block}
 .msg.info{background:rgba(108,61,232,0.1);border:1px solid rgba(108,61,232,0.3);color:var(--purple3);display:block}
-/* No account */
 .no-account{text-align:center;padding:4rem 2rem;background:var(--surface);border:1px solid var(--border2);border-radius:20px;}
 .no-account h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;margin-bottom:1rem;}
 .no-account p{color:var(--muted);font-size:14px;font-weight:300;line-height:1.7;margin-bottom:2rem;}
-/* Loading */
 .loading{text-align:center;padding:4rem;color:var(--muted);}
 .spinner{width:40px;height:40px;border:3px solid var(--border2);border-top-color:var(--purple);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1rem;}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* Checkpoint list */
 .check-list{list-style:none;margin:0.8rem 0;}
 .check-list li{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:13px;color:var(--muted);}
 .check-list li.done{color:var(--success);}
 .check-list li.done::before{content:'✓';font-weight:700;color:var(--success);}
 .check-list li.pending::before{content:'○';font-weight:700;color:var(--muted2);}
-.check-list li.locked::before{content:'🔒';font-size:12px;}
-@media(max-width:700px){.dash-grid{grid-template-columns:1fr 1fr}.metrics-grid{grid-template-columns:1fr 1fr}.btn-row{flex-direction:column}}
+@media(max-width:700px){.dash-grid{grid-template-columns:1fr 1fr}.metrics-grid{grid-template-columns:1fr 1fr}.btn-row{flex-direction:column}.aff-stats{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -137,28 +124,24 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 <div class="container">
   <div class="loading" id="loading"><div class="spinner"></div><div>Loading your account...</div></div>
 
-  <!-- No account state -->
   <div class="no-account" id="no-account" style="display:none;">
     <div style="font-size:3rem;margin-bottom:1rem;">🚀</div>
     <h2>Start Your Trading Challenge</h2>
-    <p>Pay just <strong style="color:var(--gold);">$6 today</strong> to get your evaluation account. Pay the $144 balance only when you pass and request your first payout.</p>
-    <a href="checkout.html" class="btn-primary" style="display:inline-flex;margin:0 auto;">Begin Challenge — $6</a>
+    <p>Pay <strong style="color:var(--gold);">$50</strong> to get your $5,000 evaluation account. Pass the challenge and keep 100% of every dollar you earn.</p>
+    <a href="checkout.html" class="btn-primary" style="display:inline-flex;margin:0 auto;">Begin Challenge — $50</a>
   </div>
 
-  <!-- Dashboard content -->
   <div id="dash" style="display:none;">
-    <!-- Welcome -->
     <div style="margin-bottom:2rem;">
       <h1 style="font-family:'Cinzel',serif;font-size:1.6rem;font-weight:700;margin-bottom:4px;" id="welcome-name">Welcome back</h1>
       <p style="color:var(--muted);font-size:14px;font-weight:300;" id="account-type-label"></p>
     </div>
 
-    <!-- Stats row -->
     <div class="dash-grid">
       <div class="stat-card">
         <div class="stat-label">Balance</div>
         <div class="stat-val purple" id="stat-balance">—</div>
-        <div style="font-size:11px;color:var(--muted2);margin-top:4px;font-weight:300;" id="stat-balance-sub">Available</div>
+        <div style="font-size:11px;color:var(--muted2);margin-top:4px;font-weight:300;">Available</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Total Profit</div>
@@ -172,7 +155,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
       </div>
     </div>
 
-    <!-- Account card -->
     <div class="account-card" id="account-card">
       <div class="account-header">
         <div class="account-id-row">
@@ -182,7 +164,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
         <div id="stage-badge" style="font-size:12px;color:var(--muted);font-weight:500;"></div>
       </div>
 
-      <!-- Progress bars -->
       <div class="progress-section" id="progress-section">
         <div class="progress-label"><span>Profit Progress</span><strong id="profit-pct">0%</strong></div>
         <div class="progress-bar"><div class="progress-fill profit" id="profit-bar" style="width:0%"></div></div>
@@ -196,7 +177,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
         <div class="progress-bar"><div class="progress-fill loss" id="dd-bar" style="width:0%"></div></div>
       </div>
 
-      <!-- Metrics -->
       <div class="metrics-grid">
         <div class="metric-item"><div class="metric-label">Profit Target</div><div class="metric-val" id="m-target">—</div></div>
         <div class="metric-item"><div class="metric-label">Daily Limit</div><div class="metric-val" style="color:var(--warning);">5%</div></div>
@@ -204,32 +184,48 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
         <div class="metric-item"><div class="metric-label">Your Profits</div><div class="metric-val" style="color:var(--success);">100%</div></div>
       </div>
 
-      <!-- Pass checklist -->
       <div id="checklist-wrap" style="margin-bottom:1.5rem;">
         <div style="font-size:12px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Challenge Requirements</div>
         <ul class="check-list" id="checklist"></ul>
       </div>
 
-      <!-- Buttons -->
       <div class="btn-row" id="btn-row"></div>
 
-      <!-- Failed message -->
       <div id="failed-note" style="display:none;margin-top:1rem;background:rgba(255,77,77,0.08);border:1px solid rgba(255,77,77,0.2);border-radius:10px;padding:1rem;">
         <p style="font-size:14px;color:var(--error);font-weight:600;margin-bottom:4px;">Account Failed</p>
-        <p style="font-size:13px;color:var(--muted);font-weight:300;margin-bottom:1rem;">This account has been closed due to a rule breach. Start fresh for just $6.</p>
-        <a href="checkout.html" class="btn-primary" style="font-size:13px;padding:10px 20px;">Try Again — $6</a>
+        <p style="font-size:13px;color:var(--muted);font-weight:300;margin-bottom:1rem;">This account has been closed due to a rule breach. Start fresh for just $50.</p>
+        <a href="checkout.html" class="btn-primary" style="font-size:13px;padding:10px 20px;">Try Again — $50</a>
       </div>
     </div>
 
-    <!-- Billing section -->
+    <!-- Billing -->
     <div class="section-card" id="billing-section">
       <div class="section-title">💳 Billing</div>
       <div id="billing-rows"></div>
     </div>
+
+    <!-- Affiliate -->
+    <div class="section-card" id="affiliate-section">
+      <div class="section-title">🎁 Referral Program</div>
+      <p style="font-size:13px;color:var(--muted);font-weight:300;margin-bottom:1.2rem;">Share your referral code and earn <strong style="color:var(--gold);">$25</strong> every time someone signs up and purchases a challenge.</p>
+      <div class="ref-code-box">
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;">Your Referral Code</div>
+          <div class="ref-code" id="ref-code-display">—</div>
+        </div>
+        <button class="copy-btn-sm" onclick="copyRefCode()">Copy Code</button>
+      </div>
+      <div class="aff-stats">
+        <div class="aff-stat"><div class="aff-stat-label">Total Referrals</div><div class="aff-stat-val" id="aff-total">0</div></div>
+        <div class="aff-stat"><div class="aff-stat-label">Pending Commission</div><div class="aff-stat-val" id="aff-pending">$0</div></div>
+        <div class="aff-stat"><div class="aff-stat-label">Total Earned</div><div class="aff-stat-val" id="aff-earned">$0</div></div>
+      </div>
+      <p style="font-size:12px;color:var(--muted2);font-weight:300;">Commissions are paid every Saturday in the same network you used to pay for your challenge.</p>
+    </div>
   </div>
 </div>
 
-<!-- Payout Request Modal -->
+<!-- Payout Modal -->
 <div class="modal-overlay" id="payout-modal">
   <div class="modal">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
@@ -237,59 +233,33 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
       <button onclick="closeModal()" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;">✕</button>
     </div>
 
-    <!-- Step 1: Confirm no open positions -->
     <div class="modal-step" id="modal-step1">
       <div class="modal-step-num">1</div>
       <div class="modal-step-content">
         <div class="modal-step-title">Close All Open Positions</div>
-        <div class="modal-step-desc">Before requesting a payout, you must close all open positions in the trading terminal. Once closed, tick the checkbox below to continue.</div>
+        <div class="modal-step-desc">Before requesting a payout, close all open positions in the trading terminal.</div>
         <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;color:var(--muted);cursor:pointer;">
           <input type="checkbox" id="positions-closed-check" onchange="checkStep1()"> I confirm I have closed all open positions
         </label>
       </div>
     </div>
 
-    <!-- Step 2: Enter payout wallet -->
     <div class="modal-step" id="modal-step2" style="opacity:0.3;pointer-events:none;">
       <div class="modal-step-num">2</div>
       <div class="modal-step-content">
         <div class="modal-step-title">Enter Payout Wallet Address</div>
-        <div class="modal-step-desc" id="wallet-step-desc">Enter your wallet address to receive your payout in the same network you used to pay for your challenge.</div>
+        <div class="modal-step-desc" id="wallet-step-desc">Enter your wallet address to receive your profit payout.</div>
         <input type="text" class="modal-input" id="payout-wallet-input" placeholder="Enter your wallet address...">
-        <button class="btn-primary" style="margin-top:10px;padding:10px 20px;font-size:13px;" onclick="saveWallet()">Save Wallet</button>
+        <button class="btn-primary" style="margin-top:10px;padding:10px 20px;font-size:13px;" onclick="saveWalletAndRequest()">Submit Payout Request →</button>
+        <div class="modal-warning">Your full profit will be sent to this wallet every Saturday. Make sure it is correct — payouts cannot be reversed.</div>
         <div class="msg" id="wallet-msg"></div>
       </div>
     </div>
 
-    <!-- Step 3: Pay $144 balance -->
-    <div class="modal-step" id="modal-step3" style="opacity:0.3;pointer-events:none;">
-      <div class="modal-step-num">3</div>
-      <div class="modal-step-content">
-        <div class="modal-step-title">Pay Your $144 Challenge Balance</div>
-        <div class="modal-step-desc">This is the remaining balance of your challenge fee — due only when you succeed.</div>
-        <div class="balance-due-box">
-          <div class="balance-due-label">Amount to Send</div>
-          <div class="balance-due-amount">$144</div>
-          <div class="balance-due-sub" id="balance-currency-note">USDT · TRC20 Network</div>
-        </div>
-        <div class="wallet-info-box">
-          <div class="wallet-info-label">Send to this address</div>
-          <div class="wallet-info-val" id="balance-wallet-addr">TUGcqK3s5EsXme3nMUVXH9LbmuyLf4c99d</div>
-          <button class="copy-btn-sm" onclick="copyBalanceWallet()">Copy Address</button>
-        </div>
-        <div class="modal-warning" id="balance-warning">⚠ Send on <strong>TRC20 only</strong>. Minimum $142 USDT required to cover network fees.</div>
-        <div class="modal-input" style="font-size:13px;padding:10px 14px;color:var(--muted);font-family:'Outfit',sans-serif;cursor:default;margin-top:0;">After sending, paste your TX hash below:</div>
-        <input type="text" class="modal-input" id="balance-tx-input" placeholder="Paste your $144 payment TX hash here...">
-        <button class="btn-gold" style="width:100%;justify-content:center;margin-top:10px;" onclick="submitBalanceTx()">Submit Balance Payment →</button>
-        <div class="msg" id="balance-msg"></div>
-      </div>
-    </div>
-
-    <!-- Queued state -->
     <div id="payout-queued-state" style="display:none;text-align:center;padding:1.5rem 0;">
       <div style="font-size:48px;margin-bottom:1rem;">⏳</div>
       <h3 style="font-family:'Cinzel',serif;font-size:1.2rem;font-weight:700;margin-bottom:0.8rem;color:var(--gold);">Payout Queued</h3>
-      <p style="color:var(--muted);font-size:14px;font-weight:300;line-height:1.7;">Your $144 balance payment is being verified on-chain. Once confirmed, your full profit will be sent every Saturday.</p>
+      <p style="color:var(--muted);font-size:14px;font-weight:300;line-height:1.7;">Your payout request has been submitted. Your full profit will be sent this Saturday.</p>
     </div>
   </div>
 </div>
@@ -297,7 +267,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 <script>
 var sb=window.supabase.createClient('https://qhfsvazxpnjwfxhamkea.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnN2YXp4cG5qd2Z4aGFta2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MTA1NjAsImV4cCI6MjA5MDk4NjU2MH0.16_9IbcNgIEG39Qtmd6OPs2jQqDw-wL20YXvoDY2mCo');
 var BACKEND='https://fortiqfunded-backend.onrender.com';
-var TRC20_WALLET='TUGcqK3s5EsXme3nMUVXH9LbmuyLf4c99d',BEP20_WALLET='0xC5c3f3E0f9267701987ED62Bd715e61cfB8749F9';
 var userId=null,profileData=null,accountData=null,paymentsData=null;
 
 async function init(){
@@ -314,6 +283,7 @@ async function init(){
     paymentsData=pymr.data||[];
   }
   renderDashboard();
+  loadAffiliateStats();
 }
 
 function renderDashboard(){
@@ -321,34 +291,23 @@ function renderDashboard(){
   if(!accountData){document.getElementById('no-account').style.display='block';return;}
   document.getElementById('dash').style.display='block';
   var acc=accountData;
-  // Welcome
   document.getElementById('welcome-name').textContent='Welcome back, '+(profileData.full_name||'Trader').split(' ')[0];
   var stageLbl=acc.stage===1?'Stage 1 — One-Phase Challenge':'Stage 2 — Funded Account';
   document.getElementById('account-type-label').textContent=stageLbl+' · '+acc.account_id;
-  // Stats
   var profit=parseFloat(acc.profit||0);
   document.getElementById('stat-balance').textContent='$'+parseFloat(acc.balance||0).toFixed(2);
   document.getElementById('stat-profit').textContent=(profit>=0?'+':'')+profit.toFixed(2);
   document.getElementById('stat-profit').className='stat-val '+(profit>0?'green':profit<0?'red':'');
-  if(acc.stage===1){
-    document.getElementById('stat-profit-sub').textContent='$'+profit.toFixed(2)+' of $400 target';
-    document.getElementById('m-target').textContent='8% ($400)';
-    document.getElementById('m-target').style.color='';
-  }else{
-    document.getElementById('stat-profit-sub').textContent='Funded account — max $5,000';
-    document.getElementById('m-target').textContent='Max $5k';
-    document.getElementById('m-target').style.color='var(--gold)';
-  }
+  if(acc.stage===1){document.getElementById('stat-profit-sub').textContent='$'+profit.toFixed(2)+' of $400 target';document.getElementById('m-target').textContent='8% ($400)';}
+  else{document.getElementById('stat-profit-sub').textContent='Funded account — max $5,000';document.getElementById('m-target').textContent='Max $5k';document.getElementById('m-target').style.color='var(--gold)';}
   document.getElementById('stat-days').textContent=(acc.active_days||0);
   document.getElementById('stat-days-sub').textContent=(acc.stage===1?'of 5 required':'days traded (funded)');
-  // Account ID & status badge
   document.getElementById('acc-id').textContent=acc.account_id;
   var sb2=document.getElementById('status-badge');
   var statusText=acc.status==='to_be_active'?'Pending':acc.status.charAt(0).toUpperCase()+acc.status.slice(1);
   sb2.textContent=statusText;
   sb2.className='status-badge '+(acc.status==='active'||acc.status==='to_be_active'?'status-active':acc.status==='funded'?'status-funded':acc.status==='failed'?'status-failed':'status-pending');
   document.getElementById('stage-badge').textContent='Stage '+(acc.stage||1);
-  // Progress bars
   var profitPct=Math.min(100,Math.max(0,(profit/400)*100));
   document.getElementById('profit-bar').style.width=profitPct+'%';
   document.getElementById('profit-pct').textContent=profit.toFixed(2)+' USDT';
@@ -358,8 +317,7 @@ function renderDashboard(){
   var ddPct=Math.min(100,parseFloat(acc.max_drawdown||0));
   document.getElementById('dd-bar').style.width=ddPct+'%';
   document.getElementById('dd-pct').textContent=ddPct.toFixed(2)+'%';
-  if(acc.stage===2){document.getElementById('progress-section').style.display='none';}
-  // Checklist
+  if(acc.stage===2)document.getElementById('progress-section').style.display='none';
   if(acc.stage===1){
     var items=[
       {label:'Profit target 8% ($400)',done:profit>=400},
@@ -369,29 +327,23 @@ function renderDashboard(){
     ];
     var html='';items.forEach(function(it){html+='<li class="'+(it.done?'done':'pending')+'">'+it.label+'</li>';});
     document.getElementById('checklist').innerHTML=html;
-  }else{
+  } else {
     document.getElementById('checklist-wrap').style.display='none';
   }
-  // Buttons & special states
   var btnRow=document.getElementById('btn-row');btnRow.innerHTML='';
   if(acc.status==='active'||acc.status==='to_be_active'){
     var tradeBtn=document.createElement('a');tradeBtn.href='terminal.html';tradeBtn.className='btn-primary';tradeBtn.textContent='Open Trading Terminal';btnRow.appendChild(tradeBtn);
-  }else if(acc.status==='funded'){
-    // Stage 2 funded — show payout button
+  } else if(acc.status==='funded'){
     document.getElementById('failed-note').style.display='none';
-    if(acc.balance_paid){
-      // Already paid balance, payout queued or processed
-      var pd=document.createElement('div');pd.style.cssText='background:rgba(0,214,143,0.08);border:1px solid rgba(0,214,143,0.2);border-radius:10px;padding:1rem;width:100%;';pd.innerHTML='<p style="font-size:14px;color:var(--success);font-weight:600;margin-bottom:4px;">✓ Payout Queued</p><p style="font-size:13px;color:var(--muted);font-weight:300;">Your $144 balance payment has been confirmed and your payout is queued for this Saturday.</p>';btnRow.appendChild(pd);
-    }else if(acc.payout_balance_pending){
-      var ppd=document.createElement('div');ppd.style.cssText='background:rgba(108,61,232,0.08);border:1px solid var(--border);border-radius:10px;padding:1rem;width:100%;';ppd.innerHTML='<p style="font-size:14px;color:var(--purple3);font-weight:600;margin-bottom:4px;">⏳ Balance Payment Pending</p><p style="font-size:13px;color:var(--muted);font-weight:300;">We are verifying your $144 balance payment on-chain. Once confirmed, your payout will be queued for Saturday.</p>';btnRow.appendChild(ppd);
-    }else{
+    if(acc.payout_requested){
+      var pd=document.createElement('div');pd.style.cssText='background:rgba(0,214,143,0.08);border:1px solid rgba(0,214,143,0.2);border-radius:10px;padding:1rem;width:100%;';pd.innerHTML='<p style="font-size:14px;color:var(--success);font-weight:600;margin-bottom:4px;">✓ Payout Queued</p><p style="font-size:13px;color:var(--muted);font-weight:300;">Your payout request has been submitted. Your full profit will be sent this Saturday.</p>';btnRow.appendChild(pd);
+    } else {
       var tradeBtn2=document.createElement('a');tradeBtn2.href='terminal.html';tradeBtn2.className='btn-secondary';tradeBtn2.textContent='Trading Terminal';btnRow.appendChild(tradeBtn2);
       var payBtn=document.createElement('button');payBtn.className='btn-gold';payBtn.textContent='Request Payout';payBtn.onclick=openPayoutModal;btnRow.appendChild(payBtn);
     }
-  }else if(acc.status==='failed'){
+  } else if(acc.status==='failed'){
     document.getElementById('failed-note').style.display='block';
   }
-  // Billing
   renderBilling(acc);
 }
 
@@ -399,33 +351,50 @@ function renderBilling(acc){
   var html='';
   if(paymentsData){
     paymentsData.forEach(function(p){
-      var label=(p.payment_type==='payout_balance')?'$144 Challenge Balance':(p.amount?'$6 Challenge Deposit':'Challenge Deposit');
+      var label=p.amount?'$'+parseFloat(p.amount).toFixed(2)+' Challenge Payment':'Challenge Payment';
       var currency=(p.network==='BEP20'?'USDC':'USDT');
       var statusLabel=(p.status==='confirmed')?'<span class="billing-status paid-status">Confirmed</span>':p.status==='pending'?'<span class="billing-status pending-status">Pending</span>':'<span class="billing-status" style="background:rgba(255,77,77,0.08);border:1px solid rgba(255,77,77,0.2);color:var(--error);">'+p.status+'</span>';
-      html+='<div class="billing-row"><div class="billing-info"><strong>'+label+'</strong><span>'+p.network+' · '+(p.tx_hash?p.tx_hash.slice(0,16)+'...':'')+'</span></div><div style="display:flex;align-items:center;gap:12px;"><div class="billing-amount">$'+(p.amount?parseFloat(p.amount).toFixed(2):'—')+'</div>'+statusLabel+'</div></div>';
+      html+='<div class="billing-row"><div class="billing-info"><strong>'+label+'</strong><span>'+p.network+' · '+(p.tx_hash?p.tx_hash.slice(0,16)+'...':'')+'</span></div><div style="display:flex;align-items:center;gap:12px;"><div class="billing-amount">$'+(p.amount?parseFloat(p.amount).toFixed(2):'—')+' '+currency+'</div>'+statusLabel+'</div></div>';
     });
   }
   if(!html)html='<p style="color:var(--muted);font-size:14px;font-weight:300;padding:1rem 0;">No billing records yet.</p>';
   document.getElementById('billing-rows').innerHTML=html;
 }
 
+async function loadAffiliateStats(){
+  if(!userId)return;
+  try{
+    var r=await fetch(BACKEND+'/affiliate-stats?user_id='+userId);
+    var d=await r.json();
+    if(d.referral_code){
+      document.getElementById('ref-code-display').textContent=d.referral_code;
+      document.getElementById('aff-total').textContent=d.total_referrals||0;
+      document.getElementById('aff-pending').textContent='$'+(d.pending_commission||0);
+      document.getElementById('aff-earned').textContent='$'+(d.total_earned||0);
+    }
+  }catch(e){}
+}
+
+function copyRefCode(){
+  var code=document.getElementById('ref-code-display').textContent;
+  if(code==='—')return;
+  navigator.clipboard.writeText(code).then(function(){
+    var btn=document.querySelector('.copy-btn-sm');
+    btn.textContent='Copied!';btn.style.background='rgba(0,214,143,0.2)';btn.style.color='var(--success)';
+    setTimeout(function(){btn.textContent='Copy Code';btn.style.background='';btn.style.color='';},2000);
+  });
+}
+
 function openPayoutModal(){
   var acc=accountData;
-  if(!acc||acc.status!=='funded'){return;}
-  // Setup modal network info
+  if(!acc||acc.status!=='funded')return;
   var network=acc.payment_network||'TRC20';
   if(network==='BEP20'){
-    document.getElementById('balance-wallet-addr').textContent=BEP20_WALLET;
-    document.getElementById('balance-currency-note').textContent='USDC · BEP20 Network';
-    document.getElementById('balance-warning').innerHTML='⚠ Send on <strong>BEP20 (BNB Smart Chain) only</strong>. Minimum $142 USDC required.';
     document.getElementById('wallet-step-desc').textContent='Enter your BEP20 wallet address to receive USDC.';
-  }else{
-    document.getElementById('balance-wallet-addr').textContent=TRC20_WALLET;
-    document.getElementById('balance-currency-note').textContent='USDT · TRC20 Network';
-    document.getElementById('balance-warning').innerHTML='⚠ Send on <strong>TRC20 only</strong>. Minimum $142 USDT required.';
+  } else {
     document.getElementById('wallet-step-desc').textContent='Enter your TRC20 wallet address to receive USDT.';
   }
-  if(acc.payout_wallet){document.getElementById('payout-wallet-input').value=acc.payout_wallet;checkStep1();}
+  if(acc.payout_wallet)document.getElementById('payout-wallet-input').value=acc.payout_wallet;
   document.getElementById('payout-modal').classList.add('open');
 }
 
@@ -438,46 +407,27 @@ function checkStep1(){
   step2.style.pointerEvents=checked?'auto':'none';
 }
 
-async function saveWallet(){
+async function saveWalletAndRequest(){
   var w=document.getElementById('payout-wallet-input').value.trim();
   if(!w||w.length<10){showModalMsg('wallet-msg','Please enter a valid wallet address.','error');return;}
   var acc=accountData;
   try{
+    // Save wallet
     var r=await fetch(BACKEND+'/submit-payout-wallet',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({account_id:acc.account_id,wallet:w,user_id:userId})});
     var d=await r.json();
-    if(d.success){
-      acc.payout_wallet=w;showModalMsg('wallet-msg','Wallet saved!','success');
-      var step3=document.getElementById('modal-step3');step3.style.opacity='1';step3.style.pointerEvents='auto';
-    }else{showModalMsg('wallet-msg',d.error||'Error saving wallet.','error');}
+    if(!d.success){showModalMsg('wallet-msg',d.error||'Error saving wallet.','error');return;}
+    // Mark payout requested in Supabase
+    await sb.from('accounts').update({payout_requested:true,payout_wallet:w}).eq('account_id',acc.account_id);
+    acc.payout_requested=true;acc.payout_wallet=w;
+    showModalMsg('wallet-msg','','success');
+    document.getElementById('modal-step1').style.display='none';
+    document.getElementById('modal-step2').style.display='none';
+    document.getElementById('payout-queued-state').style.display='block';
+    setTimeout(function(){closeModal();renderDashboard();},3000);
   }catch(e){showModalMsg('wallet-msg','Network error. Try again.','error');}
 }
 
-async function submitBalanceTx(){
-  var tx=document.getElementById('balance-tx-input').value.trim();
-  if(!tx||tx.length<20){showModalMsg('balance-msg','Please paste your transaction hash.','error');return;}
-  var acc=accountData;
-  if(!acc.payout_wallet){showModalMsg('balance-msg','Please save your payout wallet address first (Step 2).','error');return;}
-  try{
-    var r=await fetch(BACKEND+'/submit-balance-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({account_id:acc.account_id,tx_hash:tx,user_id:userId,network:acc.payment_network||'TRC20'})});
-    var d=await r.json();
-    if(d.success){
-      showModalMsg('balance-msg','','success');
-      document.getElementById('modal-step1').style.display='none';
-      document.getElementById('modal-step2').style.display='none';
-      document.getElementById('modal-step3').style.display='none';
-      document.getElementById('payout-queued-state').style.display='block';
-      acc.payout_balance_pending=true;
-      setTimeout(function(){closeModal();renderDashboard();},4000);
-    }else{showModalMsg('balance-msg',d.error||'Error. Please try again.','error');}
-  }catch(e){showModalMsg('balance-msg','Network error. Try again.','error');}
-}
-
 function showModalMsg(id,txt,type){var el=document.getElementById(id);el.textContent=txt;el.className='msg '+type;}
-
-function copyBalanceWallet(){
-  var addr=document.getElementById('balance-wallet-addr').textContent;
-  navigator.clipboard.writeText(addr).then(function(){var btn=document.querySelector('.copy-btn-sm');btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy Address';},2000);});
-}
 
 async function logout(){await sb.auth.signOut();window.location.href='login.html';}
 init();
