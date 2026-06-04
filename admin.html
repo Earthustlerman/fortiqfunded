@@ -623,7 +623,7 @@ function loadAffiliates(){
     if(!data.length){
       el.innerHTML='<div class="empty"><div class="empty-icon">💸</div>No pending commissions</div>';
     } else {
-      var h='<table><thead><tr><th>Referrer ID</th><th>Referred ID</th><th>Commission</th><th>Network</th><th>Date</th><th>Action</th></tr></thead><tbody>';
+      var h='<table><thead><tr><th>Referrer ID</th><th>Referred ID</th><th>Commission</th><th>Network</th><th>Wallet</th><th>Date</th><th>Action</th></tr></thead><tbody>';
       data.forEach(function(a){
         var ni=getNetworkInfo(a.payment_network);
         h+='<tr>';
@@ -631,9 +631,15 @@ function loadAffiliates(){
         h+='<td class="td-mono">'+a.referred_id+'</td>';
         h+='<td class="td-mono" style="color:var(--gold);font-weight:700;">$'+(a.commission||25)+' '+ni.currency+'</td>';
         h+='<td><span class="badge '+ni.badgeClass+'">'+ni.label+'</span></td>';
+        h+='<td class="td-mono" style="font-size:10px;" id="aff-wallet-'+a.id+'">Loading...</td>';
         h+='<td class="td-mono">'+(a.created_at?new Date(a.created_at).toLocaleDateString():'—')+'</td>';
         h+='<td><button class="action-btn pay" onclick="payAffiliate(\''+a.id+'\')">✓ Mark Paid</button></td>';
         h+='</tr>';
+        // Load referrer wallet async
+        sb.from('profiles').select('affiliate_wallet').eq('user_id',a.referrer_id).single().then(function(pr){
+          var el=document.getElementById('aff-wallet-'+a.id);
+          if(el)el.textContent=pr.data&&pr.data.affiliate_wallet?pr.data.affiliate_wallet:'<span style="color:var(--red)">No wallet set!</span>';
+        });
       });
       el.innerHTML=h+'</tbody></table>';
     }
