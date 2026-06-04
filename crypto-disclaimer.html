@@ -30,7 +30,6 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .section ul li{color:var(--muted);font-size:14px;font-weight:300;line-height:1.9;padding:4px 0;display:flex;align-items:flex-start;gap:8px;}
 .section ul li::before{content:'—';color:var(--purple3);flex-shrink:0;}
 .info-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin:1.5rem 0;}
-.info-box p{margin-bottom:0;}
 .info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border2);font-size:14px;}
 .info-row:last-child{border-bottom:none}
 .info-label{color:var(--muted);font-weight:300;}
@@ -58,7 +57,7 @@ footer-note{display:block;color:var(--muted2);font-size:12px;text-align:center;p
 <div class="container">
   <div class="page-header">
     <h1>Crypto Payment Disclaimer</h1>
-    <p>Last updated: May 2026 · Please read carefully before sending any payment</p>
+    <p>Last updated: June 2026 · Please read carefully before sending any payment</p>
   </div>
 
   <div class="warning-banner">
@@ -71,61 +70,45 @@ footer-note{display:block;color:var(--muted2);font-size:12px;text-align:center;p
 
   <div class="section">
     <h2>Accepted Payment Methods</h2>
-    <p>Fortiq Funded accepts two payment methods:</p>
     <div class="info-box">
       <div class="info-row"><span class="info-label">Option 1 — Currency</span><span class="info-val">USDT (Tether) · TRC20 Network</span></div>
       <div class="info-row"><span class="info-label">Option 2 — Currency</span><span class="info-val">USDC · BEP20 (BNB Smart Chain)</span></div>
-      <div class="info-row"><span class="info-label">Entry Fee Today</span><span class="info-val">$6 USDT or USDC</span></div>
-      <div class="info-row"><span class="info-label">Minimum to Activate (TRC20)</span><span class="info-val">$4.50 USDT received</span></div>
-      <div class="info-row"><span class="info-label">Minimum to Activate (BEP20)</span><span class="info-val">$5.50 USDC received</span></div>
-      <div class="info-row"><span class="info-label">Balance Fee (on payout)</span><span class="info-val">$144 on same network</span></div>
-      <div class="info-row"><span class="info-label">Minimum Balance (TRC20)</span><span class="info-val">$142 USDT received</span></div>
-      <div class="info-row"><span class="info-label">Minimum Balance (BEP20)</span><span class="info-val">$142 USDC received</span></div>
-      <div class="info-row"><span class="info-label">TRC20 Confirmations</span><span class="info-val">19 blockchain confirmations</span></div>
-      <div class="info-row"><span class="info-label">BEP20 Confirmations</span><span class="info-val">15 blockchain confirmations</span></div>
+      <div class="info-row"><span class="info-label">Challenge Fee</span><span class="info-val">$50 USDT or USDC</span></div>
+      <div class="info-row"><span class="info-label">Minimum to Activate (TRC20)</span><span class="info-val">$48 USDT received</span></div>
+      <div class="info-row"><span class="info-label">Minimum to Activate (BEP20)</span><span class="info-val">$49 USDC received</span></div>
+      <div class="info-row"><span class="info-label">TRC20 Confirmations Required</span><span class="info-val">19 blockchain confirmations</span></div>
+      <div class="info-row"><span class="info-label">BEP20 Confirmations Required</span><span class="info-val">15 blockchain confirmations</span></div>
     </div>
-    <p>You must send on the correct network for your chosen payment method. Do not send USDT on the BEP20 network, or USDC on the TRC20 network. Sending funds on the wrong network will result in permanent loss of those funds, and we cannot assist with recovery.</p>
-  </div>
-
-  <div class="section">
-    <h2>Payment Process</h2>
-    <p>The payment and activation process works as follows:</p>
-    <ul>
-      <li>Select your preferred network (TRC20 or BEP20) at checkout</li>
-      <li>You will be shown the correct wallet address for your chosen network</li>
-      <li>Send $6 USDT (TRC20) or $6 USDC (BEP20) to that address from your own wallet</li>
-      <li>The system monitors the blockchain automatically for incoming transactions</li>
-      <li>Once the required confirmations are detected and the amount meets the minimum threshold, your challenge is activated automatically</li>
-      <li>You will receive an email notification when your challenge is activated</li>
-      <li>If you send less than the minimum required, your challenge will not activate</li>
-    </ul>
+    <p>You must send on the correct network for your chosen payment method. Sending funds on the wrong network will result in permanent loss of those funds.</p>
   </div>
 
   <div class="section">
     <h2>Fee Structure</h2>
-    <p>The total challenge fee is $150, split into two payments:</p>
+    <p>The challenge fee is a single flat payment of <strong style="color:var(--gold)">$50</strong> — paid once upfront to activate your challenge. There are no deferred payments, no hidden fees, and no additional charges at any stage.</p>
     <ul>
-      <li><strong style="color:var(--text)">$6 entry fee today</strong> — paid upfront to activate your Stage 1 challenge account</li>
-      <li><strong style="color:var(--text)">$144 balance fee</strong> — paid only when you have passed the challenge and request your first payout</li>
+      <li>TRC20 entry: minimum $48 USDT received to activate</li>
+      <li>BEP20 entry: minimum $49 USDC received to activate</li>
+      <li>The $50 challenge fee is non-refundable under all circumstances</li>
     </ul>
-    <p>The $144 balance is not charged unless you pass the challenge. If you do not pass, you only ever pay the $6 entry fee.</p>
-    <p>Fee tolerance (to allow for network withdrawal fees):</p>
+  </div>
+
+  <div class="section">
+    <h2>Payment Process</h2>
     <ul>
-      <li>TRC20 entry: we require a minimum of $4.50 USDT received to activate</li>
-      <li>BEP20 entry: we require a minimum of $5.50 USDC received to activate</li>
-      <li>Balance payment (either network): we require a minimum of $142 received to confirm</li>
+      <li>Select your preferred network (TRC20 or BEP20) at checkout</li>
+      <li>Send $50 USDT (TRC20) or $50 USDC (BEP20) to the wallet address shown at checkout</li>
+      <li>The system monitors the blockchain automatically for incoming transactions</li>
+      <li>Once the required confirmations are detected and the amount meets the minimum threshold, your challenge is activated automatically</li>
+      <li>You will receive an email notification when your challenge is activated</li>
     </ul>
-    <p>If your challenge does not activate due to insufficient funds received, you must send the remaining amount or contact our support team at <strong style="color:var(--purple3)">support@fortiqfunded.com</strong>.</p>
   </div>
 
   <div class="section">
     <h2>Irreversibility of Transactions</h2>
-    <p>By making a payment, you fully acknowledge and accept that:</p>
     <ul>
       <li>All cryptocurrency transactions are final and irreversible once confirmed on the blockchain</li>
       <li>We cannot reverse, refund, or recover any payment once it has been sent</li>
-      <li>The $6 entry fee is non-refundable under all circumstances, including failure to pass the challenge, change of mind, or technical issues on your end</li>
-      <li>The $144 balance fee is similarly non-refundable once sent</li>
+      <li>The $50 challenge fee is non-refundable under all circumstances</li>
       <li>You are solely responsible for ensuring you send funds to the correct wallet address on the correct network</li>
       <li>We are not liable for any funds sent to an incorrect address or on the wrong network</li>
     </ul>
@@ -133,25 +116,23 @@ footer-note{display:block;color:var(--muted2);font-size:12px;text-align:center;p
 
   <div class="section">
     <h2>Wallet Address Verification</h2>
-    <p>Always verify the wallet address shown at checkout carefully before sending any funds. Our wallet addresses will always be displayed directly on our Platform. We will never ask you to send funds to a wallet address provided via email, social media, or any channel other than the checkout page of our official Platform at <strong style="color:var(--purple3)">fortiqfunded.com</strong>.</p>
-    <p>If you receive any communication asking you to send funds to an address not shown on our official checkout page, treat it as fraudulent and contact us immediately at <strong style="color:var(--purple3)">support@fortiqfunded.com</strong>.</p>
+    <p>Always verify the wallet address shown at checkout carefully before sending any funds. Our wallet addresses will always be displayed directly on our Platform at <strong style="color:var(--purple3)">fortiqfunded.com</strong>. We will never ask you to send funds to a wallet address provided via email, social media, or any other channel.</p>
   </div>
 
   <div class="section">
-    <h2>Payouts</h2>
-    <p>All payouts to funded traders are made in USDT (TRC20) or USDC (BEP20), matching the network you used for your original challenge entry payment. You must provide a valid wallet address on the correct network to receive your payout. We are not responsible for payouts sent to an incorrect or incompatible wallet address provided by you.</p>
-    <p>To request a payout, you must first submit your $144 balance payment via the dashboard. Once confirmed on-chain, your payout is queued for the next Saturday payout cycle.</p>
+    <h2>Payouts and Commissions</h2>
+    <p>All payouts to funded traders and referral commissions are made in USDT (TRC20) or USDC (BEP20), matching the network you used for your original challenge payment. You must provide a valid wallet address on the correct network. We are not responsible for payouts or commissions sent to an incorrect wallet address provided by you.</p>
+    <p>Payouts and referral commissions are processed every Saturday.</p>
   </div>
 
   <div class="section">
     <h2>Risk Warning</h2>
-    <p>Cryptocurrency markets are highly volatile. Participation in the Fortiq Funded evaluation programme involves the non-refundable payment of a $6 challenge entry fee, and there is no guarantee of passing the evaluation or receiving a payout. The $144 balance is only payable upon passing and requesting your payout.</p>
-    <p>Only participate with funds you can afford to lose. The challenge entry fee should be treated as a cost of participation, not an investment.</p>
+    <p>Cryptocurrency markets are highly volatile. Participation in the Fortiq Funded evaluation programme involves the non-refundable payment of a $50 challenge fee, and there is no guarantee of passing the evaluation or receiving a payout. Only participate with funds you can afford to lose.</p>
   </div>
 
   <div class="section">
     <h2>Contact</h2>
-    <p>If you have any questions about payments before sending funds, please contact us first at <strong style="color:var(--purple3)">support@fortiqfunded.com</strong>. We are happy to assist before you make any payment.</p>
+    <p>If you have any questions about payments before sending funds, please contact us at <strong style="color:var(--purple3)">support@fortiqfunded.com</strong>.</p>
   </div>
 
   <footer-note>© 2026 Fortiq Prop Digital. All rights reserved. · <a href="terms.html" style="color:var(--purple3);text-decoration:none">Terms &amp; Conditions</a> · <a href="privacy.html" style="color:var(--purple3);text-decoration:none">Privacy Policy</a></footer-note>
