@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMWYY4XETF"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -17,7 +16,7 @@
 </script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#04060f;--surface:#0f1829;--surface2:#162038;--purple:#6c3de8;--purple3:#a78bfa;--blue:#1e5fff;--text:#f0eeff;--muted:#7a7a9a;--muted2:#555575;--border:rgba(108,61,232,0.25);--border2:rgba(255,255,255,0.06);--success:#00d68f;--error:#ff4d4d;}
+:root{--bg:#04060f;--surface:#0f1829;--surface2:#162038;--purple:#6c3de8;--purple3:#a78bfa;--blue:#1e5fff;--text:#f0eeff;--muted:#7a7a9a;--muted2:#555575;--border:rgba(108,61,232,0.25);--border2:rgba(255,255,255,0.06);--success:#00d68f;--error:#ff4d4d;--gold:#c9a84c;}
 body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
 #stars{position:fixed;inset:0;z-index:0;pointer-events:none}
 .star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s)}
@@ -42,6 +41,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .req-item.met{color:var(--success)}
 .req-dot{width:5px;height:5px;border-radius:50%;background:var(--muted2);flex-shrink:0;transition:background 0.2s}
 .req-item.met .req-dot{background:var(--success)}
+.ref-note{font-size:11px;color:var(--muted2);font-weight:300;margin-top:5px;}
 .terms-wrap{display:flex;align-items:flex-start;gap:10px;margin-bottom:1.5rem}
 .terms-wrap input[type=checkbox]{width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--purple);cursor:pointer;}
 .terms-wrap label{font-size:12px;color:var(--muted);font-weight:300;line-height:1.6;cursor:pointer}
@@ -87,7 +87,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 
   <div id="form-view">
     <h2 class="card-title">Create Your Account</h2>
-    <p class="card-sub">Join Fortiq Funded · Pay $6 today · Keep 100% of your profits</p>
+    <p class="card-sub">Join Fortiq Funded · $50 challenge fee · Keep 100% of your profits</p>
     <div class="msg" id="msg"></div>
     <div class="field">
       <label>Full Name</label>
@@ -118,6 +118,11 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
       <label>Confirm Password</label>
       <input type="password" id="confirm" placeholder="Repeat your password" onkeydown="if(event.key==='Enter')doSignup()"/>
     </div>
+    <div class="field">
+      <label>Referral Code <span style="color:var(--muted2);font-weight:300;">(optional)</span></label>
+      <input type="text" id="refcode" placeholder="e.g. USR-000001" onkeydown="if(event.key==='Enter')doSignup()"/>
+      <div class="ref-note">If someone referred you, enter their code to give them a $25 reward.</div>
+    </div>
     <div class="terms-wrap">
       <input type="checkbox" id="terms"/>
       <label for="terms">I agree to the <a href="terms.html" target="_blank">Terms &amp; Conditions</a>, <a href="privacy.html" target="_blank">Privacy Policy</a>, and <a href="crypto-disclaimer.html" target="_blank">Crypto Payment Disclaimer</a></label>
@@ -138,6 +143,9 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     s.style.cssText='width:'+sz+'px;height:'+sz+'px;top:'+Math.random()*100+'%;left:'+Math.random()*100+'%;--d:'+(2+Math.random()*4)+'s;--delay:-'+(Math.random()*5)+'s;--min:'+(0.05+Math.random()*0.1)+';--max:'+(0.4+Math.random()*0.6);
     c.appendChild(s);
   }
+  // Pre-fill referral code from URL param
+  var params=new URLSearchParams(window.location.search);
+  if(params.get('ref'))document.getElementById('refcode').value=params.get('ref');
 })();
 
 function checkPwd(v){
@@ -169,6 +177,7 @@ function doSignup(){
   var email=document.getElementById('email').value.trim();
   var pwd=document.getElementById('password').value;
   var conf=document.getElementById('confirm').value;
+  var refCode=document.getElementById('refcode').value.trim().toUpperCase();
   var terms=document.getElementById('terms').checked;
   var recaptchaResponse=grecaptcha.getResponse();
   if(!recaptchaResponse){showMsg('Please complete the reCAPTCHA verification.','error');return;}
@@ -191,8 +200,7 @@ function doSignup(){
     if(!rd.success){
       showMsg('reCAPTCHA verification failed. Please try again.','error');
       btn.disabled=false;btn.textContent='Create Account';
-      grecaptcha.reset();
-      return;
+      grecaptcha.reset();return;
     }
     sb.auth.signUp({
       email:email,
@@ -207,8 +215,12 @@ function doSignup(){
         btn.disabled=false;btn.textContent='Create Account';
         grecaptcha.reset();
       } else {
-        gtag('event', 'sign_up', {method: 'email', event_category: 'acquisition'});
-        window.location.href='dashboard.html';
+        gtag('event','sign_up',{method:'email',event_category:'acquisition'});
+        // Register referral if code provided — store in localStorage for checkout to pick up
+        if(refCode){
+          localStorage.setItem('fortiq_refcode', refCode);
+        }
+        window.location.href='checkout.html'+(refCode?'?ref='+encodeURIComponent(refCode):'');
       }
     });
   }).catch(function(){
