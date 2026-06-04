@@ -220,7 +220,16 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
         <div class="aff-stat"><div class="aff-stat-label">Pending Commission</div><div class="aff-stat-val" id="aff-pending">$0</div></div>
         <div class="aff-stat"><div class="aff-stat-label">Total Earned</div><div class="aff-stat-val" id="aff-earned">$0</div></div>
       </div>
-      <p style="font-size:12px;color:var(--muted2);font-weight:300;">Commissions are paid every Saturday in the same network you used to pay for your challenge.</p>
+      <div style="margin-top:1.2rem;padding-top:1.2rem;border-top:1px solid var(--border2);">
+        <div style="font-size:13px;font-weight:500;color:var(--muted);margin-bottom:6px;">Commission Payout Wallet</div>
+        <div style="font-size:12px;color:var(--muted2);font-weight:300;margin-bottom:10px;">Enter the wallet address where you want to receive your $25 commissions. Use the same network you paid for your challenge with.</div>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="aff-wallet-input" placeholder="Enter your TRC20 or BEP20 wallet address..." style="flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'Courier New',monospace;font-size:12px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--purple)'" onblur="this.style.borderColor='var(--border2)'"/>
+          <button onclick="saveAffWallet()" style="background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border:none;padding:11px 20px;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap;">Save Wallet</button>
+        </div>
+        <div id="aff-wallet-msg" style="font-size:12px;margin-top:8px;display:none;"></div>
+      </div>
+      <p style="font-size:12px;color:var(--muted2);font-weight:300;margin-top:1rem;">Commissions are paid every Saturday in the same network you used to pay for your challenge.</p>
     </div>
   </div>
 </div>
@@ -372,7 +381,25 @@ async function loadAffiliateStats(){
       document.getElementById('aff-pending').textContent='$'+(d.pending_commission||0);
       document.getElementById('aff-earned').textContent='$'+(d.total_earned||0);
     }
+    // Pre-fill wallet if already saved in profiles
+    var pw=await sb.from('profiles').select('affiliate_wallet').eq('id',userId).single();
+    if(pw.data&&pw.data.affiliate_wallet){
+      document.getElementById('aff-wallet-input').value=pw.data.affiliate_wallet;
+    }
   }catch(e){}
+}
+
+async function saveAffWallet(){
+  var w=document.getElementById('aff-wallet-input').value.trim();
+  var msg=document.getElementById('aff-wallet-msg');
+  if(!w||w.length<10){msg.textContent='Please enter a valid wallet address.';msg.style.color='var(--error)';msg.style.display='block';return;}
+  try{
+    var r=await sb.from('profiles').update({affiliate_wallet:w}).eq('id',userId);
+    if(r.error){msg.textContent='Error saving wallet.';msg.style.color='var(--error)';}
+    else{msg.textContent='✓ Wallet saved successfully.';msg.style.color='var(--success)';}
+    msg.style.display='block';
+    setTimeout(function(){msg.style.display='none';},3000);
+  }catch(e){msg.textContent='Error saving wallet.';msg.style.color='var(--error)';msg.style.display='block';}
 }
 
 function copyRefCode(){
